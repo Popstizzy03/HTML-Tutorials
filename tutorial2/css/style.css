@@ -1,0 +1,36 @@
+select,
+::picker(select) {
+    appearance: base-select;
+}
+
+select {
+    width: 40%;
+}
+
+selectedcontent,
+option {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+}
+
+option {
+    padding-block: 0.25rem;
+}
+
+.emoji-name {
+    color: #333;
+}
+
+.emoji {
+    width: 30px;
+    height: 30px;
+}
+
+option::checkmark {
+    display: none;
+}
+
+option::checked {
+    background: hsl(150, 91%, 37%);
+}
