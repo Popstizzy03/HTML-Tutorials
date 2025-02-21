@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> Social Homepage</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+<body>
+
+    <header>
+        <div class="logo">SocialSphere</div>
+        <nav>
+            <ul>
+                <li><a href="#" class="active"><i class="fas fa-home"></i> Home</a></li>
+                <li><a href="#"><i class="fas fa-users"></i> Friends</a></li>
+                <li><a href="#"><i class="fas fa-envelope"></i> Messages</a></li>
+                <li><a href="#"><i class="fas fa-bell"></i> Notifications</a></li>
+            </ul>
+        </nav>
+        <div class="search-bar">
+            <input type="text" placeholder="Search...">
+            <button><i class="fas fa-search"></i></button>
+        </div>
+        <div class="profile">
+            <img src="profile.jpg" alt="User Profile">
+            <span>John Doe</span>
+            <div class="dropdown">
+                <button class="dropdown-button"><i class="fas fa-caret-down"></i></button>
+                <div class="dropdown-content">
+                    <a href="#"><i class="fas fa-user"></i> Profile</a>
+                    <a href="#"><i class="fas fa-cog"></i> Settings</a>
+                    <a href="#"><i class="fas fa-sign-out-alt"></i> Logout</a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <aside class="left-sidebar">
+            <div class="sidebar-section">
+                <h3>Your Profile</h3>
+                <img src="profile.jpg" alt="User Profile">
+                <p><strong>John Doe</strong></p>
+                <p>Web Developer</p>
+                <a href="#">Edit Profile</a>
+            </div>
+            <div class="sidebar-section">
+                <h3>Friends</h3>
+                <ul class="friend-list">
+                    <li><img src="friend1.jpg" alt="Friend 1"><span>Jane Smith</span></li>
+                    <li><img src="friend2.jpg" alt="Friend 2"><span>Peter Jones</span></li>
+                    <li><img src="friend3.jpg" alt="Friend 3"><span>Alice Brown</span></li>
+                    <li><img src="friend4.jpg" alt="Friend 4"><span>David Wilson</span></li>
+                    <li><img src="friend5.jpg" alt="Friend 5"><span>Emily Clark</span></li>
+                </ul>
+            </div>
+            <div class="sidebar-section">
+                <h3>Groups</h3>
+                <ul>
+                    <li><a href="#">Web Development Group</a></li>
+                    <li><a href="#">Photography Enthusiasts</a></li>
+                    <li><a href="#">Book Club</a></li>
+                </ul>
+            </div>
+        </aside>
+
+        <section class="main-content">
+            <div class="post-form">
+                <textarea placeholder="What's on your mind, John?"></textarea>
+                <div class="post-options">
+                    <button><i class="fas fa-image"></i> Add Photo/Video</button>
+                    <button><i class="fas fa-location-arrow"></i> Check In</button>
+                    <button class="post-button">Post</button>
+                </div>
+            </div>
+
+            <div class="post">
+                <div class="post-header">
+                    <img src="friend1.jpg" alt="Jane Smith">
+                    <span>Jane Smith</span>
+                    <small>Posted 2 hours ago</small>
+                </div>
+                <div class="post-content">
+                    <p>Enjoying a beautiful sunset at the beach!  #beachlife #sunset</p>
+                    <img src="sunset.jpg" alt="Sunset">
+                </div>
+                <div class="post-footer">
+                    <button><i class="fas fa-thumbs-up"></i> Like (25)</button>
+                    <button><i class="fas fa-comment"></i> Comment (5)</button>
+                    <button><i class="fas fa-share"></i> Share</button>
+                </div>
+
+                <div class="comment-section">
+                    <div class="comment">
+                        <img src="friend2.jpg" alt="Peter Jones">
+                        <p>Peter Jones: Wow, looks amazing!</p>
+                    </div>
+                    <div class="comment">
+                        <img src="friend3.jpg" alt="Alice Brown">
+                        <p>Alice Brown: Wish I was there!</p>
+                    </div>
+                    <div class="add-comment">
+                        <img src="profile.jpg" alt="John Doe">
+                        <input type="text" placeholder="Write a comment...">
+                    </div>
+                </div>
+            </div>
+
+             <div class="post">
+                <div class="post-header">
+                    <img src="friend2.jpg" alt="Peter Jones">
+                    <span>Peter Jones</span>
+                    <small>Posted 5 hours ago</small>
+                </div>
+                <div class="post-content">
+                    <p>Just finished a challenging coding project! Feeling accomplished. #coding #webdevelopment</p>
+                </div>
+                <div class="post-footer">
+                    <button><i class="fas fa-thumbs-up"></i> Like (12)</button>
+                    <button><i class="fas fa-comment"></i> Comment (2)</button>
+                    <button><i class="fas fa-share"></i> Share</button>
+                </div>
+
+                <div class="comment-section">
+                    <div class="comment">
+                        <img src="profile.jpg" alt="John Doe">
+                        <p>John Doe: Congrats, Peter!</p>
+                    </div>
+                    <div class="add-comment">
+                        <img src="profile.jpg" alt="John Doe">
+                        <input type="text" placeholder="Write a comment...">
+                    </div>
+                </div>
+            </div>
+
+            <!-- More posts would go here -->
+
+        </section>
+
+        <aside class="right-sidebar">
+            <div class="sidebar-section">
+                <h3>Trending</h3>
+                <ol class="trending-list">
+                    <li>#webdevelopment</li>
+                    <li>#photography</li>
+                    <li>#codinglife</li>
+                    <li>#travel</li>
+                    <li>#music</li>
+                </ol>
+            </div>
+            <div class="sidebar-section">
+                <h3>Sponsored</h3>
+                <div class="sponsored-ad">
+                    <img src="ad1.jpg" alt="Sponsored Ad">
+                    <p>Learn to code with our online courses!</p>
+                    <a href="#">Learn More</a>
+                </div>
+            </div>
+
+            <div class="sidebar-section">
+                <h3>Events</h3>
+                <ul>
+                    <li><a href="#">Web Dev Conference - October 27th</a></li>
+                    <li><a href="#">Photography Workshop - November 10th</a></li>
+                </ul>
+            </div>
+        </aside>
+    </main>
+
+    <footer>
+        <p>© 2023 SocialSphere. All rights reserved.</p>
+    </footer>
+
+    <script>
+document.addEventListener('DOMContentLoaded', () => {
+  const dropdownButton = document.querySelector('.dropdown-button');
+  const dropdownContent = document.querySelector('.dropdown-content');
+
+  if (dropdownButton && dropdownContent) {
+    dropdownButton.addEventListener('click', (event) => {
+      event.stopPropagation(); // Prevent the event from bubbling up to the document
+      dropdownContent.style.display = dropdownContent.style.display === 'block' ? 'none' : 'block';
+    });
+
+    // Close the dropdown when clicking outside of it
+    document.addEventListener('click', (event) => {
+      if (!dropdownContent.contains(event.target) && event.target !== dropdownButton) {
+        dropdownContent.style.display = 'none';
+      }
+    });
+  }
+});
+    </script>
+</body>
+</html>
