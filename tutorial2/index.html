@@ -3,26 +3,53 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Emoji Picker</title>
     <link rel="stylesheet" href="css/style.css">
-    <title>Dropdown</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
 <body>
-    <select>
-        <button>
-            <selectedcontent></selectedcontent>
-        </button>
-        <option>
-            <img class="emoji" src="" alt="">
-            <div class="emoji-name">smirk</div>
-        </option>
-        <option>
-            <img class="emoji" src="" alt="">
-            <div class="emoji-name">grining face with sweat</div>
-        </option>
-        <option>
-            <img class="emoji" src="" alt="">
-            <div class="emoji-name">ghost</div>
-        </option>
-    </select>
+
+    <div class="emoji-picker-container">
+        <div class="selected-emoji">
+            <button id="emoji-button">
+                <span id="selected-emoji-content">Select Emoji</span>
+                <i class="fas fa-caret-down"></i>
+            </button>
+        </div>
+
+        <div class="emoji-options glassmorphic" id="emoji-options">
+            <div class="search-bar">
+                <input type="text" id="emoji-search" placeholder="Search Emoji...">
+            </div>
+            <div class="emoji-list">
+                <div class="emoji-option" data-emoji-name="smirk" data-emoji-code="1F60F">
+                    <img class="emoji" src="1.svg" alt="Smirk">
+                    <div class="emoji-name">Smirk</div>
+                </div>
+                <div class="emoji-option" data-emoji-name="grinning face with sweat" data-emoji-code="1F605">
+                    <img class="emoji" src="1.svg" alt="Grinning Face with Sweat">
+                    <div class="emoji-name">Grinning Face with Sweat</div>
+                </div>
+                <div class="emoji-option" data-emoji-name="ghost" data-emoji-code="1F47B">
+                    <img class="emoji" src="1.svg" alt="Ghost">
+                    <div class="emoji-name">Ghost</div>
+                </div>
+                <div class="emoji-option" data-emoji-name="heart eyes" data-emoji-code="1F60D">
+                    <img class="emoji" src="1.svg" alt="Heart Eyes">
+                    <div class="emoji-name">Heart Eyes</div>
+                </div>
+                <div class="emoji-option" data-emoji-name="joy" data-emoji-code="1F602">
+                    <img class="emoji" src="1.svg" alt="Joy">
+                    <div class="emoji-name">Joy</div>
+                </div>
+                <div class="emoji-option" data-emoji-name="thumbs up" data-emoji-code="1F44D">
+                    <img class="emoji" src="1.svg" alt="Thumbs Up">
+                    <div class="emoji-name">Thumbs Up</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/script.js"></script>
 </body>
 </html>
