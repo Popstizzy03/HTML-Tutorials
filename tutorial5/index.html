@@ -1,0 +1,863 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Deaujo Jewellery</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&family=Spectral:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;0,800;1,200;1,300;1,400;1,500;1,600;1,700;1,800&display=swap"
+        rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
+        integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+        rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+</head>
+
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <div class="logo-container">
+                <img src="./images/header.png" alt="Deaujo Jewellery Logo" class="logo" />
+                <nav class="main-nav">
+                    <ul class="main-nav-list">
+                        <li><a href="#home" class="active">Home</a></li>
+                        <li><a href="#shop">Shop</a></li>
+                        <li><a href="#catalogue">Catalogue</a></li>
+                        <li><a href="#about">About</a></li>
+                        <li><a href="#clients">Reviews</a></li>
+                        <li><a href="#articles">Journal</a></li>
+                    </ul>
+                </nav>
+            </div>
+            <div class="icons">
+                <button id="theme-toggle" class="theme-toggle" aria-label="Toggle theme">
+                    <i class="fas fa-moon"></i>
+                </button>
+                <button id="search-toggle" class="icon-button" aria-label="Search">
+                    <i class="fas fa-search"></i>
+                </button>
+                <button id="wishlist-btn" class="icon-button" aria-label="Wishlist">
+                    <i class="fas fa-heart"></i>
+                </button>
+                <button id="cart-btn" class="icon-button" aria-label="Shopping cart">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span id="cart-count" class="icon-badge">0</span>
+                </button>
+                <button id="compare-btn" class="icon-button d-none d-md-flex" aria-label="Compare products">
+                    <i class="fas fa-exchange-alt"></i>
+                    <span id="compare-count" class="icon-badge">0</span>
+                </button>
+                <button id="hamburger" class="icon-button hamburger" aria-label="Menu">
+                    <i class="fa-solid fa-bars"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Mobile Navigation Popup -->
+    <nav id="popup-menu" class="nav-popup">
+        <button class="nav-popup-close" aria-label="Close menu">
+            <i class="fas fa-times"></i>
+        </button>
+        <ul class="nav-list">
+            <li><a href="#home"><i class="fas fa-home"></i> Home</a></li>
+            <li><a href="#shop"><i class="fas fa-store"></i> Shop</a></li>
+            <li><a href="#catalogue"><i class="fas fa-book-open"></i> Catalogue</a></li>
+            <li><a href="#about"><i class="fas fa-info-circle"></i> About</a></li>
+            <li><a href="#clients"><i class="fas fa-star"></i> Reviews</a></li>
+            <li><a href="#articles"><i class="fas fa-newspaper"></i> Journal</a></li>
+        </ul>
+    </nav>
+
+    <!-- Search Popup -->
+    <div id="search-popup" class="search-popup">
+        <button class="search-popup-close" aria-label="Close search">
+            <i class="fas fa-times"></i>
+        </button>
+        <div class="search-container">
+            <div class="search-box">
+                <input type="text" id="search-input" class="search-input" placeholder="Search for jewelry..." />
+                <button id="search-button" class="search-button">
+                    <i class="fas fa-search"></i>
+                </button>
+            </div>
+        </div>
+        <div id="search-results" class="search-results">
+            <ul id="search-results-list" class="search-results-list"></ul>
+        </div>
+    </div>
+
+    <main>
+        <!-- Hero Section -->
+        <section class="hero" id="home">
+            <div class="slider-container">
+                <div class="slider-overlay"></div>
+                <div class="slide fade">
+                    <img src="./jewwl1.webp" alt="Luxury Jewelry Collection" />
+                    <div class="slide-content">
+                        <h1 class="slide-title">Discover Timeless Elegance</h1>
+                        <h3 class="slide-subtitle">Explore our exquisite collection of fine jewelry, crafted with
+                            passion and precision.</h3>
+                        <div class="hero-buttons">
+                            <a href="#shop" class="btn btn-primary">Shop Collection <i
+                                    class="fas fa-arrow-right"></i></a>
+                            <a href="#about" class="btn btn-outline">Our Story</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="slide fade">
+                    <img src="./images/273010759_456834679278707_5503479487234058451_n.jpg" alt="Handcrafted Jewelry" />
+                    <div class="slide-content">
+                        <h1 class="slide-title">Handcrafted Excellence</h1>
+                        <h3 class="slide-subtitle">Each piece tells a unique story of artistry and sophistication.</h3>
+                        <div class="hero-buttons">
+                            <a href="#shop" class="btn btn-primary">View Collection <i
+                                    class="fas fa-arrow-right"></i></a>
+                            <a href="#catalogue" class="btn btn-outline">Our Catalogue</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="slide fade">
+                    <img src="./images/469011766_1104360731192762_2013777699898949817_n.jpg"
+                        alt="Modern Jewelry Design" />
+                    <div class="slide-content">
+                        <h1 class="slide-title">Luxury Redefined</h1>
+                        <h3 class="slide-subtitle">Experience the perfect blend of tradition and contemporary design.
+                        </h3>
+                        <div class="hero-buttons">
+                            <a href="#shop" class="btn btn-primary">Explore Now <i class="fas fa-arrow-right"></i></a>
+                            <a href="#clients" class="btn btn-outline">Customer Reviews</a>
+                        </div>
+                    </div>
+                </div>
+
+                <button class="prev" aria-label="Previous slide">
+                    <i class="fas fa-chevron-left"></i>
+                </button>
+                <button class="next" aria-label="Next slide">
+                    <i class="fas fa-chevron-right"></i>
+                </button>
+            </div>
+
+            <div class="pagination">
+                <span class="dot" data-slide="1"></span>
+                <span class="dot" data-slide="2"></span>
+                <span class="dot" data-slide="3"></span>
+            </div>
+        </section>
+
+        <!-- Shop Section -->
+        <section id="shop" class="section-container">
+            <div class="container">
+                <nav aria-label="Breadcrumb" class="breadcrumbs">
+                    <ol class="breadcrumbs-list">
+                        <li class="breadcrumbs-item">
+                            <a href="#home" class="breadcrumbs-link">Home</a>
+                            <span class="breadcrumbs-separator">
+                                <i class="fas fa-chevron-right"></i>
+                            </span>
+                        </li>
+                        <li class="breadcrumbs-item">
+                            <span class="breadcrumbs-current">Shop</span>
+                        </li>
+                    </ol>
+                </nav>
+
+                <h2 class="section-title">Explore Our Collections</h2>
+
+                <div class="filter-container">
+                    <div class="filter-section">
+                        <h3 class="filter-heading">Categories</h3>
+                        <div class="category-buttons">
+                            <button class="category-button active" data-category="all">All Products</button>
+                            <button class="category-button" data-category="rings">
+                                <i class="fas fa-ring"></i> Rings
+                            </button>
+                            <button class="category-button" data-category="necklaces">
+                                <i class="fas fa-gem"></i> Necklaces
+                            </button>
+                            <button class="category-button" data-category="watches">
+                                <i class="fas fa-clock"></i> Watches
+                            </button>
+                            <button class="category-button" data-category="wedding-dresses">
+                                <i class="fas fa-female"></i> Wedding Dresses
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="filter-section">
+                        <h3 class="filter-heading">Filter By</h3>
+                        <div class="gender-filter">
+                            <button class="gender-button active" data-gender="all">All</button>
+                            <button class="gender-button" data-gender="male">
+                                <i class="fas fa-mars"></i> Men
+                            </button>
+                            <button class="gender-button" data-gender="female">
+                                <i class="fas fa-venus"></i> Women
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="filter-section">
+                        <h3 class="filter-heading">Price Range</h3>
+                        <div class="price-filter">
+                            <div class="price-range">
+                                <span id="min-price-display">K0</span>
+                                <span id="max-price-display">K3000</span>
+                            </div>
+                            <div class="slider-container">
+                                <div id="price-slider-track" class="slider-track"></div>
+                                <div id="slider-min-handle" class="slider-handle" style="left: 0%"></div>
+                                <div id="slider-max-handle" class="slider-handle" style="left: 100%"></div>
+                            </div>
+                            <div class="price-inputs">
+                                <input type="number" id="min-price-input" class="price-input" placeholder="Min" min="0"
+                                    value="0">
+                                <input type="number" id="max-price-input" class="price-input" placeholder="Max" min="0"
+                                    value="3000">
+                            </div>
+                            <button id="apply-price-filter" class="btn btn-primary btn-small filter-apply">Apply
+                                Filter</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="products-loading" class="products-grid">
+                    <!-- Skeleton Loaders -->
+                    <div class="product-skeleton">
+                        <div class="skeleton-image"></div>
+                        <div class="skeleton-content">
+                            <div class="skeleton-title"></div>
+                            <div class="skeleton-price"></div>
+                            <div class="skeleton-text"></div>
+                            <div class="skeleton-button"></div>
+                        </div>
+                    </div>
+                    <div class="product-skeleton">
+                        <div class="skeleton-image"></div>
+                        <div class="skeleton-content">
+                            <div class="skeleton-title"></div>
+                            <div class="skeleton-price"></div>
+                            <div class="skeleton-text"></div>
+                            <div class="skeleton-button"></div>
+                        </div>
+                    </div>
+                    <div class="product-skeleton">
+                        <div class="skeleton-image"></div>
+                        <div class="skeleton-content">
+                            <div class="skeleton-title"></div>
+                            <div class="skeleton-price"></div>
+                            <div class="skeleton-text"></div>
+                            <div class="skeleton-button"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="products-container" class="products-grid" style="display: none"></div>
+
+                <div id="no-products" style="display: none; text-align: center; padding: 50px 0;">
+                    <i class="fas fa-search" style="font-size: 3rem; color: #ccc; margin-bottom: 20px;"></i>
+                    <h3>No products found</h3>
+                    <p>Try adjusting your filters or search term</p>
+                </div>
+
+                <div class="recently-viewed">
+                    <h3 class="recently-viewed-title">Recently Viewed</h3>
+                    <div class="recently-viewed-container">
+                        <div id="recently-viewed-carousel" class="recently-viewed-carousel">
+                            <!-- Recently viewed products will be added here -->
+                        </div>
+                        <div class="carousel-controls">
+                            <button class="carousel-control prev" aria-label="Previous items">
+                                <i class="fas fa-chevron-left"></i>
+                            </button>
+                            <button class="carousel-control next" aria-label="Next items">
+                                <i class="fas fa-chevron-right"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Newsletter Section -->
+        <section class="newsletter">
+            <div class="newsletter-container">
+                <h3 class="newsletter-title">Subscribe to Our Newsletter</h3>
+                <p class="newsletter-subtitle">Stay updated with our latest collections and exclusive offers</p>
+                <form class="newsletter-form">
+                    <input type="email" class="newsletter-input" placeholder="Your email address" required>
+                    <button type="submit" class="newsletter-button">Subscribe</button>
+                </form>
+            </div>
+        </section>
+
+        <!-- Catalogue Section -->
+        <section id="catalogue" class="section-container">
+            <div class="container text-center">
+                <h2 class="section-title">Our Catalogue</h2>
+                <p class="mb-3" style="margin-bottom: 30px;">Browse our latest designs and timeless classics in our
+                    seasonal catalogue.</p>
+                <button class="btn btn-primary catalogue-button">
+                    View Catalogue
+                    <i class="fas fa-arrow-right"></i>
+                </button>
+            </div>
+        </section>
+
+        <!-- About Section -->
+        <section id="about" class="section-container">
+            <div class="container">
+                <h2 class="section-title">About Deaujo Jewellery</h2>
+                <div class="about-content">
+                    <div class="about-image">
+                        <img src="images/005.png" alt="Deaujo Jewellery workshop" loading="lazy" />
+                    </div>
+                    <div class="about-text">
+                        <h3>Our Story</h3>
+                        <p>
+                            Founded in 2005, Deaujo Jewellery has been crafting exquisite
+                            pieces that blend traditional artisanship with modern design.
+                            Our journey began in a small workshop in Lusaka, Zambia, fueled
+                            by a passion for creating timeless beauty.
+                        </p>
+                        <h3>Our Commitment</h3>
+                        <p>
+                            At Deaujo, we are committed to ethical sourcing and sustainable
+                            practices. Each piece is crafted with care, using responsibly
+                            sourced materials and supporting local artisans. We believe in
+                            creating jewelry that not only beautifies but also respects our
+                            planet and communities.
+                        </p>
+                        <h3>Our Promise</h3>
+                        <p>
+                            We promise to deliver not just jewelry, but wearable art that
+                            tells a story. Every Deaujo piece is a testament to quality,
+                            creativity, and the enduring allure of fine craftsmanship. Our
+                            attention to detail ensures that each creation stands the test of
+                            time, both in style and durability.
+                        </p>
+
+                        <div class="about-stats">
+                            <div class="stat-item">
+                                <div class="stat-value">19</div>
+                                <div class="stat-label">Years Experience</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-value">5K+</div>
+                                <div class="stat-label">Happy Clients</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-value">200+</div>
+                                <div class="stat-label">Unique Designs</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Testimonials Section -->
+        <section id="clients" class="section-container">
+            <div class="container">
+                <div class="testimonial-header">
+                    <h2 class="section-title">Testimonials</h2>
+                    <p>What Our Customers Say</p>
+                </div>
+
+                <div class="testimonials-grid">
+                    <div class="testimonial-card animate-fade">
+                        <div class="testimonial-profile">
+                            <img src="images/001.png" alt="Joseph Sichula" />
+                            <div class="testimonial-info">
+                                <span class="testimonial-name">Joseph Sichula</span>
+                                <span class="testimonial-title">Loyal Customer</span>
+                            </div>
+                        </div>
+                        <div class="testimonial-rating">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                        </div>
+                        <p class="testimonial-text">
+                            The quality of craftsmanship in my engagement ring is exceptional. The attention to detail
+                            and customer service made the whole experience memorable. Highly recommended!
+                        </p>
+                    </div>
+
+                    <div class="testimonial-card animate-fade" style="animation-delay: 0.2s;">
+                        <div class="testimonial-profile">
+                            <img src="images/001.png" alt="Maria Njovu" />
+                            <div class="testimonial-info">
+                                <span class="testimonial-name">Maria Njovu</span>
+                                <span class="testimonial-title">First-time Buyer</span>
+                            </div>
+                        </div>
+                        <div class="testimonial-rating">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star-half-alt"></i>
+                        </div>
+                        <p class="testimonial-text">
+                            I was looking for something special for my anniversary and found the perfect necklace at
+                            Deaujo. The packaging was beautiful and my wife absolutely loved it!
+                        </p>
+                    </div>
+
+                    <div class="testimonial-card animate-fade" style="animation-delay: 0.4s;">
+                        <div class="testimonial-profile">
+                            <img src="images/001.png" alt="Daniel Mbewe" />
+                            <div class="testimonial-info">
+                                <span class="testimonial-name">Daniel Mbewe</span>
+                                <span class="testimonial-title">Repeat Customer</span>
+                            </div>
+                        </div>
+                        <div class="testimonial-rating">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                        </div>
+                        <p class="testimonial-text">
+                            I've purchased several pieces from Deaujo over the years, and their commitment to quality
+                            has never wavered. Their designs are always unique and conversation starters.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Articles Section -->
+        <section id="articles" class="section-container">
+            <div class="container">
+                <h2 class="section-title">Jewelry Journal</h2>
+                <div class="articles-grid">
+                    <article class="article-card animate-slide-up">
+                        <div class="article-image">
+                            <img src="images/001.png" alt="The History of Diamond Cutting" loading="lazy" />
+                            <div class="article-date">June 15, 2024</div>
+                        </div>
+                        <div class="article-content">
+                            <div class="article-category">Education</div>
+                            <h3 class="article-title">The History of Diamond Cutting</h3>
+                            <p class="article-excerpt">
+                                Explore the fascinating journey of diamond cutting techniques
+                                from ancient times to modern precision methods. Discover how these
+                                innovations have shaped the jewelry industry.
+                            </p>
+                            <a href="#" class="read-more">Read More <i class="fas fa-arrow-right"></i></a>
+                        </div>
+                    </article>
+
+                    <article class="article-card animate-slide-up" style="animation-delay: 0.2s;">
+                        <div class="article-image">
+                            <img src="images/013.png" alt="Caring for Your Fine Jewelry" loading="lazy" />
+                            <div class="article-date">May 28, 2024</div>
+                        </div>
+                        <div class="article-content">
+                            <div class="article-category">Care Guide</div>
+                            <h3 class="article-title">Caring for Your Fine Jewelry</h3>
+                            <p class="article-excerpt">
+                                Learn expert tips on how to maintain the sparkle and integrity
+                                of your precious jewelry pieces for generations. Simple daily habits
+                                can make all the difference.
+                            </p>
+                            <a href="#" class="read-more">Read More <i class="fas fa-arrow-right"></i></a>
+                        </div>
+                    </article>
+
+                    <article class="article-card animate-slide-up" style="animation-delay: 0.4s;">
+                        <div class="article-image">
+                            <img src="images/012.png" alt="Emerging Trends in Jewelry Design" loading="lazy" />
+                            <div class="article-date">April 10, 2024</div>
+                        </div>
+                        <div class="article-content">
+                            <div class="article-category">Trends</div>
+                            <h3 class="article-title">Emerging Trends in Jewelry Design</h3>
+                            <p class="article-excerpt">
+                                Discover the latest trends shaping the world of jewelry
+                                design, from sustainable materials to innovative forms. Stay ahead
+                                of the curve with our expert insights.
+                            </p>
+                            <a href="#" class="read-more">Read More <i class="fas fa-arrow-right"></i></a>
+                        </div>
+                    </article>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <div class="footer-logo">
+                    <img src="./images/header.png" alt="Deaujo Jewellery Logo" />
+                </div>
+                <p>
+                    Deaujo Gems is your destination for fine jewelry and exquisite
+                    timepieces. We've been creating memorable pieces since 2005.
+                </p>
+                <p>
+                    Our high-quality, durable jewelry has earned the trust of customers
+                    across Zambia and beyond.
+                </p>
+                <div class="social-icons">
+                    <a href="https://www.facebook.com/Deaujo24?mibextid=ZbWKwL" target="_blank" aria-label="Facebook">
+                        <i class="fab fa-facebook-f"></i>
+                    </a>
+                    <a href="https://www.instagram.com/deaujo_jewellery?igsh=MTBmNGlsaXFnYWtubg==" target="_blank"
+                        aria-label="Instagram">
+                        <i class="fab fa-instagram"></i>
+                    </a>
+                    <a href="https://www.tiktok.com/@deaujo_jewellery" target="_blank" aria-label="TikTok">
+                        <i class="fab fa-tiktok"></i>
+                    </a>
+                    <a href="#" target="_blank" aria-label="YouTube">
+                        <i class="fab fa-youtube"></i>
+                    </a>
+                </div>
+            </div>
+
+            <div class="footer-section">
+                <h3>Quick Links</h3>
+                <ul class="footer-links">
+                    <li><a href="#home">Home</a></li>
+                    <li><a href="#shop">Shop</a></li>
+                    <li><a href="#catalogue">Catalogue</a></li>
+                    <li><a href="#about">About</a></li>
+                    <li><a href="#clients">Reviews</a></li>
+                    <li><a href="#articles">Journal</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-section">
+                <h3>Customer Service</h3>
+                <ul class="footer-links">
+                    <li><a href="#">FAQs</a></li>
+                    <li><a href="#">Shipping & Returns</a></li>
+                    <li><a href="#">Product Care</a></li>
+                    <li><a href="#">Sizing Guide</a></li>
+                    <li><a href="#">Custom Orders</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-section footer-contact">
+                <h3>Contact Us</h3>
+                <p><i class="fas fa-envelope"></i> info@deaujogems.com</p>
+                <p><i class="fas fa-phone"></i> (+260) 974-421451</p>
+                <p><i class="fas fa-map-marker-alt"></i> Lusaka, Zambia</p>
+                <p><i class="far fa-clock"></i> Mon-Fri: 9AM - 6PM</p>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <p>&copy; 2024 Deaujo Jewellery. All rights reserved.</p>
+            <div class="payment-methods">
+                <i class="fab fa-cc-visa"></i>
+                <i class="fab fa-cc-mastercard"></i>
+                <i class="fab fa-cc-amex"></i>
+                <i class="fab fa-cc-paypal"></i>
+                <i class="fab fa-cc-discover"></i>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Product Details Popup -->
+    <div id="overlay" class="overlay"></div>
+
+    <div id="product-popup" class="product-popup">
+        <div class="popup-content">
+            <button class="close-popup" aria-label="Close popup">
+                <i class="fas fa-times"></i>
+            </button>
+            <div class="product-popup-content">
+                <div class="product-gallery">
+                    <div class="product-gallery-main">
+                        <!-- Main product image/video will be displayed here -->
+                        <div class="gallery-controls">
+                            <button class="gallery-control gallery-prev">
+                                <i class="fas fa-chevron-left"></i>
+                            </button>
+                            <button class="gallery-control gallery-next">
+                                <i class="fas fa-chevron-right"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="product-gallery-thumbs">
+                        <!-- Thumbnail images/videos will be displayed here -->
+                    </div>
+                </div>
+
+                <div class="product-details">
+                    <div class="product-meta">
+                        <div class="product-category">Category</div>
+                    </div>
+                    <h2 class="product-title"></h2>
+                    <div class="product-rating"></div>
+                    <div class="product-price-display"></div>
+                    <div class="product-availability"></div>
+                    <div class="product-description"></div>
+
+                    <div class="product-variation">
+                        <div class="variation-title">Available Colors</div>
+                        <div class="color-options">
+                            <div class="color-option selected" style="background-color: #FFD700;" data-color="Gold">
+                            </div>
+                            <div class="color-option" style="background-color: #C0C0C0;" data-color="Silver"></div>
+                            <div class="color-option" style="background-color: #B76E79;" data-color="Rose Gold"></div>
+                            <div class="color-option" style="background-color: #333333;" data-color="Black"></div>
+                        </div>
+                    </div>
+
+                    <div class="product-variation">
+                        <div class="variation-title">Size</div>
+                        <div class="size-options">
+                            <div class="size-option" data-size="5">5</div>
+                            <div class="size-option" data-size="6">6</div>
+                            <div class="size-option selected" data-size="7">7</div>
+                            <div class="size-option" data-size="8">8</div>
+                            <div class="size-option" data-size="9">9</div>
+                            <div class="size-option disabled" data-size="10">10</div>
+                        </div>
+                    </div>
+
+                    <div class="product-tabs">
+                        <div class="tab-buttons">
+                            <button class="tab-button active" data-tab="specs">Specifications</button>
+                            <button class="tab-button" data-tab="about">Details</button>
+                            <button class="tab-button" data-tab="reviews">Reviews</button>
+                            <button class="tab-button" data-tab="shipping">Shipping</button>
+                        </div>
+
+                        <div class="tab-content">
+                            <div id="specs-tab" class="tab-panel active">
+                                <div class="product-specs">
+                                    <!-- Product specifications will be displayed here -->
+                                </div>
+                            </div>
+
+                            <div id="about-tab" class="tab-panel">
+                                <!-- Product description will be displayed here -->
+                            </div>
+
+                            <div id="reviews-tab" class="tab-panel">
+                                <div class="product-reviews">
+                                    <!-- Product reviews will be displayed here -->
+                                </div>
+                            </div>
+
+                            <div id="shipping-tab" class="tab-panel">
+                                <h4>Shipping Information</h4>
+                                <p>All orders are processed within 1-2 business days. Shipping times vary based on
+                                    location:</p>
+                                <ul style="margin-left: 20px; margin-bottom: 15px;">
+                                    <li>Lusaka: 1-2 business days</li>
+                                    <li>Other Provinces: 3-5 business days</li>
+                                    <li>International: 7-14 business days</li>
+                                </ul>
+                                <p>Free shipping on orders over K500 within Zambia.</p>
+
+                                <h4>Returns & Exchanges</h4>
+                                <p>We accept returns within 30 days of delivery. Items must be in original condition
+                                    with all packaging intact. Custom orders are non-refundable.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="quantity-control">
+                        <button class="quantity-btn" id="decrease-quantity" aria-label="Decrease quantity">
+                            <i class="fas fa-minus"></i>
+                        </button>
+                        <input type="number" id="quantity-input" class="quantity-input" value="1" min="1"
+                            aria-label="Quantity" />
+                        <button class="quantity-btn" id="increase-quantity" aria-label="Increase quantity">
+                            <i class="fas fa-plus"></i>
+                        </button>
+                    </div>
+
+                    <div class="product-actions">
+                        <button class="product-action-btn buy-now-btn">
+                            <i class="fas fa-bolt"></i> Buy Now
+                        </button>
+                        <button class="product-action-btn add-to-cart-btn">
+                            <i class="fas fa-shopping-cart"></i> Add to Cart
+                        </button>
+                        <button class="product-action-btn wishlist-btn">
+                            <i class="far fa-heart"></i>
+                        </button>
+                    </div>
+
+                    <div class="product-share">
+                        <div class="share-title">Share This Product</div>
+                        <div class="share-options">
+                            <a href="#" class="share-option share-facebook" aria-label="Share on Facebook">
+                                <i class="fab fa-facebook-f"></i>
+                            </a>
+                            <a href="#" class="share-option share-twitter" aria-label="Share on Twitter">
+                                <i class="fab fa-twitter"></i>
+                            </a>
+                            <a href="#" class="share-option share-pinterest" aria-label="Share on Pinterest">
+                                <i class="fab fa-pinterest-p"></i>
+                            </a>
+                            <a href="#" class="share-option share-email" aria-label="Share via Email">
+                                <i class="fas fa-envelope"></i>
+                            </a>
+                            <a href="#" class="share-option share-whatsapp" aria-label="Share on WhatsApp">
+                                <i class="fab fa-whatsapp"></i>
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="related-products">
+                        <h3 class="related-title">You May Also Like</h3>
+                        <div class="related-container">
+                            <!-- Related products will be dynamically added here -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Quick View Popup -->
+    <div id="quick-view-popup" class="quick-view-popup">
+        <div class="quick-view-content">
+            <button class="close-popup" aria-label="Close quick view">
+                <i class="fas fa-times"></i>
+            </button>
+            <div class="quick-view-grid">
+                <img src="" alt="" class="quick-view-image">
+                <div class="quick-view-details">
+                    <div class="quick-view-header">
+                        <h3 class="quick-view-title"></h3>
+                        <div class="quick-view-price"></div>
+                        <div class="product-rating"></div>
+                    </div>
+                    <p class="quick-view-description"></p>
+                    <div class="quick-view-actions">
+                        <button class="quick-view-btn view-details-btn">
+                            <i class="fas fa-eye"></i> View Details
+                        </button>
+                        <button class="quick-view-btn quick-add-to-cart-btn">
+                            <i class="fas fa-shopping-cart"></i> Add to Cart
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Image Zoom Popup -->
+    <div id="zoomed-image-container" class="zoomed-image-container">
+        <button class="zoomed-image-close" aria-label="Close zoomed image">
+            <i class="fas fa-times"></i>
+        </button>
+        <img src="" alt="" class="zoomed-image">
+    </div>
+
+    <!-- Cart Popup -->
+    <div id="cart-popup" class="cart-popup">
+        <div class="cart-header">
+            <h2 class="cart-title">
+                Your Cart
+                <span class="cart-count-badge">0</span>
+            </h2>
+            <button class="close-cart" aria-label="Close cart">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+
+        <div id="cart-items" class="cart-items">
+            <!-- Cart items will be displayed here -->
+        </div>
+
+        <div class="cart-footer">
+            <div class="cart-subtotal">
+                <span class="subtotal-label">Subtotal:</span>
+                <span class="subtotal-value">K0.00</span>
+            </div>
+            <div class="cart-total">
+                <span class="total-label">Total:</span>
+                <span class="total-value">K0.00</span>
+            </div>
+            <button id="checkout-btn" class="checkout-btn" disabled>Proceed to Checkout</button>
+            <a href="#shop" class="continue-shopping">Continue Shopping</a>
+        </div>
+    </div>
+
+    <!-- Wishlist Popup -->
+    <div id="wishlist-popup" class="cart-popup">
+        <div class="cart-header">
+            <h2 class="cart-title">
+                Your Wishlist
+                <span class="cart-count-badge">0</span>
+            </h2>
+            <button class="close-wishlist" aria-label="Close wishlist">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+
+        <div id="wishlist-items" class="cart-items">
+            <!-- Wishlist items will be displayed here -->
+        </div>
+
+        <div class="cart-footer">
+            <a href="#shop" class="continue-shopping">Continue Shopping</a>
+        </div>
+    </div>
+
+    <!-- Product Comparison Popup -->
+    <div id="comparison-popup" class="comparison-popup">
+        <div class="comparison-header">
+            <h3 class="comparison-title">Compare Products</h3>
+            <button class="comparison-close" aria-label="Close comparison">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+
+        <div id="comparison-items" class="comparison-items">
+            <!-- Comparison items will be displayed here -->
+        </div>
+
+        <div class="comparison-actions">
+            <button id="clear-comparison" class="comparison-button">Clear All</button>
+            <button id="compare-button" class="comparison-button">Compare Now</button>
+        </div>
+    </div>
+
+    <!-- Back to Top Button -->
+    <button id="back-to-top" class="back-to-top" aria-label="Back to top">
+        <i class="fas fa-chevron-up"></i>
+    </button>
+
+    <!-- Notification Component -->
+    <div id="notification" class="notification">
+        <div class="notification-icon"></div>
+        <div class="notification-content">
+            <div class="notification-title">Success!</div>
+            <div class="notification-message"></div>
+        </div>
+        <button class="notification-close" aria-label="Close notification">
+            <i class="fas fa-times"></i>
+        </button>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
