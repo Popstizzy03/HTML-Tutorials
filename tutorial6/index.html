@@ -8,6 +8,52 @@
     <title>PolyBrute Calculator</title>
 </head>
 <body>
+    <div class="calculator-container">
+        <div class="title-bar">
+            <div class="title-text">PolyBrute Calculator</div>
+            <div class="close-button">×</div>
+        </div>
+        <div class="calculator-content">
+            <div class="tab-container">
+                <div class="tab-buttons">
+                    <div class="tab-button active" data-tab="calculator">Calculator</div>
+                    <div class="tab-button" data-tab="factors">Polynomial Factors</div>
+                </div>
+
+                <div class="tab-content active" id="calculator-tab">
+                    <div class="form-group">
+                        <label for="expression">Enter Expression:</label>
+                        <input type="text" id="expression" placeholder="e.g., 5*x^3 + 2*x^2 - 2*x + 7">
+                    </div>
+
+                    <div class="function-keys">
+                        <div class="function-key" data-key="+">&plus;</div>
+                        <div class="function-key" data-key="-">&minus;</div>
+                        <div class="function-key" data-key="*">&times;</div>
+                        <div class="function-key" data-key="/">&divide;</div>
+                        <div class="function-key" data-key="^">x^y</div>
+                        <div class="function-key" data-key="(">(</div>
+                        <div class="function-key" data-key=")">)</div>
+                        <div class="function-key" data-key="sqrt">√</div>
+                        <div class="function-key" data-key="sin">sin</div>
+                        <div class="function-key" data-key="cos">cos</div>
+                        <div class="function-key" data-key="tan">tan</div>
+                        <div class="function-key" data-key="x">x</div>
+                        <div class="function-key" data-key="y">y</div>
+                        <div class="function-key" data-key="z">z</div>
+                        <div class="function-key" data-key="pi">π</div>
+                        <div class="function-key" data-key="e">e</div>
+                    </div>
+
+                    <div class="variables-container" class="form-group">
+                        <button id="calculate-btn">Calculate</button>
+                        <button id="clear-btn">Clear</button>
+                        <button id="detect-btn">Detect Variables</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
     <script src="script.js"></script>
 </body>
 </html>
