@@ -1,0 +1,278 @@
+/* Neo Brutalism Theme*/
+:root {
+    --primary: #ff5252;
+    --secondary: #ffca28;
+    --accent: #4a4ae9;
+    --background: #ffffff;
+    --card-bg: #f0f0f0;
+    --text: #000000;
+    --shadow: 6px 6px 0px #000000;
+    --border: 3px solid #000000;
+    --input-bg: #ffffff;
+    --result-bg: #e5e5ff;
+    --error-color: #ff0000;
+    --button-hover: #e0e0e0;
+    --function-key-bg: #ffefd5;
+    --help-bg: #e0ffff;
+}
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Courier New', Courier, monospace;
+}
+body {
+    background-color: var(--background);
+    color: var(--text);
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    min-height: 100vh;
+}
+.calculator-container {
+    background-color: var(--card-bg);
+    width: 100%;
+    max-width: 700px;
+    border: var(--border);
+    box-shadow: var(--shadow);
+    margin-top: 20px;
+    transition: transform 0.2s;
+}
+.calculator-container:hover {
+    transform: translate(-5px);
+}
+.title-bar {
+    background-color: var(--primary);
+    padding: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: var(--border);
+}
+.title-text {
+    font-weight: bold;
+    font-size: 24px;
+    text-transform: uppercase;
+}
+.close-button {
+    background-color: var(--secondary);
+    border: 2px solid black;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
+    font-size: 20px;
+    cursor: pointer;
+    box-shadow: 3px 3px 0px #000000;
+    transition: all 0.1s;
+}
+.close-button:hover {
+    transform: translate(-1px, -1px);
+    box-shadow: 4px 4px 0px #000000;
+}
+.close-button:active {
+    transform: translate(2px, 2px);
+    box-shadow: 4px 4px 0px #000000;
+}
+.calculator-content {
+    padding: 20px;
+}
+.form-group {
+    margin-bottom: 20px;
+}
+label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: bold;
+    font-size: 18px;
+}
+input, select {
+    width: 100%;
+    padding: 15px;
+    background-color: var(--input-bg);
+    border: var(--border);
+    font-size: 16px;
+    color: var(--text);
+    box-shadow: 4px 4px 0px #000000;
+    transition: all 0.25s;
+}
+input:focus, select:focus {
+    outline: none;
+    box-shadow: 6px 6px 0px #000000;
+    transform: transition(-2px, -2px);
+}
+.variable-container {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+.variable-item {
+    display: flex;
+    align-items: center;
+    background-color: var(--secondary);
+    padding: 10px;
+    border: var(--border);
+    box-shadow: 3px 3px 0px #000000;
+    margin-bottom: 10px;
+}
+.variable-item label {
+    margin: 0 10px 0 0;
+    font-size: 16px;
+}
+.variable-item input {
+    width: 80px;
+    padding: 8px;
+    box-shadow: 2px 2px 0px #000000;
+}
+.button-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+button {
+    background-color: var(--accent);
+    color: white;
+    border: var(--border);
+    padding: 12px 20px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 4px 4px 0px #000000;
+    transition: all 0.25s;
+    text-transform: uppercase;
+}
+button:hover {
+    background-color: var(--button-hover);
+    color: var(--text);
+    transform: translate(-2px -2px);
+    box-shadow: 6px 6px 0px #000000;
+}
+button:active {
+    transform: translate(2px, 2px);
+    box-shadow: 2px 2px 0px #000000;
+}
+.function-keys {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 10px;
+    margin: 20px 0;
+}
+@media (max-width: 700px) {
+    .function-keys {
+        grid-template-columns: repeat(4, 1fr);
+    }
+}
+@media (max-width: 500px) {
+    .function-keys {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+.function-key {
+    padding: 10px 5px;
+    background-color: var(--function-key-bg);
+    border: 2px solid black;
+    text-align: center;
+    cursor: pointer;
+    font-weight: bold;
+    box-shadow: 3px 3pxp 0px #000000;
+    transition: all 0.2s;
+}
+.function-key:hover {
+    transform: translate(-1px, -1px);
+    box-shadow: 4px 4px 0px #000000;
+}
+.function-key:active {
+    transform: translate(2px, 2px);
+    box-shadow: 1px 1px 0px #000000;
+}
+.result-container {
+    margin-top: 20px;
+    padding: 15px;
+    background-color: var(--result-bg);
+    min-height: 60px;
+    color: var(--text);
+    word-wrap: break-word;
+    border: var(--border);
+    box-shadow: 4px 4px 0px #000000;
+    font-family: 'Courier New', Courier, monospace;
+}
+.error {
+    color: var(--error-color);
+    font-weight: bold;
+}
+.help-text{
+    font-size: 14px;
+    margin-top: 20px;
+    color: var(--text);
+    padding: 15px;
+    background-color: var(--help-bg);
+    border: var(--border);
+    box-shadow: 4px 4px 0px #000000;
+}
+.tab-container {
+    margin-bottom: 20px;
+}
+.tab-buttons {
+    display: flex;
+    flex-wrap: wrap;
+}
+.tab-button {
+    background-color: var(--card-bg);
+    padding: 10px 20px;
+    border: 2px solid black;
+    border-bottom: none;
+    margin-right: 5px;
+    cursor: pointer;
+    position: relative;
+    top: 20px;
+}
+.tab-button.active {
+    background-color: var(--primary);
+    font-weight: bold;
+    box-shadow: 3px 0px 0px #000000;
+}
+.tab-content {
+    border: var(--border);
+    padding: 20px;
+    background-color: var(--card-bg);
+    display: none;
+}
+.tab-content.active {
+    display: block;
+}
+.factor-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
+    border: 2px solid black;
+}
+.factor-table th, 
+.factor-table td {
+    padding: 10px;
+    text-align: left;
+    border: 2px solid black;
+}
+.factor-table th {
+    background-color: var(--primary);
+}
+.factor-table tr:nth-child(even) {
+    background-color: var(--result-bg);
+}
+.no-bullet {
+    list-style-type: none;
+    padding-left: 0;
+}
+.note {
+    padding: 10px;
+    background-color: var(--secondary);
+    border: 2px solid black;
+    margin-top: 15px;
+    font-style: italic;
+}
+.hidden {
+    display: none;
+}
