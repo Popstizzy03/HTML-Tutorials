@@ -50,6 +50,71 @@
                         <button id="clear-btn">Clear</button>
                         <button id="detect-btn">Detect Variables</button>
                     </div>
+
+                    <div class="form-group">
+                        <label>Result:</label>
+                        <div class="result-container" id="result">
+                            Enter an expression and click Calculate
+                        </div>
+                    </div>
+
+                    <div class="help-text">
+                        <strong>Supoerted operations</strong><br>
+                        • Basic: +, -, /, ^ (power)<br>
+                        • Functions: sin, cos, tan, sqrt, log, exp<br>
+                        • Constants: pi, e<br>
+                        <br>
+                        <strong>Tips:</strong>
+                        • Click "Detect variables" to find variables in your expression<br>
+                        • Try using different variables (x, y, z, etc.) in your equations<br>
+                        • Switch to "Polynomial Factors" tab to find possible factors
+                    </div>
+                </div>
+
+                <div class="tab-content" id="factors-tab">
+                    <div class="form-group">
+                        <label for="polynomial">Enter Polynomial:</label>
+                        <input type="text" id="polynomial" placeholder="e.g., x^3 - 6*x^2 + 11*x - 6">
+                    </div>
+
+                    <div class="button-container">
+                        <button id="find-factors-btn">Find Factors</button>
+                        <button id="clear-factors-btn">Clear</button>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Results:</label>
+                        <div class="result-container" id="factor-result">
+                            Enter a polynomial and click Find Factors
+                        </div>
+                    </div>
+
+                    <div class="factors-table-container" class="hidden">
+                        <h3>Potential Factors Table</h3>
+                        <table class="factor-table" id="factors-table">
+                            <thead>
+                                <tr>
+                                    <th>Value</th>
+                                    <th>P(x)</th>
+                                    <th>Is Root?</th>
+                                </tr>
+                            </thead>
+                            <tbody id="factors-table-body">
+                                <!-- Factors will be added here -->
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="help-text">
+                        <strong>How to use:</strong><br>
+                        • Enter a polynomial in the form a*x^n + b*x(n-1) + ... + c<br>
+                        • Click "Find Factors" to analyze the polynimial<br>
+                        • The calculator will check common rational values<br>
+                        • If P(r) = 0, then (x-r) is a factor of the polynomial<br>
+                        <div class="note">
+                            Based on the rational Root Theorem: if p\q is a rational root (in lowest terms),
+                            then p divides the constant term and q divides the leading coefficient.
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
