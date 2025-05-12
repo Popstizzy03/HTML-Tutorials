@@ -31,6 +31,39 @@ document.addEventListener('DOMContentLoaded', function() {
             //Add active class to clicked button and corresponding content
             this.classList.add('active');
             document.getElementById(`${tabId}-tab`).classList.add('active');
-        })
-    })
+        });
+    });
+
+    // Focus on expression input on load
+    expressionInput.focus();
+
+    // Function Key insertion
+    functionKeys.forEach(key => {
+        key.addEventListener('click', function() {
+            const value = this.getAttribute('data-key');
+            const activeInput = document.activeElement;
+
+            // If an input is focused, insert at cursor
+            if (activeInput.tagName === 'INPUT') {
+                insertAtCursor(activeInput, value);
+            } else {
+                // Default to expression input
+                insertAtCursor(expressionInput, value);
+                expressionInput.focus();
+            }
+        });
+    });
+
+    function insertAtCursor(input, text) {
+        const startPos = input.selectionStart;
+        const endPos = input.selectionEnd;
+        const scrollTop = input.scrollTop;
+        const currentValue = input.value;
+
+        input.value = currentValue.substring(0, startPos) + text + currentValue.substring(endPos);
+        input.selectionStart = input.selectionEnd = startPos + text.length;
+        input.scrollTop = scrollTop;
+    }
+
+    // Detect variables in the expression
 })
