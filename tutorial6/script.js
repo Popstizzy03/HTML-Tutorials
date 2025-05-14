@@ -66,4 +66,14 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     // Detect variables in the expression
+    detectBtn.addEventListener('click', detectVariables);
+
+    function detectVariables() {
+        try {
+            const expression = expressionInput.value.trim();
+            if (!expression) {
+                throw new Error('Please enter an expression first');
+            }
+        }
+    }
 })
