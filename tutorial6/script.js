@@ -74,6 +74,47 @@ document.addEventListener('DOMContentLoaded', function() {
             if (!expression) {
                 throw new Error('Please enter an expression first');
             }
+            // Find all variable names in the expression using regex
+            // This looks for letters that aren't part of function names like sin, cos, etc.
+            const functions = ['sin', 'cos', 'tan', 'asin', 'acos', 'atan', 'sqrt', 'log', 'exp', 'abs'];
+            const funcPattern = new RegExp(`\\b(${functions.join('|')})\\b`, `g`);
+
+            // Replace known function names with empty strings temporarily
+            let tempExpr = expression.replace(funcPattern, '');
+
+            // Now find all single letters that could be variables
+            const varRegex = /[a-zA-Z]/g;
+            const matches = tempExpr.match(varRegex);
+
+            // Extract unique variables
+            const variables = [...new Set(matches)];
+
+            if (!variables || variables.length === 0) {
+                variableInputs.innerHTML = '<div>No variables detected in expression</div>';
+                return;
+            }
+
+            // Create input fields for each variable
+            variableInputs.innerHTML = '';
+            variables.forEach(variable => {
+                const varDiv = document.createElement('div');
+                varDiv.className = 'variable-item';
+
+                const varLabel = document.createElement('lable');
+                varLabel.textContent = variable + '=';
+
+                const varInput = document.createElement('input');
+                varInput.type = 'text';
+                varInput.id = `var-${variable}`;
+                varInput.setAttribute('data-var', variable);
+                varInput.value = '1'; // Default value
+
+                varDiv.appendChild(varLabel);
+                varDiv.appendChild(varInput);
+                variableInputs.appendChild(varDiv);
+            });
+        } catch (error) {
+            result
         }
     }
 })
