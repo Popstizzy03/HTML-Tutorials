@@ -114,7 +114,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 variableInputs.appendChild(varDiv);
             });
         } catch (error) {
-            result
+            resultDisplay.innerHTML = `<span class="error">Error: ${error.message}</span>`;
+            resultDisplay.classList.add('error');
         }
     }
 })
