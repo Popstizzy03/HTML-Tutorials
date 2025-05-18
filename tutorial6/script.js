@@ -118,4 +118,7 @@ document.addEventListener('DOMContentLoaded', function() {
             resultDisplay.classList.add('error');
         }
     }
+
+                // Handle calculation
+            calculateBtn.addEventListener('click', calculateResult);
 })
