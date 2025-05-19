@@ -121,4 +121,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
                 // Handle calculation
             calculateBtn.addEventListener('click', calculateResult);
+
+                        // Allow pressing Enter to calculate
+            expressionInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') calculateResult();
+            });
 })
