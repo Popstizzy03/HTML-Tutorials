@@ -1,4 +1,4 @@
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     // Elements
     const expressionInput = document.getElementById('expression');
     const calculateBtn = document.getElementById('calculate-btn');
@@ -21,7 +21,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Tab switching
     tabButtons.forEach(button => {
-        button.addEventListener('click', function() {
+        button.addEventListener('click', function () {
             const tabId = this.getAttribute('data-tab');
 
             // Remove active class from all buttons
@@ -39,7 +39,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Function Key insertion
     functionKeys.forEach(key => {
-        key.addEventListener('click', function() {
+        key.addEventListener('click', function () {
             const value = this.getAttribute('data-key');
             const activeInput = document.activeElement;
 
@@ -119,11 +119,20 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-                // Handle calculation
-            calculateBtn.addEventListener('click', calculateResult);
+    // Handle calculation
+    calculateBtn.addEventListener('click', calculateResult);
 
-                        // Allow pressing Enter to calculate
-            expressionInput.addEventListener('keypress', function(e) {
-                if (e.key === 'Enter') calculateResult();
-            });
+    // Allow pressing Enter to calculate
+    expressionInput.addEventListener('keypress', function (e) {
+        if (e.key === 'Enter') calculateResult();
+    });
+
+    // clear inputs and result
+    clearBtn.addEventListener('click', function() {
+        expressionInput.value = '';
+        variableInputs.innerHTML = '';
+        resultDisplay.innerHTML = 'Enter an expression and click calculate';
+        resultDisplay.classList.remove('error');
+        expressionInput.focus();
+    });
 })
