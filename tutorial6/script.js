@@ -135,4 +135,13 @@ document.addEventListener('DOMContentLoaded', function () {
         resultDisplay.classList.remove('error');
         expressionInput.focus();
     });
+
+                // Close button (just resets the calculator for demo purposes)
+            closeButton.addEventListener('click', function() {
+                expressionInput.value = '';
+                variableInputs.innerHTML = '';
+                resultDisplay.innerHTML = 'Enter an expression and click Calculate';
+                resultDisplay.classList.remove('error');
+                expressionInput.focus();
+            });
 })
