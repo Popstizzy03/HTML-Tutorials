@@ -144,4 +144,10 @@ document.addEventListener('DOMContentLoaded', function () {
                 resultDisplay.classList.remove('error');
                 expressionInput.focus();
             });
+
+	function calculateResult() {
+          try {
+            const expression = expressionInput.value.trim();
+	  }
+	}
 })
