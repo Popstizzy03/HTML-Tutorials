@@ -128,7 +128,7 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     // clear inputs and result
-    clearBtn.addEventListener('click', function() {
+    clearBtn.addEventListener('click', function () {
         expressionInput.value = '';
         variableInputs.innerHTML = '';
         resultDisplay.innerHTML = 'Enter an expression and click calculate';
@@ -136,18 +136,27 @@ document.addEventListener('DOMContentLoaded', function () {
         expressionInput.focus();
     });
 
-                // Close button (just resets the calculator for demo purposes)
-            closeButton.addEventListener('click', function() {
-                expressionInput.value = '';
-                variableInputs.innerHTML = '';
-                resultDisplay.innerHTML = 'Enter an expression and click Calculate';
-                resultDisplay.classList.remove('error');
-                expressionInput.focus();
-            });
+    // Close button (just resets the calculator for demo purposes)
+    closeButton.addEventListener('click', function () {
+        expressionInput.value = '';
+        variableInputs.innerHTML = '';
+        resultDisplay.innerHTML = 'Enter an expression and click Calculate';
+        resultDisplay.classList.remove('error');
+        expressionInput.focus();
+    });
 
-	function calculateResult() {
-          try {
+    function calculateResult() {
+        try {
             const expression = expressionInput.value.trim();
-	  }
-	}
+            if (!expression) {
+                throw new Error('Please enter an expression');
+            }
+
+            // Remove any semicolons that could cause parsing errors
+            const cleanExpression = expression.replace(/;/g, '');
+
+            // Create a scope with all variable values
+            const scope = {};
+            const varInputs = document.querySelectorAll('[data-var]');
+        }
 })
