@@ -158,5 +158,31 @@ document.addEventListener('DOMContentLoaded', function () {
             // Create a scope with all variable values
             const scope = {};
             const varInputs = document.querySelectorAll('[data-var]');
+
+                                if (varInputs.length > 0) {
+                        varInputs.forEach(input => {
+                            const varName = input.getAttribute('data-var');
+                            const varValue = input.value.trim();
+                            
+                            if (!varValue) {
+                                throw new Error(`Please enter a value for ${varName}`);
+                            }
+                            
+                            try {
+                                scope[varName] = math.evaluate(varValue);
+                            } catch (e) {
+                                throw new Error(`Invalid value for ${varName}: ${e.message}`);
+                            }
+                        });
+                    } else {
+                        // If no variables have been detected yet, try to detect them now
+                        detectVariables();
+                        
+                        // If we now have variables, ask the user to set values
+                        const newVarInputs = document.querySelectorAll('[data-var]');
+                        if (newVarInputs.length > 0) {
+                            throw new Error('Variables detected. Please set values for them and calculate again.');
+                        }
+                    }
         }
 })
