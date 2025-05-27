@@ -1,0 +1,19 @@
+        .calendar-day {
+            min-height: 100px;
+        }
+        .event-item {
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+        .toggle-checkbox:checked {
+            right: 0;
+            border-color: #5D5CDE;
+        }
+        .toggle-checkbox:checked + .toggle-label {
+            background-color: #5D5CDE;
+        }
+        /* Smooth transitions for dark mode */
+        * {
+            transition: background-color 0.3s, color 0.3s, border-color 0.3s;
+        }
