@@ -10,9 +10,29 @@
 <body
     class="antialised bg-white dark:bg-gray-900 text:gray-800 dark:text-gray-200 min-h-screen flex flex-col"
 >
- <!--Header-->
- <header class="bg-white dark:bg-gray-800 shadow>
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 "></div>
- </header> 
+    <!-- Header -->
+    <header class="bg-white dark:bg-gray-800 shadow">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex flex-col sm:flex-row items-center justify-between">
+            <div class="flex items-center mb-4 sm:mb-0">
+                <i class="fas fa-calendar-alt text-primary dark:text-primary-light text-2xl mr-2"></i>
+                <h1 class="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white">Ultimate Event Manager</h1>
+            </div>
+            <div class="flex items-center space-x-4">
+                <button id="import-btn" class="text-sm px-3 py-1 rounded border border-gray-300 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-700">
+                    <i class="fas fa-file-import mr-1"></i> Import
+                </button>
+                <button id="export-btn" class="text-sm px-3 py-1 rounded border border-gray-300 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-700">
+                    <i class="fas fa-file-export mr-1"></i> Export
+                </button>
+                <div class="relative inline-block w-10 mr-2 align-middle select-none">
+                    <input type="checkbox" id="dark-mode-toggle" class="toggle-checkbox absolute block w-6 h-6 rounded-full bg-white border-4 appearance-none cursor-pointer"/>
+                    <label for="dark-mode-toggle" class="toggle-label block overflow-hidden h-6 rounded-full bg-gray-300 dark:bg-gray-600 cursor-pointer"></label>
+                </div>
+                <span class="text-sm">
+                    <i id="theme-icon" class="fas fa-moon"></i>
+                </span>
+            </div>
+        </div>
+    </header>
 </body>
 </html>
