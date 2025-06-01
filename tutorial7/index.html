@@ -34,5 +34,162 @@
             </div>
         </div>
     </header>
+
+        <!-- Main Content -->
+    <main class="flex-grow">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+            <!-- Tabs -->
+            <div class="border-b border-gray-200 dark:border-gray-700">
+                <nav class="flex -mb-px space-x-8">
+                    <button id="tab-calendar" class="text-primary dark:text-primary-light border-primary dark:border-primary-light whitespace-nowrap py-2 px-1 border-b-2 font-medium text-sm">
+                        Calendar
+                    </button>
+                    <button id="tab-events" class="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300 whitespace-nowrap py-2 px-1 border-b-2 border-transparent font-medium text-sm">
+                        Events
+                    </button>
+                    <button id="tab-attendees" class="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300 whitespace-nowrap py-2 px-1 border-b-2 border-transparent font-medium text-sm">
+                        Attendees
+                    </button>
+                    <button id="tab-tasks" class="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300 whitespace-nowrap py-2 px-1 border-b-2 border-transparent font-medium text-sm">
+                        Tasks
+                    </button>
+                </nav>
+            </div>
+
+            <!-- Action Bar -->
+            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center my-4 space-y-2 sm:space-y-0">
+                <div class="flex items-center space-x-2">
+                    <button id="prev-month" class="p-1 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700">
+                        <i class="fas fa-chevron-left"></i>
+                    </button>
+                    <h2 id="current-month" class="text-lg font-semibold">Loading...</h2>
+                    <button id="next-month" class="p-1 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700">
+                        <i class="fas fa-chevron-right"></i>
+                    </button>
+                    <button id="today-btn" class="ml-2 text-xs px-2 py-1 rounded bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600">
+                        Today
+                    </button>
+                </div>
+
+                <div class="flex items-center w-full sm:w-auto">
+                    <div class="relative w-full sm:w-auto">
+                        <input type="text" id="search-input" placeholder="Search events..." class="pl-8 pr-4 py-1 text-base border rounded w-full sm:w-64 border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800">
+                        <div class="absolute left-2 top-1/2 transform -translate-y-1/2 text-gray-400">
+                            <i class="fas fa-search"></i>
+                        </div>
+                    </div>
+                    <button id="add-event-btn" class="ml-2 px-3 py-1 bg-primary hover:bg-primary-dark dark:bg-primary-light dark:hover:bg-primary text-white dark:text-gray-900 rounded">
+                        <i class="fas fa-plus mr-1"></i> Event
+                    </button>
+                </div>
+            </div>
+
+            <!-- Filter Bar -->
+            <div class="flex flex-wrap gap-2 my-4">
+                <select id="field-filter" class="text-sm border rounded py-1 px-2 border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800">
+                    <option value="all">All Fields</option>
+                    <option value="engineering">Engineering</option>
+                    <option value="accounting">Accounting</option>
+                    <option value="marketing">Marketing</option>
+                    <option value="hr">Human Resources</option>
+                    <option value="it">Information Technology</option>
+                    <option value="sales">Sales</option>
+                    <option value="other">Other</option>
+                </select>
+                <select id="type-filter" class="text-sm border rounded py-1 px-2 border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800">
+                    <option value="all">All Types</option>
+                    <option value="meeting">Meeting</option>
+                    <option value="workshop">Workshop</option>
+                    <option value="conference">Conference</option>
+                    <option value="webinar">Webinar</option>
+                    <option value="training">Training</option>
+                    <option value="other">Other</option>
+                </select>
+                <button id="clear-filters" class="text-sm px-2 py-1 text-primary dark:text-primary-light">
+                    <i class="fas fa-times mr-1"></i> Clear Filters
+                </button>
+            </div>
+
+            <!-- Content Sections -->
+            <div id="calendar-section" class="mt-4">
+                <!-- Calendar Days Header -->
+                <div class="grid grid-cols-7 gap-1 mb-1">
+                    <div class="text-center text-sm font-semibold py-1">Sun</div>
+                    <div class="text-center text-sm font-semibold py-1">Mon</div>
+                    <div class="text-center text-sm font-semibold py-1">Tue</div>
+                    <div class="text-center text-sm font-semibold py-1">Wed</div>
+                    <div class="text-center text-sm font-semibold py-1">Thu</div>
+                    <div class="text-center text-sm font-semibold py-1">Fri</div>
+                    <div class="text-center text-sm font-semibold py-1">Sat</div>
+                </div>
+                <!-- Calendar Grid -->
+                <div id="calendar-grid" class="grid grid-cols-7 gap-1">
+                    <!-- Calendar days will be generated here -->
+                    <div class="border rounded p-1 calendar-day bg-gray-100 dark:bg-gray-800 text-gray-400 dark:text-gray-600">
+                        <div class="text-right text-sm">30</div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="events-section" class="mt-4 hidden">
+                <div class="overflow-hidden rounded-lg border border-gray-200 dark:border-gray-700">
+                    <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+                        <thead class="bg-gray-50 dark:bg-gray-800">
+                            <tr>
+                                <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Event</th>
+                                <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Date & Time</th>
+                                <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Field</th>
+                                <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Type</th>
+                                <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Attendees</th>
+                                <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="events-table-body" class="bg-white dark:bg-gray-900 divide-y divide-gray-200 dark:divide-gray-700">
+                            <!-- Events will be listed here -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div id="attendees-section" class="mt-4 hidden">
+                <div class="overflow-hidden rounded-lg border border-gray-200 dark:border-gray-700">
+                    <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+                        <thead class="bg-gray-50 dark:bg-gray-800">
+                            <tr>
+                                <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Name</th>
+                                <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Email</th>
+                                <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Organization</th>
+                                <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Events</th>
+                                <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="attendees-table-body" class="bg-white dark:bg-gray-900 divide-y divide-gray-200 dark:divide-gray-700">
+                            <!-- Attendees will be listed here -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div id="tasks-section" class="mt-4 hidden">
+                <div class="overflow-hidden rounded-lg border border-gray-200 dark:border-gray-700">
+                    <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+                        <thead class="bg-gray-50 dark:bg-gray-800">
+                            <tr>
+                                <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Task</th>
+                                <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Event</th>
+                                <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Due Date</th>
+                                <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Status</th>
+                                <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Assigned To</th>
+                                <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tasks-table-body" class="bg-white dark:bg-gray-900 divide-y divide-gray-200 dark:divide-gray-700">
+                            <!-- Tasks will be listed here -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </main>
 </body>
 </html>
