@@ -191,5 +191,120 @@
             </div>
         </div>
     </main>
+        <!-- Add/Edit Event Modal -->
+    <div id="event-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+        <div class="bg-white dark:bg-gray-800 rounded-lg shadow-xl w-full max-w-2xl max-h-[90vh] overflow-y-auto">
+            <div class="p-6">
+                <div class="flex justify-between items-center mb-4">
+                    <h3 id="modal-title" class="text-lg font-semibold">Add New Event</h3>
+                    <button id="close-modal" class="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <form id="event-form">
+                    <input type="hidden" id="event-id">
+                    <div class="space-y-4">
+                        <div>
+                            <label for="event-title" class="block text-sm font-medium mb-1">Event Title</label>
+                            <input type="text" id="event-title" class="w-full p-2 border rounded text-base text-gray-900 dark:text-white border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700" required>
+                        </div>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label for="event-field" class="block text-sm font-medium mb-1">Professional Field</label>
+                                <select id="event-field" class="w-full p-2 border rounded text-base text-gray-900 dark:text-white border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700">
+                                    <option value="engineering">Engineering</option>
+                                    <option value="accounting">Accounting</option>
+                                    <option value="marketing">Marketing</option>
+                                    <option value="hr">Human Resources</option>
+                                    <option value="it">Information Technology</option>
+                                    <option value="sales">Sales</option>
+                                    <option value="other">Other</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label for="event-type" class="block text-sm font-medium mb-1">Event Type</label>
+                                <select id="event-type" class="w-full p-2 border rounded text-base text-gray-900 dark:text-white border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700">
+                                    <option value="meeting">Meeting</option>
+                                    <option value="workshop">Workshop</option>
+                                    <option value="conference">Conference</option>
+                                    <option value="webinar">Webinar</option>
+                                    <option value="training">Training</option>
+                                    <option value="other">Other</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label for="event-start-date" class="block text-sm font-medium mb-1">Start Date</label>
+                                <input type="date" id="event-start-date" class="w-full p-2 border rounded text-base text-gray-900 dark:text-white border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700" required>
+                            </div>
+                            <div>
+                                <label for="event-start-time" class="block text-sm font-medium mb-1">Start Time</label>
+                                <input type="time" id="event-start-time" class="w-full p-2 border rounded text-base text-gray-900 dark:text-white border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700">
+                            </div>
+                        </div>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label for="event-end-date" class="block text-sm font-medium mb-1">End Date</label>
+                                <input type="date" id="event-end-date" class="w-full p-2 border rounded text-base text-gray-900 dark:text-white border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700" required>
+                            </div>
+                            <div>
+                                <label for="event-end-time" class="block text-sm font-medium mb-1">End Time</label>
+                                <input type="time" id="event-end-time" class="w-full p-2 border rounded text-base text-gray-900 dark:text-white border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700">
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <label for="event-location" class="block text-sm font-medium mb-1">Location</label>
+                            <input type="text" id="event-location" class="w-full p-2 border rounded text-base text-gray-900 dark:text-white border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700">
+                        </div>
+                        
+                        <div>
+                            <label for="event-description" class="block text-sm font-medium mb-1">Description</label>
+                            <textarea id="event-description" rows="3" class="w-full p-2 border rounded text-base text-gray-900 dark:text-white border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700"></textarea>
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-medium mb-1">Field-Specific Details</label>
+                            <div id="field-specific-container" class="border rounded p-3 border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-700">
+                                <!-- Field-specific form elements will be inserted here dynamically -->
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-medium mb-1">Attendees</label>
+                            <div class="flex items-center">
+                                <select id="add-attendee-select" class="w-full p-2 border rounded-l text-base text-gray-900 dark:text-white border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700">
+                                    <option value="">Select an attendee...</option>
+                                </select>
+                                <button type="button" id="add-attendee-btn" class="px-3 py-2 bg-primary hover:bg-primary-dark dark:bg-primary-light dark:hover:bg-primary text-white dark:text-gray-900 rounded-r">
+                                    <i class="fas fa-plus"></i>
+                                </button>
+                            </div>
+                            <div id="attendees-list" class="mt-2 space-y-1 max-h-32 overflow-y-auto">
+                                <!-- Selected attendees will appear here -->
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="flex justify-end mt-6 space-x-2">
+                        <button type="button" id="delete-event-btn" class="px-4 py-2 text-red-600 dark:text-red-400 border border-red-600 dark:border-red-400 rounded hover:bg-red-50 dark:hover:bg-red-900 dark:hover:bg-opacity-30 hidden">
+                            Delete
+                        </button>
+                        <button type="button" id="cancel-event-btn" class="px-4 py-2 text-gray-700 dark:text-gray-300 border border-gray-300 dark:border-gray-600 rounded hover:bg-gray-100 dark:hover:bg-gray-700">
+                            Cancel
+                        </button>
+                        <button type="submit" class="px-4 py-2 bg-primary hover:bg-primary-dark dark:bg-primary-light dark:hover:bg-primary text-white dark:text-gray-900 rounded">
+                            Save Event
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+<!--===========================================================-->
 </body>
 </html>
