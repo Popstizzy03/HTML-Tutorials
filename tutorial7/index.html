@@ -3,12 +3,56 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>tutorial 7</title>
+    <title>Ultimate Event Manager</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: {
+                            DEFAULT: '#5D5CDE',
+                            light: '#7C7BE8',
+                            dark: '#4A49C2'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .toggle-checkbox:checked {
+            right: 0;
+            border-color: #5D5CDE;
+        }
+        .toggle-checkbox:checked + .toggle-label {
+            background-color: #5D5CDE;
+        }
+        .calendar-day {
+            min-height: 100px;
+        }
+        .calendar-day.other-month {
+            opacity: 0.5;
+        }
+        .calendar-day.today {
+            background-color: rgba(93, 92, 222, 0.1);
+            border: 2px solid #5D5CDE;
+        }
+        .event-pill {
+            font-size: 0.75rem;
+            padding: 2px 6px;
+            margin: 1px 0;
+            border-radius: 9999px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 100%;
+        }
+    </style>
 </head>
 <body
-    class="antialised bg-white dark:bg-gray-900 text:gray-800 dark:text-gray-200 min-h-screen flex flex-col"
+    class="antialiased bg-white dark:bg-gray-900 text-gray-800 dark:text-gray-200 min-h-screen flex flex-col"
 >
     <!-- Header -->
     <header class="bg-white dark:bg-gray-800 shadow">
@@ -35,7 +79,7 @@
         </div>
     </header>
 
-        <!-- Main Content -->
+    <!-- Main Content -->
     <main class="flex-grow">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
             <!-- Tabs -->
@@ -125,13 +169,16 @@
                 <!-- Calendar Grid -->
                 <div id="calendar-grid" class="grid grid-cols-7 gap-1">
                     <!-- Calendar days will be generated here -->
-                    <div class="border rounded p-1 calendar-day bg-gray-100 dark:bg-gray-800 text-gray-400 dark:text-gray-600">
-                        <div class="text-right text-sm">30</div>
-                    </div>
                 </div>
             </div>
 
             <div id="events-section" class="mt-4 hidden">
+                <div class="flex justify-between items-center mb-4">
+                    <h3 class="text-lg font-semibold">Events</h3>
+                    <button id="add-event-btn-2" class="px-3 py-1 bg-primary hover:bg-primary-dark dark:bg-primary-light dark:hover:bg-primary text-white dark:text-gray-900 rounded">
+                        <i class="fas fa-plus mr-1"></i> Add Event
+                    </button>
+                </div>
                 <div class="overflow-hidden rounded-lg border border-gray-200 dark:border-gray-700">
                     <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
                         <thead class="bg-gray-50 dark:bg-gray-800">
@@ -152,6 +199,12 @@
             </div>
 
             <div id="attendees-section" class="mt-4 hidden">
+                <div class="flex justify-between items-center mb-4">
+                    <h3 class="text-lg font-semibold">Attendees</h3>
+                    <button id="add-attendee-btn-2" class="px-3 py-1 bg-primary hover:bg-primary-dark dark:bg-primary-light dark:hover:bg-primary text-white dark:text-gray-900 rounded">
+                        <i class="fas fa-plus mr-1"></i> Add Attendee
+                    </button>
+                </div>
                 <div class="overflow-hidden rounded-lg border border-gray-200 dark:border-gray-700">
                     <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
                         <thead class="bg-gray-50 dark:bg-gray-800">
@@ -171,6 +224,12 @@
             </div>
 
             <div id="tasks-section" class="mt-4 hidden">
+                <div class="flex justify-between items-center mb-4">
+                    <h3 class="text-lg font-semibold">Tasks</h3>
+                    <button id="add-task-btn-2" class="px-3 py-1 bg-primary hover:bg-primary-dark dark:bg-primary-light dark:hover:bg-primary text-white dark:text-gray-900 rounded">
+                        <i class="fas fa-plus mr-1"></i> Add Task
+                    </button>
+                </div>
                 <div class="overflow-hidden rounded-lg border border-gray-200 dark:border-gray-700">
                     <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
                         <thead class="bg-gray-50 dark:bg-gray-800">
@@ -191,7 +250,8 @@
             </div>
         </div>
     </main>
-        <!-- Add/Edit Event Modal -->
+
+    <!-- Add/Edit Event Modal -->
     <div id="event-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
         <div class="bg-white dark:bg-gray-800 rounded-lg shadow-xl w-full max-w-2xl max-h-[90vh] overflow-y-auto">
             <div class="p-6">
@@ -305,7 +365,7 @@
             </div>
         </div>
     </div>
-<!--===========================================================-->
+
     <!-- Add/Edit Attendee Modal -->
     <div id="attendee-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
         <div class="bg-white dark:bg-gray-800 rounded-lg shadow-xl w-full max-w-md">
@@ -360,8 +420,8 @@
             </div>
         </div>
     </div>
-<!--===========================================================-->
-        <!-- Add/Edit Task Modal -->
+
+    <!-- Add/Edit Task Modal -->
     <div id="task-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
         <div class="bg-white dark:bg-gray-800 rounded-lg shadow-xl w-full max-w-md">
             <div class="p-6">
@@ -429,8 +489,8 @@
             </div>
         </div>
     </div>
-<!--======================================================================================-->
-        <!-- Confirm Delete Modal -->
+
+    <!-- Confirm Delete Modal -->
     <div id="confirm-delete-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
         <div class="bg-white dark:bg-gray-800 rounded-lg shadow-xl w-full max-w-md">
             <div class="p-6">
@@ -450,19 +510,1113 @@
             </div>
         </div>
     </div>
-        <!-- Toast Notification -->
+
+    <!-- Toast Notification -->
     <div id="toast" class="fixed bottom-4 right-4 px-4 py-2 rounded-lg shadow-lg text-white bg-green-500 transform transition-transform duration-300 translate-y-24 opacity-0 flex items-center">
         <span id="toast-message">Success!</span>
         <button id="close-toast" class="ml-3 text-white">
             <i class="fas fa-times"></i>
         </button>
     </div>
-        <!-- Import File Input (Hidden) -->
+
+    <!-- Import File Input (Hidden) -->
     <input type="file" id="import-file-input" accept=".json" class="hidden">
 
     <script>
-        
-    </script>
+        // Application State
+        let events = [];
+        let attendees = [];
+        let tasks = [];
+        let currentDate = new Date();
+        let currentView = 'calendar';
+        let editingId = null;
+        let deleteCallback = null;
 
+        // Field-specific form configurations
+        const fieldSpecificForms = {
+            engineering: {
+                fields: [
+                    { name: 'projectCode', label: 'Project Code', type: 'text' },
+                    { name: 'techStack', label: 'Technology Stack', type: 'text' },
+                    { name: 'complexity', label: 'Complexity Level', type: 'select', options: ['Low', 'Medium', 'High', 'Critical'] }
+                ]
+            },
+            accounting: {
+                fields: [
+                    { name: 'budget', label: 'Budget Amount', type: 'number' },
+                    { name: 'fiscalYear', label: 'Fiscal Year', type: 'text' },
+                    { name: 'auditRequired', label: 'Audit Required', type: 'checkbox' }
+                ]
+            },
+            marketing: {
+                fields: [
+                    { name: 'campaign', label: 'Campaign Name', type: 'text' },
+                    { name: 'targetAudience', label: 'Target Audience', type: 'text' },
+                    { name: 'budget', label: 'Marketing Budget', type: 'number' }
+                ]
+            },
+            hr: {
+                fields: [
+                    { name: 'department', label: 'Department', type: 'text' },
+                    { name: 'interviewType', label: 'Interview Type', type: 'select', options: ['Technical', 'Behavioral', 'Cultural Fit', 'Final Round'] },
+                    { name: 'headcount', label: 'Expected Headcount', type: 'number' }
+                ]
+            },
+            it: {
+                fields: [
+                    { name: 'systemType', label: 'System Type', type: 'text' },
+                    { name: 'priority', label: 'Priority Level', type: 'select', options: ['Low', 'Normal', 'High', 'Critical'] },
+                    { name: 'downtime', label: 'Planned Downtime', type: 'checkbox' }
+                ]
+            },
+            sales: {
+                fields: [
+                    { name: 'dealValue', label: 'Deal Value', type: 'number' },
+                    { name: 'clientType', label: 'Client Type', type: 'select', options: ['Prospect', 'Existing', 'Partner', 'Enterprise'] },
+                    { name: 'stage', label: 'Sales Stage', type: 'select', options: ['Lead', 'Qualified', 'Proposal', 'Negotiation', 'Closed'] }
+                ]
+            },
+            other: {
+                fields: [
+                    { name: 'category', label: 'Category', type: 'text' },
+                    { name: 'priority', label: 'Priority', type: 'select', options: ['Low', 'Medium', 'High'] }
+                ]
+            }
+        };
+
+        // Utility Functions
+        function generateId() {
+            return Date.now().toString(36) + Math.random().toString(36).substr(2);
+        }
+
+        function formatDate(date) {
+            return new Date(date).toLocaleDateString();
+        }
+
+        function formatDateTime(date, time) {
+            if (!time) return formatDate(date);
+            return `${formatDate(date)} ${time}`;
+        }
+
+        function showToast(message, type = 'success') {
+            const toast = document.getElementById('toast');
+            const toastMessage = document.getElementById('toast-message');
+            
+            toastMessage.textContent = message;
+            toast.className = `fixed bottom-4 right-4 px-4 py-2 rounded-lg shadow-lg text-white transform transition-transform duration-300 flex items-center ${
+                type === 'success' ? 'bg-green-500' : 
+                type === 'error' ? 'bg-red-500' : 
+                'bg-blue-500'
+            }`;
+            
+            toast.style.transform = 'translateY(0)';
+            toast.style.opacity = '1';
+            
+            setTimeout(() => {
+                toast.style.transform = 'translateY(6rem)';
+                toast.style.opacity = '0';
+            }, 3000);
+        }
+
+        // Dark Mode Functions
+        function initializeDarkMode() {
+            const isDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+            const darkModeToggle = document.getElementById('dark-mode-toggle');
+            const themeIcon = document.getElementById('theme-icon');
+            
+            if (isDark) {
+                document.documentElement.classList.add('dark');
+                darkModeToggle.checked = true;
+                themeIcon.className = 'fas fa-sun';
+            } else {
+                themeIcon.className = 'fas fa-moon';
+            }
+            
+            darkModeToggle.addEventListener('change', () => {
+                if (darkModeToggle.checked) {
+                    document.documentElement.classList.add('dark');
+                    themeIcon.className = 'fas fa-sun';
+                } else {
+                    document.documentElement.classList.remove('dark');
+                    themeIcon.className = 'fas fa-moon';
+                }
+            });
+            
+            window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', event => {
+                if (event.matches) {
+                    document.documentElement.classList.add('dark');
+                    darkModeToggle.checked = true;
+                    themeIcon.className = 'fas fa-sun';
+                } else {
+                    document.documentElement.classList.remove('dark');
+                    darkModeToggle.checked = false;
+                    themeIcon.className = 'fas fa-moon';
+                }
+            });
+        }
+
+        // Tab Functions
+        function initializeTabs() {
+            const tabs = ['calendar', 'events', 'attendees', 'tasks'];
+            
+            tabs.forEach(tab => {
+                document.getElementById(`tab-${tab}`).addEventListener('click', () => {
+                    switchTab(tab);
+                });
+            });
+        }
+
+        function switchTab(tab) {
+            currentView = tab;
+            
+            // Update tab styles
+            const tabs = ['calendar', 'events', 'attendees', 'tasks'];
+            tabs.forEach(t => {
+                const tabEl = document.getElementById(`tab-${t}`);
+                const sectionEl = document.getElementById(`${t}-section`);
+                
+                if (t === tab) {
+                    tabEl.className = 'text-primary dark:text-primary-light border-primary dark:border-primary-light whitespace-nowrap py-2 px-1 border-b-2 font-medium text-sm';
+                    sectionEl.classList.remove('hidden');
+                } else {
+                    tabEl.className = 'text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300 whitespace-nowrap py-2 px-1 border-b-2 border-transparent font-medium text-sm';
+                    sectionEl.classList.add('hidden');
+                }
+            });
+
+            // Render content based on current tab
+            if (tab === 'calendar') {
+                renderCalendar();
+            } else if (tab === 'events') {
+                renderEventsTable();
+            } else if (tab === 'attendees') {
+                renderAttendeesTable();
+            } else if (tab === 'tasks') {
+                renderTasksTable();
+            }
+        }
+
+        // Calendar Functions
+        function renderCalendar() {
+            const calendarGrid = document.getElementById('calendar-grid');
+            const currentMonthEl = document.getElementById('current-month');
+            
+            // Clear existing calendar
+            calendarGrid.innerHTML = '';
+            
+            const year = currentDate.getFullYear();
+            const month = currentDate.getMonth();
+            
+            // Update month display
+            currentMonthEl.textContent = currentDate.toLocaleDateString('en-US', { 
+                month: 'long', 
+                year: 'numeric' 
+            });
+            
+            // Get first day of month and number of days
+            const firstDay = new Date(year, month, 1);
+            const lastDay = new Date(year, month + 1, 0);
+            const daysInMonth = lastDay.getDate();
+            const startDate = firstDay.getDay();
+            
+            // Add days from previous month
+            const prevMonth = new Date(year, month, 0);
+            const prevDaysInMonth = prevMonth.getDate();
+            
+            for (let i = startDate - 1; i >= 0; i--) {
+                const day = prevDaysInMonth - i;
+                const dayEl = createCalendarDay(day, true, new Date(year, month - 1, day));
+                calendarGrid.appendChild(dayEl);
+            }
+            
+            // Add days of current month
+            for (let day = 1; day <= daysInMonth; day++) {
+                const dayEl = createCalendarDay(day, false, new Date(year, month, day));
+                calendarGrid.appendChild(dayEl);
+            }
+            
+            // Add days from next month
+            const totalCells = calendarGrid.children.length;
+            const remainingCells = 42 - totalCells; // 6 rows × 7 days
+            
+            for (let day = 1; day <= remainingCells; day++) {
+                const dayEl = createCalendarDay(day, true, new Date(year, month + 1, day));
+                calendarGrid.appendChild(dayEl);
+            }
+        }
+
+        function createCalendarDay(day, isOtherMonth, date) {
+            const dayEl = document.createElement('div');
+            dayEl.className = `border rounded p-1 calendar-day bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700 cursor-pointer ${
+                isOtherMonth ? 'other-month text-gray-400 dark:text-gray-600' : ''
+            }`;
+            
+            // Check if this is today
+            const today = new Date();
+            if (date.toDateString() === today.toDateString()) {
+                dayEl.classList.add('today');
+            }
+            
+            dayEl.innerHTML = `
+                <div class="text-right text-sm mb-1">${day}</div>
+                <div class="space-y-1" id="events-${date.toISOString().split('T')[0]}">
+                    <!-- Events will be added here -->
+                </div>
+            `;
+            
+            // Add click event to create new event
+            dayEl.addEventListener('click', () => {
+                openEventModal(null, date);
+            });
+            
+            // Add events for this day
+            const dayEvents = getEventsForDate(date);
+            const eventsContainer = dayEl.querySelector(`#events-${date.toISOString().split('T')[0]}`);
+            
+            dayEvents.forEach(event => {
+                const eventEl = document.createElement('div');
+                eventEl.className = `event-pill text-white text-xs cursor-pointer ${getEventColor(event.field)}`;
+                eventEl.textContent = event.title;
+                eventEl.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    openEventModal(event.id);
+                });
+                eventsContainer.appendChild(eventEl);
+            });
+            
+            return dayEl;
+        }
+
+        function getEventsForDate(date) {
+            const dateStr = date.toISOString().split('T')[0];
+            return events.filter(event => {
+                const eventStart = event.startDate;
+                const eventEnd = event.endDate;
+                return dateStr >= eventStart && dateStr <= eventEnd;
+            });
+        }
+
+        function getEventColor(field) {
+            const colors = {
+                engineering: 'bg-blue-500',
+                accounting: 'bg-green-500',
+                marketing: 'bg-purple-500',
+                hr: 'bg-pink-500',
+                it: 'bg-indigo-500',
+                sales: 'bg-yellow-500',
+                other: 'bg-gray-500'
+            };
+            return colors[field] || colors.other;
+        }
+
+        // Event Functions
+        function renderEventsTable() {
+            const tableBody = document.getElementById('events-table-body');
+            const filteredEvents = getFilteredEvents();
+            
+            tableBody.innerHTML = '';
+            
+            filteredEvents.forEach(event => {
+                const row = document.createElement('tr');
+                row.className = 'hover:bg-gray-50 dark:hover:bg-gray-800';
+                
+                const attendeeNames = event.attendees.map(id => {
+                    const attendee = attendees.find(a => a.id === id);
+                    return attendee ? attendee.name : 'Unknown';
+                }).join(', ');
+                
+                row.innerHTML = `
+                    <td class="px-4 py-3">
+                        <div class="font-medium">${event.title}</div>
+                        <div class="text-sm text-gray-500 dark:text-gray-400">${event.location || 'No location'}</div>
+                    </td>
+                    <td class="px-4 py-3">
+                        <div>${formatDateTime(event.startDate, event.startTime)}</div>
+                        <div class="text-sm text-gray-500 dark:text-gray-400">to ${formatDateTime(event.endDate, event.endTime)}</div>
+                    </td>
+                    <td class="px-4 py-3">
+                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${getFieldBadgeColor(event.field)}">
+                            ${event.field.charAt(0).toUpperCase() + event.field.slice(1)}
+                        </span>
+                    </td>
+                    <td class="px-4 py-3">
+                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${getTypeBadgeColor(event.type)}">
+                            ${event.type.charAt(0).toUpperCase() + event.type.slice(1)}
+                        </span>
+                    </td>
+                    <td class="px-4 py-3">
+                        <div class="text-sm">${attendeeNames || 'No attendees'}</div>
+                    </td>
+                    <td class="px-4 py-3">
+                        <button onclick="openEventModal('${event.id}')" class="text-primary dark:text-primary-light hover:text-primary-dark mr-2">
+                            <i class="fas fa-edit"></i>
+                        </button>
+                        <button onclick="confirmDelete('event', '${event.id}', '${event.title}')" class="text-red-600 dark:text-red-400 hover:text-red-800">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </td>
+                `;
+                
+                tableBody.appendChild(row);
+            });
+        }
+
+        function getFieldBadgeColor(field) {
+            const colors = {
+                engineering: 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-300',
+                accounting: 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300',
+                marketing: 'bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-300',
+                hr: 'bg-pink-100 text-pink-800 dark:bg-pink-900 dark:text-pink-300',
+                it: 'bg-indigo-100 text-indigo-800 dark:bg-indigo-900 dark:text-indigo-300',
+                sales: 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-300',
+                other: 'bg-gray-100 text-gray-800 dark:bg-gray-900 dark:text-gray-300'
+            };
+            return colors[field] || colors.other;
+        }
+
+        function getTypeBadgeColor(type) {
+            const colors = {
+                meeting: 'bg-orange-100 text-orange-800 dark:bg-orange-900 dark:text-orange-300',
+                workshop: 'bg-cyan-100 text-cyan-800 dark:bg-cyan-900 dark:text-cyan-300',
+                conference: 'bg-teal-100 text-teal-800 dark:bg-teal-900 dark:text-teal-300',
+                webinar: 'bg-violet-100 text-violet-800 dark:bg-violet-900 dark:text-violet-300',
+                training: 'bg-lime-100 text-lime-800 dark:bg-lime-900 dark:text-lime-300',
+                other: 'bg-gray-100 text-gray-800 dark:bg-gray-900 dark:text-gray-300'
+            };
+            return colors[type] || colors.other;
+        }
+
+        function getFilteredEvents() {
+            const searchTerm = document.getElementById('search-input').value.toLowerCase();
+            const fieldFilter = document.getElementById('field-filter').value;
+            const typeFilter = document.getElementById('type-filter').value;
+            
+            return events.filter(event => {
+                const matchesSearch = !searchTerm || 
+                    event.title.toLowerCase().includes(searchTerm) ||
+                    event.description.toLowerCase().includes(searchTerm) ||
+                    event.location.toLowerCase().includes(searchTerm);
+                
+                const matchesField = fieldFilter === 'all' || event.field === fieldFilter;
+                const matchesType = typeFilter === 'all' || event.type === typeFilter;
+                
+                return matchesSearch && matchesField && matchesType;
+            });
+        }
+
+        // Modal Functions
+        function openEventModal(eventId = null, selectedDate = null) {
+            const modal = document.getElementById('event-modal');
+            const modalTitle = document.getElementById('modal-title');
+            const deleteBtn = document.getElementById('delete-event-btn');
+            const form = document.getElementById('event-form');
+            
+            editingId = eventId;
+            
+            if (eventId) {
+                const event = events.find(e => e.id === eventId);
+                if (!event) return;
+                
+                modalTitle.textContent = 'Edit Event';
+                deleteBtn.classList.remove('hidden');
+                
+                // Populate form
+                document.getElementById('event-id').value = event.id;
+                document.getElementById('event-title').value = event.title;
+                document.getElementById('event-field').value = event.field;
+                document.getElementById('event-type').value = event.type;
+                document.getElementById('event-start-date').value = event.startDate;
+                document.getElementById('event-start-time').value = event.startTime || '';
+                document.getElementById('event-end-date').value = event.endDate;
+                document.getElementById('event-end-time').value = event.endTime || '';
+                document.getElementById('event-location').value = event.location || '';
+                document.getElementById('event-description').value = event.description || '';
+                
+                // Populate field-specific data
+                updateFieldSpecificForm(event.field, event.fieldSpecific);
+                
+                // Populate attendees
+                updateEventAttendeesList(event.attendees);
+            } else {
+                modalTitle.textContent = 'Add New Event';
+                deleteBtn.classList.add('hidden');
+                form.reset();
+                document.getElementById('event-id').value = '';
+                
+                // Set default date if provided
+                if (selectedDate) {
+                    const dateStr = selectedDate.toISOString().split('T')[0];
+                    document.getElementById('event-start-date').value = dateStr;
+                    document.getElementById('event-end-date').value = dateStr;
+                }
+                
+                updateFieldSpecificForm('engineering');
+                updateEventAttendeesList([]);
+            }
+            
+            updateAttendeeDropdown();
+            modal.classList.remove('hidden');
+        }
+
+        function updateFieldSpecificForm(field, data = {}) {
+            const container = document.getElementById('field-specific-container');
+            const config = fieldSpecificForms[field];
+            
+            container.innerHTML = '';
+            
+            if (!config) return;
+            
+            config.fields.forEach(fieldConfig => {
+                const div = document.createElement('div');
+                div.className = 'mb-3';
+                
+                const label = document.createElement('label');
+                label.className = 'block text-sm font-medium mb-1';
+                label.textContent = fieldConfig.label;
+                
+                let input;
+                
+                if (fieldConfig.type === 'select') {
+                    input = document.createElement('select');
+                    fieldConfig.options.forEach(option => {
+                        const optionEl = document.createElement('option');
+                        optionEl.value = option.toLowerCase();
+                        optionEl.textContent = option;
+                        input.appendChild(optionEl);
+                    });
+                } else if (fieldConfig.type === 'checkbox') {
+                    input = document.createElement('input');
+                    input.type = 'checkbox';
+                    input.className = 'rounded';
+                } else {
+                    input = document.createElement('input');
+                    input.type = fieldConfig.type;
+                }
+                
+                if (fieldConfig.type !== 'checkbox') {
+                    input.className = 'w-full p-2 border rounded text-base text-gray-900 dark:text-white border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700';
+                }
+                
+                input.id = `field-${fieldConfig.name}`;
+                input.name = fieldConfig.name;
+                
+                // Set value if editing
+                if (data[fieldConfig.name] !== undefined) {
+                    if (fieldConfig.type === 'checkbox') {
+                        input.checked = data[fieldConfig.name];
+                    } else {
+                        input.value = data[fieldConfig.name];
+                    }
+                }
+                
+                div.appendChild(label);
+                div.appendChild(input);
+                container.appendChild(div);
+            });
+        }
+
+        function updateAttendeeDropdown() {
+            const select = document.getElementById('add-attendee-select');
+            select.innerHTML = '<option value="">Select an attendee...</option>';
+            
+            attendees.forEach(attendee => {
+                const option = document.createElement('option');
+                option.value = attendee.id;
+                option.textContent = `${attendee.name} (${attendee.email})`;
+                select.appendChild(option);
+            });
+        }
+
+        function updateEventAttendeesList(selectedAttendees = []) {
+            const container = document.getElementById('attendees-list');
+            container.innerHTML = '';
+            
+            selectedAttendees.forEach(attendeeId => {
+                const attendee = attendees.find(a => a.id === attendeeId);
+                if (!attendee) return;
+                
+                const div = document.createElement('div');
+                div.className = 'flex items-center justify-between bg-gray-100 dark:bg-gray-700 rounded px-2 py-1';
+                div.innerHTML = `
+                    <span class="text-sm">${attendee.name}</span>
+                    <button type="button" onclick="removeAttendeeFromEvent('${attendeeId}')" class="text-red-600 dark:text-red-400 hover:text-red-800">
+                        <i class="fas fa-times"></i>
+                    </button>
+                `;
+                container.appendChild(div);
+            });
+        }
+
+        function addAttendeeToEvent() {
+            const select = document.getElementById('add-attendee-select');
+            const attendeeId = select.value;
+            
+            if (!attendeeId) return;
+            
+            const container = document.getElementById('attendees-list');
+            const existing = container.querySelector(`[onclick*="${attendeeId}"]`);
+            
+            if (existing) {
+                showToast('Attendee already added', 'error');
+                return;
+            }
+            
+            const attendee = attendees.find(a => a.id === attendeeId);
+            if (!attendee) return;
+            
+            const div = document.createElement('div');
+            div.className = 'flex items-center justify-between bg-gray-100 dark:bg-gray-700 rounded px-2 py-1';
+            div.innerHTML = `
+                <span class="text-sm">${attendee.name}</span>
+                <button type="button" onclick="removeAttendeeFromEvent('${attendeeId}')" class="text-red-600 dark:text-red-400 hover:text-red-800">
+                    <i class="fas fa-times"></i>
+                </button>
+            `;
+            container.appendChild(div);
+            
+            select.value = '';
+        }
+
+        function removeAttendeeFromEvent(attendeeId) {
+            const container = document.getElementById('attendees-list');
+            const element = container.querySelector(`[onclick*="${attendeeId}"]`).parentElement;
+            element.remove();
+        }
+
+        function saveEvent(formData) {
+            const eventData = {
+                id: formData.get('event-id') || generateId(),
+                title: formData.get('event-title'),
+                field: formData.get('event-field'),
+                type: formData.get('event-type'),
+                startDate: formData.get('event-start-date'),
+                startTime: formData.get('event-start-time'),
+                endDate: formData.get('event-end-date'),
+                endTime: formData.get('event-end-time'),
+                location: formData.get('event-location'),
+                description: formData.get('event-description'),
+                attendees: getSelectedAttendees(),
+                fieldSpecific: getFieldSpecificData(formData.get('event-field')),
+                createdAt: new Date().toISOString()
+            };
+            
+            if (editingId) {
+                const index = events.findIndex(e => e.id === editingId);
+                events[index] = eventData;
+                showToast('Event updated successfully');
+            } else {
+                events.push(eventData);
+                showToast('Event created successfully');
+            }
+            
+            closeModal('event-modal');
+            if (currentView === 'calendar') {
+                renderCalendar();
+            } else if (currentView === 'events') {
+                renderEventsTable();
+            }
+        }
+
+        function getSelectedAttendees() {
+            const container = document.getElementById('attendees-list');
+            const buttons = container.querySelectorAll('button[onclick*="removeAttendeeFromEvent"]');
+            return Array.from(buttons).map(btn => {
+                const onclick = btn.getAttribute('onclick');
+                return onclick.match(/'([^']+)'/)[1];
+            });
+        }
+
+        function getFieldSpecificData(field) {
+            const data = {};
+            const config = fieldSpecificForms[field];
+            
+            if (!config) return data;
+            
+            config.fields.forEach(fieldConfig => {
+                const input = document.getElementById(`field-${fieldConfig.name}`);
+                if (input) {
+                    if (fieldConfig.type === 'checkbox') {
+                        data[fieldConfig.name] = input.checked;
+                    } else {
+                        data[fieldConfig.name] = input.value;
+                    }
+                }
+            });
+            
+            return data;
+        }
+
+        // Attendee Functions
+        function renderAttendeesTable() {
+            const tableBody = document.getElementById('attendees-table-body');
+            
+            tableBody.innerHTML = '';
+            
+            attendees.forEach(attendee => {
+                const row = document.createElement('tr');
+                row.className = 'hover:bg-gray-50 dark:hover:bg-gray-800';
+                
+                const attendeeEvents = events.filter(e => e.attendees.includes(attendee.id));
+                const eventNames = attendeeEvents.map(e => e.title).join(', ');
+                
+                row.innerHTML = `
+                    <td class="px-4 py-3">
+                        <div class="font-medium">${attendee.name}</div>
+                        <div class="text-sm text-gray-500 dark:text-gray-400">${attendee.role || 'No role specified'}</div>
+                    </td>
+                    <td class="px-4 py-3">${attendee.email}</td>
+                    <td class="px-4 py-3">${attendee.organization || 'No organization'}</td>
+                    <td class="px-4 py-3">
+                        <div class="text-sm">${eventNames || 'No events'}</div>
+                    </td>
+                    <td class="px-4 py-3">
+                        <button onclick="openAttendeeModal('${attendee.id}')" class="text-primary dark:text-primary-light hover:text-primary-dark mr-2">
+                            <i class="fas fa-edit"></i>
+                        </button>
+                        <button onclick="confirmDelete('attendee', '${attendee.id}', '${attendee.name}')" class="text-red-600 dark:text-red-400 hover:text-red-800">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </td>
+                `;
+                
+                tableBody.appendChild(row);
+            });
+        }
+
+        function openAttendeeModal(attendeeId = null) {
+            const modal = document.getElementById('attendee-modal');
+            const modalTitle = document.getElementById('attendee-modal-title');
+            const deleteBtn = document.getElementById('delete-attendee-btn');
+            const form = document.getElementById('attendee-form');
+            
+            editingId = attendeeId;
+            
+            if (attendeeId) {
+                const attendee = attendees.find(a => a.id === attendeeId);
+                if (!attendee) return;
+                
+                modalTitle.textContent = 'Edit Attendee';
+                deleteBtn.classList.remove('hidden');
+                
+                document.getElementById('attendee-id').value = attendee.id;
+                document.getElementById('attendee-name').value = attendee.name;
+                document.getElementById('attendee-email').value = attendee.email;
+                document.getElementById('attendee-organization').value = attendee.organization || '';
+                document.getElementById('attendee-role').value = attendee.role || '';
+                document.getElementById('attendee-notes').value = attendee.notes || '';
+            } else {
+                modalTitle.textContent = 'Add New Attendee';
+                deleteBtn.classList.add('hidden');
+                form.reset();
+                document.getElementById('attendee-id').value = '';
+            }
+            
+            modal.classList.remove('hidden');
+        }
+
+        function saveAttendee(formData) {
+            const attendeeData = {
+                id: formData.get('attendee-id') || generateId(),
+                name: formData.get('attendee-name'),
+                email: formData.get('attendee-email'),
+                organization: formData.get('attendee-organization'),
+                role: formData.get('attendee-role'),
+                notes: formData.get('attendee-notes'),
+                createdAt: new Date().toISOString()
+            };
+            
+            if (editingId) {
+                const index = attendees.findIndex(a => a.id === editingId);
+                attendees[index] = attendeeData;
+                showToast('Attendee updated successfully');
+            } else {
+                attendees.push(attendeeData);
+                showToast('Attendee created successfully');
+            }
+            
+            closeModal('attendee-modal');
+            if (currentView === 'attendees') {
+                renderAttendeesTable();
+            }
+        }
+
+        // Task Functions
+        function renderTasksTable() {
+            const tableBody = document.getElementById('tasks-table-body');
+            
+            tableBody.innerHTML = '';
+            
+            tasks.forEach(task => {
+                const row = document.createElement('tr');
+                row.className = 'hover:bg-gray-50 dark:hover:bg-gray-800';
+                
+                const relatedEvent = task.eventId ? events.find(e => e.id === task.eventId) : null;
+                const assignedAttendee = task.assignedTo ? attendees.find(a => a.id === task.assignedTo) : null;
+                
+                row.innerHTML = `
+                    <td class="px-4 py-3">
+                        <div class="font-medium">${task.title}</div>
+                        <div class="text-sm text-gray-500 dark:text-gray-400">${task.description || 'No description'}</div>
+                    </td>
+                    <td class="px-4 py-3">${relatedEvent ? relatedEvent.title : 'No related event'}</td>
+                    <td class="px-4 py-3">${formatDate(task.dueDate)}</td>
+                    <td class="px-4 py-3">
+                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${getStatusBadgeColor(task.status)}">
+                            ${task.status.replace('-', ' ').replace(/\b\w/g, l => l.toUpperCase())}
+                        </span>
+                    </td>
+                    <td class="px-4 py-3">${assignedAttendee ? assignedAttendee.name : 'Unassigned'}</td>
+                    <td class="px-4 py-3">
+                        <button onclick="openTaskModal('${task.id}')" class="text-primary dark:text-primary-light hover:text-primary-dark mr-2">
+                            <i class="fas fa-edit"></i>
+                        </button>
+                        <button onclick="confirmDelete('task', '${task.id}', '${task.title}')" class="text-red-600 dark:text-red-400 hover:text-red-800">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </td>
+                `;
+                
+                tableBody.appendChild(row);
+            });
+        }
+
+        function getStatusBadgeColor(status) {
+            const colors = {
+                'not-started': 'bg-gray-100 text-gray-800 dark:bg-gray-900 dark:text-gray-300',
+                'in-progress': 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-300',
+                'completed': 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300'
+            };
+            return colors[status] || colors['not-started'];
+        }
+
+        function openTaskModal(taskId = null) {
+            const modal = document.getElementById('task-modal');
+            const modalTitle = document.getElementById('task-modal-title');
+            const deleteBtn = document.getElementById('delete-task-btn');
+            const form = document.getElementById('task-form');
+            
+            editingId = taskId;
+            
+            // Update event dropdown
+            updateTaskEventDropdown();
+            updateTaskAssigneeDropdown();
+            
+            if (taskId) {
+                const task = tasks.find(t => t.id === taskId);
+                if (!task) return;
+                
+                modalTitle.textContent = 'Edit Task';
+                deleteBtn.classList.remove('hidden');
+                
+                document.getElementById('task-id').value = task.id;
+                document.getElementById('task-title').value = task.title;
+                document.getElementById('task-event').value = task.eventId || '';
+                document.getElementById('task-due-date').value = task.dueDate;
+                document.getElementById('task-status').value = task.status;
+                document.getElementById('task-assigned').value = task.assignedTo || '';
+                document.getElementById('task-description').value = task.description || '';
+            } else {
+                modalTitle.textContent = 'Add New Task';
+                deleteBtn.classList.add('hidden');
+                form.reset();
+                document.getElementById('task-id').value = '';
+            }
+            
+            modal.classList.remove('hidden');
+        }
+
+        function updateTaskEventDropdown() {
+            const select = document.getElementById('task-event');
+            select.innerHTML = '<option value="">No related event</option>';
+            
+            events.forEach(event => {
+                const option = document.createElement('option');
+                option.value = event.id;
+                option.textContent = event.title;
+                select.appendChild(option);
+            });
+        }
+
+        function updateTaskAssigneeDropdown() {
+            const select = document.getElementById('task-assigned');
+            select.innerHTML = '<option value="">Unassigned</option>';
+            
+            attendees.forEach(attendee => {
+                const option = document.createElement('option');
+                option.value = attendee.id;
+                option.textContent = attendee.name;
+                select.appendChild(option);
+            });
+        }
+
+        function saveTask(formData) {
+            const taskData = {
+                id: formData.get('task-id') || generateId(),
+                title: formData.get('task-title'),
+                eventId: formData.get('task-event') || null,
+                dueDate: formData.get('task-due-date'),
+                status: formData.get('task-status'),
+                assignedTo: formData.get('task-assigned') || null,
+                description: formData.get('task-description'),
+                createdAt: new Date().toISOString()
+            };
+            
+            if (editingId) {
+                const index = tasks.findIndex(t => t.id === editingId);
+                tasks[index] = taskData;
+                showToast('Task updated successfully');
+            } else {
+                tasks.push(taskData);
+                showToast('Task created successfully');
+            }
+            
+            closeModal('task-modal');
+            if (currentView === 'tasks') {
+                renderTasksTable();
+            }
+        }
+
+        // Delete Functions
+        function confirmDelete(type, id, name) {
+            const modal = document.getElementById('confirm-delete-modal');
+            const text = document.getElementById('confirm-delete-text');
+            
+            text.textContent = `Are you sure you want to delete "${name}"? This action cannot be undone.`;
+            
+            deleteCallback = () => {
+                if (type === 'event') {
+                    deleteEvent(id);
+                } else if (type === 'attendee') {
+                    deleteAttendee(id);
+                } else if (type === 'task') {
+                    deleteTask(id);
+                }
+            };
+            
+            modal.classList.remove('hidden');
+        }
+
+        function deleteEvent(id) {
+            events = events.filter(e => e.id !== id);
+            showToast('Event deleted successfully');
+            if (currentView === 'calendar') {
+                renderCalendar();
+            } else if (currentView === 'events') {
+                renderEventsTable();
+            }
+            closeModal('confirm-delete-modal');
+        }
+
+        function deleteAttendee(id) {
+            // Remove attendee from all events
+            events.forEach(event => {
+                event.attendees = event.attendees.filter(attendeeId => attendeeId !== id);
+            });
+            
+            // Remove attendee from tasks
+            tasks.forEach(task => {
+                if (task.assignedTo === id) {
+                    task.assignedTo = null;
+                }
+            });
+            
+            // Remove attendee
+            attendees = attendees.filter(a => a.id !== id);
+            showToast('Attendee deleted successfully');
+            if (currentView === 'attendees') {
+                renderAttendeesTable();
+            }
+            closeModal('confirm-delete-modal');
+        }
+
+        function deleteTask(id) {
+            tasks = tasks.filter(t => t.id !== id);
+            showToast('Task deleted successfully');
+            if (currentView === 'tasks') {
+                renderTasksTable();
+            }
+            closeModal('confirm-delete-modal');
+        }
+
+        function executeDelete() {
+            if (deleteCallback) {
+                deleteCallback();
+                deleteCallback = null;
+            }
+        }
+
+        // Modal Management
+        function closeModal(modalId) {
+            document.getElementById(modalId).classList.add('hidden');
+            editingId = null;
+        }
+
+        // Calendar Navigation
+        function navigateMonth(direction) {
+            currentDate.setMonth(currentDate.getMonth() + direction);
+            renderCalendar();
+        }
+
+        function goToToday() {
+            currentDate = new Date();
+            renderCalendar();
+        }
+
+        // Import/Export Functions
+        function exportData() {
+            const data = {
+                events,
+                attendees,
+                tasks,
+                exportDate: new Date().toISOString()
+            };
+            
+            const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `event-manager-export-${new Date().toISOString().split('T')[0]}.json`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            
+            showToast('Data exported successfully');
+        }
+
+        function importData() {
+            document.getElementById('import-file-input').click();
+        }
+
+        function handleFileImport(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const data = JSON.parse(e.target.result);
+                    
+                    if (data.events) events = data.events;
+                    if (data.attendees) attendees = data.attendees;
+                    if (data.tasks) tasks = data.tasks;
+                    
+                    showToast('Data imported successfully');
+                    
+                    // Refresh current view
+                    if (currentView === 'calendar') {
+                        renderCalendar();
+                    } else if (currentView === 'events') {
+                        renderEventsTable();
+                    } else if (currentView === 'attendees') {
+                        renderAttendeesTable();
+                    } else if (currentView === 'tasks') {
+                        renderTasksTable();
+                    }
+                } catch (error) {
+                    showToast('Error importing data: Invalid file format', 'error');
+                }
+            };
+            reader.readAsText(file);
+        }
+
+        // Filter Functions
+        function clearFilters() {
+            document.getElementById('search-input').value = '';
+            document.getElementById('field-filter').value = 'all';
+            document.getElementById('type-filter').value = 'all';
+            
+            if (currentView === 'events') {
+                renderEventsTable();
+            }
+        }
+
+        // Event Listeners
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize application
+            initializeDarkMode();
+            initializeTabs();
+            renderCalendar();
+            
+            // Calendar navigation
+            document.getElementById('prev-month').addEventListener('click', () => navigateMonth(-1));
+            document.getElementById('next-month').addEventListener('click', () => navigateMonth(1));
+            document.getElementById('today-btn').addEventListener('click', goToToday);
+            
+            // Add buttons
+            document.getElementById('add-event-btn').addEventListener('click', () => openEventModal());
+            document.getElementById('add-event-btn-2').addEventListener('click', () => openEventModal());
+            document.getElementById('add-attendee-btn-2').addEventListener('click', () => openAttendeeModal());
+            document.getElementById('add-task-btn-2').addEventListener('click', () => openTaskModal());
+            
+            // Modal close buttons
+            document.getElementById('close-modal').addEventListener('click', () => closeModal('event-modal'));
+            document.getElementById('cancel-event-btn').addEventListener('click', () => closeModal('event-modal'));
+            document.getElementById('close-attendee-modal').addEventListener('click', () => closeModal('attendee-modal'));
+            document.getElementById('cancel-attendee-btn').addEventListener('click', () => closeModal('attendee-modal'));
+            document.getElementById('close-task-modal').addEventListener('click', () => closeModal('task-modal'));
+            document.getElementById('cancel-task-btn').addEventListener('click', () => closeModal('task-modal'));
+            
+            // Delete confirmation
+            document.getElementById('cancel-delete-btn').addEventListener('click', () => closeModal('confirm-delete-modal'));
+            document.getElementById('confirm-delete-btn').addEventListener('click', executeDelete);
+            
+            // Event form specific
+            document.getElementById('add-attendee-btn').addEventListener('click', addAttendeeToEvent);
+            document.getElementById('event-field').addEventListener('change', (e) => {
+                updateFieldSpecificForm(e.target.value);
+            });
+            
+            // Form submissions
+            document.getElementById('event-form').addEventListener('submit', (e) => {
+                e.preventDefault();
+                saveEvent(new FormData(e.target));
+            });
+            
+            document.getElementById('attendee-form').addEventListener('submit', (e) => {
+                e.preventDefault();
+                saveAttendee(new FormData(e.target));
+            });
+            
+            document.getElementById('task-form').addEventListener('submit', (e) => {
+                e.preventDefault();
+                saveTask(new FormData(e.target));
+            });
+            
+            // Import/Export
+            document.getElementById('import-btn').addEventListener('click', importData);
+            document.getElementById('export-btn').addEventListener('click', exportData);
+            document.getElementById('import-file-input').addEventListener('change', handleFileImport);
+            
+            // Filters
+            document.getElementById('search-input').addEventListener('input', () => {
+                if (currentView === 'events') renderEventsTable();
+            });
+            document.getElementById('field-filter').addEventListener('change', () => {
+                if (currentView === 'events') renderEventsTable();
+            });
+            document.getElementById('type-filter').addEventListener('change', () => {
+                if (currentView === 'events') renderEventsTable();
+            });
+            document.getElementById('clear-filters').addEventListener('click', clearFilters);
+            
+            // Toast close
+            document.getElementById('close-toast').addEventListener('click', () => {
+                const toast = document.getElementById('toast');
+                toast.style.transform = 'translateY(6rem)';
+                toast.style.opacity = '0';
+            });
+            
+            // Modal backdrop clicks
+            ['event-modal', 'attendee-modal', 'task-modal', 'confirm-delete-modal'].forEach(modalId => {
+                document.getElementById(modalId).addEventListener('click', (e) => {
+                    if (e.target.id === modalId) {
+                        closeModal(modalId);
+                    }
+                });
+            });
+        });
+    </script>
 </body>
 </html>
