@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>iOS 26 Liquid Glass Emoji Picker</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    backdropBlur: {
+                        'xs': '2px',
+                        '4xl': '72px',
+                    },
+                    animation: {
+                        'glow': 'glow 8s ease-in-out infinite',
+                        'float': 'float 6s ease-in-out infinite',
+                        'shimmer': 'shimmer 2s linear infinite',
+                        'pulse-glow': 'pulse-glow 2s ease-in-out infinite alternate',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        @keyframes glow {
+            0%, 100% { 
+                box-shadow: 
+                    0 0 20px rgba(139, 69, 255, 0.3),
+                    0 0 40px rgba(139, 69, 255, 0.2),
+                    0 0 60px rgba(139, 69, 255, 0.1),
+                    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+            }
+            50% { 
+                box-shadow: 
+                    0 0 30px rgba(59, 130, 246, 0.4),
+                    0 0 60px rgba(59, 130, 246, 0.3),
+                    0 0 90px rgba(59, 130, 246, 0.2),
+                    inset 0 1px 0 rgba(255, 255, 255, 0.3);
+            }
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            33% { transform: translateY(-10px) rotate(1deg); }
+            66% { transform: translateY(-5px) rotate(-1deg); }
+        }
+
+        @keyframes shimmer {
+            0% { background-position: -200% 0; }
+            100% { background-position: 200% 0; }
+        }
+
+        @keyframes pulse-glow {
+            0% { 
+                box-shadow: 0 0 0 0 rgba(139, 69, 255, 0.4);
+                border-color: rgba(139, 69, 255, 0.5);
+            }
+            100% { 
+                box-shadow: 0 0 0 20px rgba(139, 69, 255, 0);
+                border-color: rgba(59, 130, 246, 0.8);
+            }
+        }
+
+        .liquid-glass {
+            background: linear-gradient(135deg, 
+                rgba(255, 255, 255, 0.1) 0%,
+                rgba(255, 255, 255, 0.05) 50%,
+                rgba(255, 255, 255, 0.02) 100%);
+            backdrop-filter: blur(20px) saturate(180%);
+            -webkit-backdrop-filter: blur(20px) saturate(180%);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            position: relative;
+        }
+
+        .liquid-glass::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, 
+                rgba(255, 255, 255, 0.1) 0%,
+                transparent 50%,
+                rgba(0, 0, 0, 0.05) 100%);
+            border-radius: inherit;
+            pointer-events: none;
+        }
+
+        .shimmer-effect {
+            background: linear-gradient(
+                90deg,
+                transparent 0%,
+                rgba(255, 255, 255, 0.1) 50%,
+                transparent 100%
+            );
+            background-size: 200% 100%;
+            animation: shimmer 3s ease-in-out infinite;
+        }
+
+        .dark {
+            background: radial-gradient(ellipse at top, 
+                rgba(16, 16, 40, 1) 0%, 
+                rgba(8, 8, 20, 1) 50%, 
+                rgba(0, 0, 0, 1) 100%);
+        }
+
+        body {
+            background: radial-gradient(ellipse at top, 
+                rgba(240, 248, 255, 1) 0%, 
+                rgba(220, 235, 255, 1) 50%, 
+                rgba(200, 225, 255, 1) 100%);
+            min-height: 100vh;
+            transition: all 0.3s ease;
+        }
+
+        .emoji-item {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .emoji-item:hover {
+            transform: translateY(-4px) scale(1.05);
+            background: linear-gradient(135deg, 
+                rgba(255, 255, 255, 0.2) 0%,
+                rgba(255, 255, 255, 0.1) 100%);
+        }
+
+        .search-input {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+        }
+
+        .search-input:focus {
+            background: rgba(255, 255, 255, 0.15);
+            border-color: rgba(139, 69, 255, 0.5);
+            box-shadow: 0 0 0 4px rgba(139, 69, 255, 0.1);
+        }
+
+        /* Custom scrollbar */
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 3px;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: linear-gradient(180deg, 
+                rgba(139, 69, 255, 0.6) 0%, 
+                rgba(59, 130, 246, 0.6) 100%);
+            border-radius: 3px;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(180deg, 
+                rgba(139, 69, 255, 0.8) 0%, 
+                rgba(59, 130, 246, 0.8) 100%);
+        }
+    </style>
+</head>
+<body class="font-sans transition-all duration-300">
+    <div class="min-h-screen flex items-center justify-center p-4">
+        <div class="relative animate-float">
+            <!-- Main Button -->
+            <button id="emoji-button" class="liquid-glass rounded-2xl px-6 py-4 text-white font-medium text-base w-72 flex items-center justify-between transition-all duration-300 hover:scale-105 animate-glow group">
+                <span id="selected-emoji-content" class="flex items-center gap-3 shimmer-effect">
+                    <i class="fas fa-smile text-xl opacity-70"></i>
+                    Select Emoji
+                </span>
+                <i class="fas fa-chevron-down transition-transform duration-300 group-hover:rotate-180"></i>
+            </button>
+
+            <!-- Dropdown Panel -->
+            <div id="emoji-options" class="absolute top-full left-0 mt-4 w-80 liquid-glass rounded-3xl overflow-hidden opacity-0 invisible transform scale-95 transition-all duration-300 z-50 shadow-2xl">
+                <!-- Search Bar -->
+                <div class="p-6 border-b border-white/10">
+                    <div class="relative">
+                        <i class="fas fa-search absolute left-4 top-1/2 transform -translate-y-1/2 text-white/50"></i>
+                        <input 
+                            type="text" 
+                            id="emoji-search" 
+                            placeholder="Search emojis..." 
+                            class="search-input w-full pl-12 pr-4 py-3 rounded-xl text-white placeholder-white/50 outline-none text-base border-0 focus:ring-0"
+                        >
+                    </div>
+                </div>
+
+                <!-- Emoji Grid -->
+                <div class="emoji-list p-4 max-h-64 overflow-y-auto custom-scrollbar">
+                    <div class="grid grid-cols-1 gap-2">
+                        <div class="emoji-option emoji-item liquid-glass rounded-xl p-3 cursor-pointer flex items-center gap-3" data-emoji-name="smirk" data-emoji-code="1F60F">
+                            <div class="text-2xl">😏</div>
+                            <div class="text-white font-medium">Smirk</div>
+                        </div>
+                        <div class="emoji-option emoji-item liquid-glass rounded-xl p-3 cursor-pointer flex items-center gap-3" data-emoji-name="grinning face with sweat" data-emoji-code="1F605">
+                            <div class="text-2xl">😅</div>
+                            <div class="text-white font-medium">Grinning Face with Sweat</div>
+                        </div>
+                        <div class="emoji-option emoji-item liquid-glass rounded-xl p-3 cursor-pointer flex items-center gap-3" data-emoji-name="ghost" data-emoji-code="1F47B">
+                            <div class="text-2xl">👻</div>
+                            <div class="text-white font-medium">Ghost</div>
+                        </div>
+                        <div class="emoji-option emoji-item liquid-glass rounded-xl p-3 cursor-pointer flex items-center gap-3" data-emoji-name="heart eyes" data-emoji-code="1F60D">
+                            <div class="text-2xl">😍</div>
+                            <div class="text-white font-medium">Heart Eyes</div>
+                        </div>
+                        <div class="emoji-option emoji-item liquid-glass rounded-xl p-3 cursor-pointer flex items-center gap-3" data-emoji-name="joy" data-emoji-code="1F602">
+                            <div class="text-2xl">😂</div>
+                            <div class="text-white font-medium">Joy</div>
+                        </div>
+                        <div class="emoji-option emoji-item liquid-glass rounded-xl p-3 cursor-pointer flex items-center gap-3" data-emoji-name="thumbs up" data-emoji-code="1F44D">
+                            <div class="text-2xl">👍</div>
+                            <div class="text-white font-medium">Thumbs Up</div>
+                        </div>
+                        <div class="emoji-option emoji-item liquid-glass rounded-xl p-3 cursor-pointer flex items-center gap-3" data-emoji-name="fire" data-emoji-code="1F525">
+                            <div class="text-2xl">🔥</div>
+                            <div class="text-white font-medium">Fire</div>
+                        </div>
+                        <div class="emoji-option emoji-item liquid-glass rounded-xl p-3 cursor-pointer flex items-center gap-3" data-emoji-name="sparkles" data-emoji-code="2728">
+                            <div class="text-2xl">✨</div>
+                            <div class="text-white font-medium">Sparkles</div>
+                        </div>
+                        <div class="emoji-option emoji-item liquid-glass rounded-xl p-3 cursor-pointer flex items-center gap-3" data-emoji-name="rocket" data-emoji-code="1F680">
+                            <div class="text-2xl">🚀</div>
+                            <div class="text-white font-medium">Rocket</div>
+                        </div>
+                        <div class="emoji-option emoji-item liquid-glass rounded-xl p-3 cursor-pointer flex items-center gap-3" data-emoji-name="party" data-emoji-code="1F389">
+                            <div class="text-2xl">🎉</div>
+                            <div class="text-white font-medium">Party</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Dark mode detection
+        if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+            document.documentElement.classList.add('dark');
+        }
+        window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', event => {
+            if (event.matches) {
+                document.documentElement.classList.add('dark');
+            } else {
+                document.documentElement.classList.remove('dark');
+            }
+        });
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const emojiButton = document.getElementById('emoji-button');
+            const emojiOptions = document.getElementById('emoji-options');
+            const selectedEmojiContent = document.getElementById('selected-emoji-content');
+            const emojiSearch = document.getElementById('emoji-search');
+            const emojiList = document.querySelector('.emoji-list');
+
+            // Toggle emoji options visibility with smooth animations
+            emojiButton.addEventListener('click', (event) => {
+                event.stopPropagation();
+                
+                if (emojiOptions.classList.contains('opacity-0')) {
+                    // Show
+                    emojiOptions.classList.remove('opacity-0', 'invisible', 'scale-95');
+                    emojiOptions.classList.add('opacity-100', 'visible', 'scale-100');
+                    emojiSearch.focus();
+                } else {
+                    // Hide
+                    emojiOptions.classList.remove('opacity-100', 'visible', 'scale-100');
+                    emojiOptions.classList.add('opacity-0', 'invisible', 'scale-95');
+                }
+            });
+
+            // Close emoji options when clicking outside
+            document.addEventListener('click', (event) => {
+                if (!emojiOptions.contains(event.target) && event.target !== emojiButton) {
+                    emojiOptions.classList.remove('opacity-100', 'visible', 'scale-100');
+                    emojiOptions.classList.add('opacity-0', 'invisible', 'scale-95');
+                }
+            });
+
+            // Select emoji with smooth animation
+            emojiList.addEventListener('click', (event) => {
+                const emojiOption = event.target.closest('.emoji-option');
+                if (emojiOption) {
+                    const emojiName = emojiOption.dataset.emojiName;
+                    const emojiIcon = emojiOption.querySelector('div').textContent;
+                    
+                    // Add selection animation
+                    emojiOption.style.transform = 'scale(0.95)';
+                    setTimeout(() => {
+                        emojiOption.style.transform = '';
+                    }, 150);
+                    
+                    selectedEmojiContent.innerHTML = `
+                        <span class="flex items-center gap-3">
+                            <span class="text-xl">${emojiIcon}</span>
+                            ${emojiName}
+                        </span>
+                    `;
+                    
+                    // Close dropdown with animation
+                    setTimeout(() => {
+                        emojiOptions.classList.remove('opacity-100', 'visible', 'scale-100');
+                        emojiOptions.classList.add('opacity-0', 'invisible', 'scale-95');
+                    }, 100);
+                }
+            });
+
+            // Enhanced search functionality with smooth filtering
+            emojiSearch.addEventListener('input', () => {
+                const searchTerm = emojiSearch.value.toLowerCase();
+                const emojiOptionsArray = Array.from(document.querySelectorAll('.emoji-option'));
+
+                emojiOptionsArray.forEach((option, index) => {
+                    const emojiName = option.dataset.emojiName.toLowerCase();
+                    setTimeout(() => {
+                        if (emojiName.includes(searchTerm)) {
+                            option.style.display = 'flex';
+                            option.style.opacity = '0';
+                            option.style.transform = 'translateY(10px)';
+                            setTimeout(() => {
+                                option.style.opacity = '1';
+                                option.style.transform = 'translateY(0)';
+                            }, 50);
+                        } else {
+                            option.style.opacity = '0';
+                            option.style.transform = 'translateY(-10px)';
+                            setTimeout(() => {
+                                option.style.display = 'none';
+                            }, 200);
+                        }
+                    }, index * 20);
+                });
+            });
+
+            // Add ripple effect to button clicks
+            function createRipple(event) {
+                const button = event.currentTarget;
+                const circle = document.createElement('span');
+                const diameter = Math.max(button.clientWidth, button.clientHeight);
+                const radius = diameter / 2;
+
+                circle.style.width = circle.style.height = `${diameter}px`;
+                circle.style.left = `${event.clientX - button.offsetLeft - radius}px`;
+                circle.style.top = `${event.clientY - button.offsetTop - radius}px`;
+                circle.classList.add('ripple');
+                circle.style.cssText = `
+                    position: absolute;
+                    border-radius: 50%;
+                    background: rgba(255, 255, 255, 0.3);
+                    transform: scale(0);
+                    animation: ripple 0.6s linear;
+                    pointer-events: none;
+                `;
+
+                const rippleStyle = document.createElement('style');
+                rippleStyle.textContent = `
+                    @keyframes ripple {
+                        to {
+                            transform: scale(4);
+                            opacity: 0;
+                        }
+                    }
+                `;
+                document.head.appendChild(rippleStyle);
+
+                const rippleEffect = button.getElementsByClassName('ripple')[0];
+                if (rippleEffect) {
+                    rippleEffect.remove();
+                }
+
+                button.appendChild(circle);
+                setTimeout(() => circle.remove(), 600);
+            }
+
+            emojiButton.addEventListener('click', createRipple);
+        });
+    </script>
+</body>
+</html>
