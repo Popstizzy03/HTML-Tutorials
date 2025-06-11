@@ -1,149 +1,324 @@
-/* css/style.css */
+        @keyframes bounce-brutal {
+            0% { transform: scale(0.8) translateY(10px); }
+            50% { transform: scale(1.1) translateY(-5px); }
+            100% { transform: scale(1) translateY(0); }
+        }
 
-body {
-    font-family: sans-serif;
-    background-color: #222; /* Darker background */
-    color: #fff;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
-    margin: 0;
-}
+        @keyframes slide-brutal {
+            0% { transform: translateX(-20px); opacity: 0; }
+            100% { transform: translateX(0); opacity: 1; }
+        }
 
-.emoji-picker-container {
-    position: relative;
-}
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
+        }
 
-.selected-emoji button {
-    background: rgba(255, 255, 255, 0.1); /* More subtle glass effect */
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    color: #fff;
-    padding: 12px 20px;
-    font-size: 16px;
-    border-radius: 10px;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    width: 250px;
-    transition: all 0.3s ease;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-}
+        @keyframes glitch {
+            0% { transform: translate(0); }
+            20% { transform: translate(-2px, 2px); }
+            40% { transform: translate(-2px, -2px); }
+            60% { transform: translate(2px, 2px); }
+            80% { transform: translate(2px, -2px); }
+            100% { transform: translate(0); }
+        }
 
-.selected-emoji button:hover {
-    background: rgba(255, 255, 255, 0.2);
-    transform: translateY(-2px); /* Slight hover effect */
-}
+        .dark {
+            background: #1a1a1a !important;
+        }
 
-.glassmorphic {
-    background: rgba(255, 255, 255, 0.05);
-    border-radius: 16px;
-    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
-    backdrop-filter: blur(5px);
-    -webkit-backdrop-filter: blur(5px);
-    border: 1px solid rgba(255, 255, 255, 0.3);
-}
+        body {
+            background: #f5f5f5;
+            min-height: 100vh;
+            transition: all 0.3s ease;
+            font-family: 'Arial Black', Arial, sans-serif;
+        }
 
-.emoji-options {
-    position: absolute;
-    top: 100%;
-    left: 0;
-    margin-top: 10px;
-    border-radius: 10px;
-    overflow: hidden;
-    display: none; /* Initially hidden */
-    width: 300px;
-    z-index: 10;
-}
+        .neo-card {
+            background: white;
+            border: 4px solid #000;
+            box-shadow: 8px 8px 0px 0px #000;
+            transition: all 0.2s ease;
+        }
 
-.emoji-options.show {
-    display: block;
-}
+        .neo-card:hover {
+            transform: translate(-2px, -2px);
+            box-shadow: 10px 10px 0px 0px #000;
+        }
 
-.search-bar {
-    padding: 10px;
-}
+        .dark .neo-card {
+            background: #2a2a2a;
+            border-color: #fff;
+            box-shadow: 8px 8px 0px 0px #fff;
+        }
 
-.search-bar input {
-    width: 100%;
-    padding: 8px;
-    border: none;
-    border-radius: 5px;
-    background: rgba(255, 255, 255, 0.1);
-    color: #fff;
-    outline: none;
-}
+        .dark .neo-card:hover {
+            box-shadow: 10px 10px 0px 0px #fff;
+        }
 
-.emoji-list {
-    max-height: 200px;
-    overflow-y: auto;
-    padding: 10px;
-}
+        .neo-button {
+            background: #ff6b6b;
+            border: 3px solid #000;
+            color: #000;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: all 0.1s ease;
+            box-shadow: 4px 4px 0px 0px #000;
+        }
 
-.emoji-option {
-    display: flex;
-    align-items: center;
-    padding: 8px;
-    cursor: pointer;
-    border-radius: 5px;
-    transition: background-color 0.2s ease;
-}
+        .neo-button:hover {
+            transform: translate(-2px, -2px);
+            box-shadow: 6px 6px 0px 0px #000;
+        }
 
-.emoji-option:hover {
-    background-color: rgba(255, 255, 255, 0.1);
-}
+        .neo-button:active {
+            transform: translate(2px, 2px);
+            box-shadow: 2px 2px 0px 0px #000;
+        }
 
-.emoji {
-    width: 24px;
-    height: 24px;
-    margin-right: 8px;
-}
+        .neo-button.secondary {
+            background: #4ecdc4;
+        }
 
-.emoji-name {
-    font-size: 14px;
-}
+        .neo-button.tertiary {
+            background: #45b7d1;
+        }
 
-/* Scrollbar styling (for Webkit browsers - Chrome, Safari) */
-.emoji-list::-webkit-scrollbar {
-  width: 8px;
-}
+        .neo-button.warning {
+            background: #ffa726;
+        }
 
-.emoji-list::-webkit-scrollbar-track {
-  background: rgba(0, 0, 0, 0.1);
-  border-radius: 4px;
-}
+        .neo-button.success {
+            background: #66bb6a;
+        }
 
-.emoji-list::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.2);
-  border-radius: 4px;
-}
+        .dark .neo-button {
+            border-color: #fff;
+            box-shadow: 4px 4px 0px 0px #fff;
+            color: #fff;
+        }
 
-.emoji-list::-webkit-scrollbar-thumb:hover {
-  background: rgba(255, 255, 255, 0.3);
-}
+        .dark .neo-button:hover {
+            box-shadow: 6px 6px 0px 0px #fff;
+        }
 
-/* Modern glow effect */
-.emoji-picker-container::before {
-  content: '';
-  position: absolute;
-  top: -2px;
-  left: -2px;
-  right: -2px;
-  bottom: -2px;
-  background: linear-gradient(45deg, #00bcd4, #9c27b0, #e91e63, #ff9800, #00bcd4);
-  z-index: -1;
-  border-radius: 16px;
-  opacity: 0.5;
-  filter: blur(10px);
-  animation: glow 10s linear infinite;
-}
+        .dark .neo-button:active {
+            box-shadow: 2px 2px 0px 0px #fff;
+        }
 
-@keyframes glow {
-  0% {
-    background-position: 0 0;
-  }
-  100% {
-    background-position: 400% 0;
-  }
-}
+        .neo-input {
+            background: white;
+            border: 3px solid #000;
+            color: #000;
+            font-weight: 600;
+            box-shadow: 4px 4px 0px 0px #000;
+            transition: all 0.2s ease;
+        }
+
+        .neo-input:focus {
+            outline: none;
+            transform: translate(-2px, -2px);
+            box-shadow: 6px 6px 0px 0px #000;
+            border-color: #ff6b6b;
+        }
+
+        .dark .neo-input {
+            background: #2a2a2a;
+            border-color: #fff;
+            color: #fff;
+            box-shadow: 4px 4px 0px 0px #fff;
+        }
+
+        .dark .neo-input:focus {
+            box-shadow: 6px 6px 0px 0px #fff;
+            border-color: #ff6b6b;
+        }
+
+        .neo-input::placeholder {
+            color: #666;
+            font-weight: 600;
+        }
+
+        .dark .neo-input::placeholder {
+            color: #ccc;
+        }
+
+        .emoji-item {
+            background: white;
+            border: 3px solid #000;
+            transition: all 0.1s ease;
+            box-shadow: 4px 4px 0px 0px #000;
+            cursor: pointer;
+        }
+
+        .emoji-item:hover {
+            transform: translate(-2px, -2px);
+            box-shadow: 6px 6px 0px 0px #000;
+            background: #ff6b6b;
+        }
+
+        .emoji-item:active {
+            transform: translate(2px, 2px);
+            box-shadow: 2px 2px 0px 0px #000;
+            animation: glitch 0.3s ease-in-out;
+        }
+
+        .dark .emoji-item {
+            background: #2a2a2a;
+            border-color: #fff;
+            box-shadow: 4px 4px 0px 0px #fff;
+        }
+
+        .dark .emoji-item:hover {
+            box-shadow: 6px 6px 0px 0px #fff;
+            background: #ff6b6b;
+        }
+
+        .dark .emoji-item:active {
+            box-shadow: 2px 2px 0px 0px #fff;
+        }
+
+        .category-tab {
+            background: white;
+            border: 3px solid #000;
+            color: #000;
+            font-weight: 900;
+            box-shadow: 4px 4px 0px 0px #000;
+            transition: all 0.1s ease;
+        }
+
+        .category-tab:hover {
+            transform: translate(-1px, -1px);
+            box-shadow: 5px 5px 0px 0px #000;
+        }
+
+        .category-tab.active {
+            background: #ff6b6b;
+            transform: translate(2px, 2px);
+            box-shadow: 2px 2px 0px 0px #000;
+        }
+
+        .dark .category-tab {
+            background: #2a2a2a;
+            border-color: #fff;
+            color: #fff;
+            box-shadow: 4px 4px 0px 0px #fff;
+        }
+
+        .dark .category-tab:hover {
+            box-shadow: 5px 5px 0px 0px #fff;
+        }
+
+        .dark .category-tab.active {
+            background: #ff6b6b;
+            box-shadow: 2px 2px 0px 0px #fff;
+            color: #000;
+        }
+
+        .recent-emoji {
+            animation: bounce-brutal 0.4s ease-out;
+            background: #4ecdc4;
+            border: 3px solid #000;
+            box-shadow: 4px 4px 0px 0px #000;
+            transition: all 0.1s ease;
+        }
+
+        .recent-emoji:hover {
+            transform: translate(-2px, -2px) scale(1.1);
+            box-shadow: 6px 6px 0px 0px #000;
+            background: #ff6b6b;
+        }
+
+        .dark .recent-emoji {
+            background: #4ecdc4;
+            border-color: #fff;
+            box-shadow: 4px 4px 0px 0px #fff;
+        }
+
+        .dark .recent-emoji:hover {
+            box-shadow: 6px 6px 0px 0px #fff;
+        }
+
+        /* Custom scrollbar */
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #f5f5f5;
+            border: 2px solid #000;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #ff6b6b;
+            border: 2px solid #000;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: #ff5252;
+        }
+
+        .dark .custom-scrollbar::-webkit-scrollbar-track {
+            background: #1a1a1a;
+            border-color: #fff;
+        }
+
+        .dark .custom-scrollbar::-webkit-scrollbar-thumb {
+            border-color: #fff;
+        }
+
+        .toast {
+            background: #66bb6a;
+            border: 3px solid #000;
+            color: #000;
+            font-weight: 900;
+            box-shadow: 6px 6px 0px 0px #000;
+        }
+
+        .dark .toast {
+            border-color: #fff;
+            box-shadow: 6px 6px 0px 0px #fff;
+            color: #fff;
+        }
+
+        .combo-suggestion {
+            background: #ffa726;
+            border: 3px solid #000;
+            box-shadow: 4px 4px 0px 0px #000;
+            transition: all 0.1s ease;
+        }
+
+        .combo-suggestion:hover {
+            transform: translate(-2px, -2px);
+            box-shadow: 6px 6px 0px 0px #000;
+        }
+
+        .dark .combo-suggestion {
+            border-color: #fff;
+            box-shadow: 4px 4px 0px 0px #fff;
+        }
+
+        .dark .combo-suggestion:hover {
+            box-shadow: 6px 6px 0px 0px #fff;
+        }
+
+        .stats-card {
+            background: linear-gradient(45deg, #ff6b6b 0%, #4ecdc4 50%, #45b7d1 100%);
+            border: 4px solid #000;
+            box-shadow: 8px 8px 0px 0px #000;
+        }
+
+        .dark .stats-card {
+            border-color: #fff;
+            box-shadow: 8px 8px 0px 0px #fff;
+        }
+
+        .glitch-text {
+            animation: glitch 2s infinite;
+        }
+
+        @keyframes fadeOut {
+            to { opacity: 0; transform: translate(-50%, -50%) scale(0.5); }
+        }
