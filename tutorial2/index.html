@@ -7,45 +7,151 @@
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
-<body>
-
-    <div class="emoji-picker-container">
-        <div class="selected-emoji">
-            <button id="emoji-button">
-                <span id="selected-emoji-content">Select Emoji</span>
-                <i class="fas fa-caret-down"></i>
-            </button>
-        </div>
-
-        <div class="emoji-options glassmorphic" id="emoji-options">
-            <div class="search-bar">
-                <input type="text" id="emoji-search" placeholder="Search Emoji...">
+<body class="font-sans transition-all duration-300">
+    <div class="min-h-screen flex items-center justify-center p-4">
+        <div class="w-full max-w-2xl mx-auto space-y-6 animate-slide-brutal">
+            
+            <!-- Header -->
+            <div class="text-center mb-8">
+                <h1 class="text-5xl font-black text-black dark:text-white mb-4 glitch-text">
+                    <i class="fas fa-skull mr-3"></i>
+                    EMOJI BRUTALIST
+                </h1>
+                <p class="text-black dark:text-white text-xl font-bold">HARDCORE EMOJI ENGINEERING</p>
+                
+                <!-- Stats Bar -->
+                <div class="stats-card p-4 mt-6">
+                    <div class="grid grid-cols-3 gap-4 text-center">
+                        <div>
+                            <div class="text-2xl font-black text-black" id="total-emojis">0</div>
+                            <div class="text-sm font-bold text-black">TOTAL USED</div>
+                        </div>
+                        <div>
+                            <div class="text-2xl font-black text-black" id="session-count">0</div>
+                            <div class="text-sm font-bold text-black">THIS SESSION</div>
+                        </div>
+                        <div>
+                            <div class="text-2xl font-black text-black" id="combo-count">0</div>
+                            <div class="text-sm font-bold text-black">COMBOS MADE</div>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="emoji-list">
-                <div class="emoji-option" data-emoji-name="smirk" data-emoji-code="1F60F">
-                    <img class="emoji" src="1.svg" alt="Smirk">
-                    <div class="emoji-name">Smirk</div>
+
+            <!-- Main Input Area -->
+            <div class="neo-card p-6">
+                <div class="space-y-6">
+                    <!-- Text Input -->
+                    <div>
+                        <label class="block text-black dark:text-white font-black mb-3 text-xl uppercase tracking-wider">
+                            <i class="fas fa-terminal mr-2"></i>MESSAGE CONSTRUCTOR
+                        </label>
+                        <textarea 
+                            id="main-input" 
+                            placeholder="ENTER YOUR BRUTAL MESSAGE..."
+                            class="neo-input w-full h-32 p-4 text-base resize-none"
+                            style="font-size: 16px;"
+                        ></textarea>
+                        <div class="flex justify-between items-center mt-3 text-sm font-bold">
+                            <span id="char-count" class="text-black dark:text-white">0 CHARS</span>
+                            <span id="emoji-count" class="text-black dark:text-white">0 EMOJIS</span>
+                        </div>
+                    </div>
+
+                    <!-- Action Buttons -->
+                    <div class="grid grid-cols-2 sm:grid-cols-5 gap-3">
+                        <button id="copy-btn" class="neo-button px-4 py-3 flex items-center justify-center gap-2">
+                            <i class="fas fa-copy"></i>COPY
+                        </button>
+                        <button id="clear-btn" class="neo-button secondary px-4 py-3 flex items-center justify-center gap-2">
+                            <i class="fas fa-trash"></i>CLEAR
+                        </button>
+                        <button id="save-btn" class="neo-button tertiary px-4 py-3 flex items-center justify-center gap-2">
+                            <i class="fas fa-save"></i>SAVE
+                        </button>
+                        <button id="random-btn" class="neo-button warning px-4 py-3 flex items-center justify-center gap-2">
+                            <i class="fas fa-dice"></i>RANDOM
+                        </button>
+                        <button id="combo-btn" class="neo-button success px-4 py-3 flex items-center justify-center gap-2">
+                            <i class="fas fa-magic"></i>COMBO
+                        </button>
+                    </div>
+
+                    <!-- Quick Actions -->
+                    <div class="grid grid-cols-2 gap-3">
+                        <button id="caps-btn" class="neo-button px-4 py-2 text-sm">
+                            <i class="fas fa-font"></i> CAPS LOCK
+                        </button>
+                        <button id="reverse-btn" class="neo-button secondary px-4 py-2 text-sm">
+                            <i class="fas fa-undo"></i> REVERSE
+                        </button>
+                    </div>
                 </div>
-                <div class="emoji-option" data-emoji-name="grinning face with sweat" data-emoji-code="1F605">
-                    <img class="emoji" src="1.svg" alt="Grinning Face with Sweat">
-                    <div class="emoji-name">Grinning Face with Sweat</div>
+            </div>
+
+            <!-- Combo Suggestions -->
+            <div id="combo-section" class="neo-card p-6" style="display: none;">
+                <h3 class="text-black dark:text-white font-black mb-4 flex items-center gap-2 text-xl uppercase">
+                    <i class="fas fa-fire"></i>COMBO SUGGESTIONS
+                </h3>
+                <div id="combo-suggestions" class="grid grid-cols-1 sm:grid-cols-2 gap-3"></div>
+            </div>
+
+            <!-- Recent Emojis -->
+            <div id="recent-section" class="neo-card p-6" style="display: none;">
+                <h3 class="text-black dark:text-white font-black mb-4 flex items-center gap-2 text-xl uppercase">
+                    <i class="fas fa-history"></i>RECENT ARSENAL
+                </h3>
+                <div id="recent-emojis" class="flex flex-wrap gap-3"></div>
+            </div>
+
+            <!-- Emoji Arsenal -->
+            <div class="neo-card p-6">
+                <div class="space-y-6">
+                    <!-- Search Bar -->
+                    <div class="relative">
+                        <i class="fas fa-search absolute left-4 top-1/2 transform -translate-y-1/2 text-black dark:text-white"></i>
+                        <input 
+                            type="text" 
+                            id="emoji-search" 
+                            placeholder="SEARCH EMOJIS..." 
+                            class="neo-input w-full pl-12 pr-4 py-3 text-base font-bold"
+                            style="font-size: 16px;"
+                        >
+                    </div>
+
+                    <!-- Category Tabs -->
+                    <div class="flex gap-3 overflow-x-auto pb-2">
+                        <button class="category-tab active px-4 py-3 whitespace-nowrap text-sm" data-category="all">
+                            <i class="fas fa-star"></i> ALL
+                        </button>
+                        <button class="category-tab px-4 py-3 whitespace-nowrap text-sm" data-category="faces">
+                            <i class="fas fa-smile"></i> FACES
+                        </button>
+                        <button class="category-tab px-4 py-3 whitespace-nowrap text-sm" data-category="gestures">
+                            <i class="fas fa-hand"></i> HANDS
+                        </button>
+                        <button class="category-tab px-4 py-3 whitespace-nowrap text-sm" data-category="objects">
+                            <i class="fas fa-rocket"></i> OBJECTS
+                        </button>
+                        <button class="category-tab px-4 py-3 whitespace-nowrap text-sm" data-category="nature">
+                            <i class="fas fa-leaf"></i> NATURE
+                        </button>
+                    </div>
+
+                    <!-- Emoji Grid -->
+                    <div class="emoji-list max-h-80 overflow-y-auto custom-scrollbar">
+                        <div id="emoji-grid" class="grid grid-cols-2 sm:grid-cols-3 gap-3"></div>
+                    </div>
                 </div>
-                <div class="emoji-option" data-emoji-name="ghost" data-emoji-code="1F47B">
-                    <img class="emoji" src="1.svg" alt="Ghost">
-                    <div class="emoji-name">Ghost</div>
-                </div>
-                <div class="emoji-option" data-emoji-name="heart eyes" data-emoji-code="1F60D">
-                    <img class="emoji" src="1.svg" alt="Heart Eyes">
-                    <div class="emoji-name">Heart Eyes</div>
-                </div>
-                <div class="emoji-option" data-emoji-name="joy" data-emoji-code="1F602">
-                    <img class="emoji" src="1.svg" alt="Joy">
-                    <div class="emoji-name">Joy</div>
-                </div>
-                <div class="emoji-option" data-emoji-name="thumbs up" data-emoji-code="1F44D">
-                    <img class="emoji" src="1.svg" alt="Thumbs Up">
-                    <div class="emoji-name">Thumbs Up</div>
-                </div>
+            </div>
+
+            <!-- Saved Messages -->
+            <div id="saved-section" class="neo-card p-6" style="display: none;">
+                <h3 class="text-black dark:text-white font-black mb-4 flex items-center gap-2 text-xl uppercase">
+                    <i class="fas fa-bookmark"></i>MESSAGE VAULT
+                </h3>
+                <div id="saved-messages" class="space-y-3"></div>
             </div>
         </div>
     </div>
