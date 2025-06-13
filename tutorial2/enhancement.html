@@ -3,240 +3,509 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>iOS 26 Liquid Glass Emoji Picker</title>
+    <title>Neo Brutalist Emoji Studio</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
             theme: {
                 extend: {
-                    backdropBlur: {
-                        'xs': '2px',
-                        '4xl': '72px',
+                    colors: {
+                        'neo-bg': '#f5f5f5',
+                        'neo-dark': '#1a1a1a',
+                        'neo-accent': '#ff6b6b',
+                        'neo-secondary': '#4ecdc4',
+                        'neo-tertiary': '#45b7d1',
+                        'neo-warning': '#ffa726',
+                        'neo-success': '#66bb6a',
                     },
                     animation: {
-                        'glow': 'glow 8s ease-in-out infinite',
-                        'float': 'float 6s ease-in-out infinite',
-                        'shimmer': 'shimmer 2s linear infinite',
-                        'pulse-glow': 'pulse-glow 2s ease-in-out infinite alternate',
+                        'bounce-brutal': 'bounce-brutal 0.4s ease-out',
+                        'slide-brutal': 'slide-brutal 0.3s ease-out',
+                        'shake': 'shake 0.5s ease-in-out',
+                        'glitch': 'glitch 0.3s ease-in-out',
+                    },
+                    boxShadow: {
+                        'brutal': '4px 4px 0px 0px #000000',
+                        'brutal-lg': '8px 8px 0px 0px #000000',
+                        'brutal-xl': '12px 12px 0px 0px #000000',
                     }
                 }
             }
         }
     </script>
     <style>
-        @keyframes glow {
-            0%, 100% { 
-                box-shadow: 
-                    0 0 20px rgba(139, 69, 255, 0.3),
-                    0 0 40px rgba(139, 69, 255, 0.2),
-                    0 0 60px rgba(139, 69, 255, 0.1),
-                    inset 0 1px 0 rgba(255, 255, 255, 0.2);
-            }
-            50% { 
-                box-shadow: 
-                    0 0 30px rgba(59, 130, 246, 0.4),
-                    0 0 60px rgba(59, 130, 246, 0.3),
-                    0 0 90px rgba(59, 130, 246, 0.2),
-                    inset 0 1px 0 rgba(255, 255, 255, 0.3);
-            }
+        @keyframes bounce-brutal {
+            0% { transform: scale(0.8) translateY(10px); }
+            50% { transform: scale(1.1) translateY(-5px); }
+            100% { transform: scale(1) translateY(0); }
         }
 
-        @keyframes float {
-            0%, 100% { transform: translateY(0px) rotate(0deg); }
-            33% { transform: translateY(-10px) rotate(1deg); }
-            66% { transform: translateY(-5px) rotate(-1deg); }
+        @keyframes slide-brutal {
+            0% { transform: translateX(-20px); opacity: 0; }
+            100% { transform: translateX(0); opacity: 1; }
         }
 
-        @keyframes shimmer {
-            0% { background-position: -200% 0; }
-            100% { background-position: 200% 0; }
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
         }
 
-        @keyframes pulse-glow {
-            0% { 
-                box-shadow: 0 0 0 0 rgba(139, 69, 255, 0.4);
-                border-color: rgba(139, 69, 255, 0.5);
-            }
-            100% { 
-                box-shadow: 0 0 0 20px rgba(139, 69, 255, 0);
-                border-color: rgba(59, 130, 246, 0.8);
-            }
-        }
-
-        .liquid-glass {
-            background: linear-gradient(135deg, 
-                rgba(255, 255, 255, 0.1) 0%,
-                rgba(255, 255, 255, 0.05) 50%,
-                rgba(255, 255, 255, 0.02) 100%);
-            backdrop-filter: blur(20px) saturate(180%);
-            -webkit-backdrop-filter: blur(20px) saturate(180%);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            position: relative;
-        }
-
-        .liquid-glass::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: linear-gradient(135deg, 
-                rgba(255, 255, 255, 0.1) 0%,
-                transparent 50%,
-                rgba(0, 0, 0, 0.05) 100%);
-            border-radius: inherit;
-            pointer-events: none;
-        }
-
-        .shimmer-effect {
-            background: linear-gradient(
-                90deg,
-                transparent 0%,
-                rgba(255, 255, 255, 0.1) 50%,
-                transparent 100%
-            );
-            background-size: 200% 100%;
-            animation: shimmer 3s ease-in-out infinite;
+        @keyframes glitch {
+            0% { transform: translate(0); }
+            20% { transform: translate(-2px, 2px); }
+            40% { transform: translate(-2px, -2px); }
+            60% { transform: translate(2px, 2px); }
+            80% { transform: translate(2px, -2px); }
+            100% { transform: translate(0); }
         }
 
         .dark {
-            background: radial-gradient(ellipse at top, 
-                rgba(16, 16, 40, 1) 0%, 
-                rgba(8, 8, 20, 1) 50%, 
-                rgba(0, 0, 0, 1) 100%);
+            background: #1a1a1a !important;
         }
 
         body {
-            background: radial-gradient(ellipse at top, 
-                rgba(240, 248, 255, 1) 0%, 
-                rgba(220, 235, 255, 1) 50%, 
-                rgba(200, 225, 255, 1) 100%);
+            background: #f5f5f5;
             min-height: 100vh;
             transition: all 0.3s ease;
+            font-family: 'Arial Black', Arial, sans-serif;
+        }
+
+        .neo-card {
+            background: white;
+            border: 4px solid #000;
+            box-shadow: 8px 8px 0px 0px #000;
+            transition: all 0.2s ease;
+        }
+
+        .neo-card:hover {
+            transform: translate(-2px, -2px);
+            box-shadow: 10px 10px 0px 0px #000;
+        }
+
+        .dark .neo-card {
+            background: #2a2a2a;
+            border-color: #fff;
+            box-shadow: 8px 8px 0px 0px #fff;
+        }
+
+        .dark .neo-card:hover {
+            box-shadow: 10px 10px 0px 0px #fff;
+        }
+
+        .neo-button {
+            background: #ff6b6b;
+            border: 3px solid #000;
+            color: #000;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: all 0.1s ease;
+            box-shadow: 4px 4px 0px 0px #000;
+        }
+
+        .neo-button:hover {
+            transform: translate(-2px, -2px);
+            box-shadow: 6px 6px 0px 0px #000;
+        }
+
+        .neo-button:active {
+            transform: translate(2px, 2px);
+            box-shadow: 2px 2px 0px 0px #000;
+        }
+
+        .neo-button.secondary {
+            background: #4ecdc4;
+        }
+
+        .neo-button.tertiary {
+            background: #45b7d1;
+        }
+
+        .neo-button.warning {
+            background: #ffa726;
+        }
+
+        .neo-button.success {
+            background: #66bb6a;
+        }
+
+        .dark .neo-button {
+            border-color: #fff;
+            box-shadow: 4px 4px 0px 0px #fff;
+            color: #fff;
+        }
+
+        .dark .neo-button:hover {
+            box-shadow: 6px 6px 0px 0px #fff;
+        }
+
+        .dark .neo-button:active {
+            box-shadow: 2px 2px 0px 0px #fff;
+        }
+
+        .neo-input {
+            background: white;
+            border: 3px solid #000;
+            color: #000;
+            font-weight: 600;
+            box-shadow: 4px 4px 0px 0px #000;
+            transition: all 0.2s ease;
+        }
+
+        .neo-input:focus {
+            outline: none;
+            transform: translate(-2px, -2px);
+            box-shadow: 6px 6px 0px 0px #000;
+            border-color: #ff6b6b;
+        }
+
+        .dark .neo-input {
+            background: #2a2a2a;
+            border-color: #fff;
+            color: #fff;
+            box-shadow: 4px 4px 0px 0px #fff;
+        }
+
+        .dark .neo-input:focus {
+            box-shadow: 6px 6px 0px 0px #fff;
+            border-color: #ff6b6b;
+        }
+
+        .neo-input::placeholder {
+            color: #666;
+            font-weight: 600;
+        }
+
+        .dark .neo-input::placeholder {
+            color: #ccc;
         }
 
         .emoji-item {
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            background: white;
+            border: 3px solid #000;
+            transition: all 0.1s ease;
+            box-shadow: 4px 4px 0px 0px #000;
+            cursor: pointer;
         }
 
         .emoji-item:hover {
-            transform: translateY(-4px) scale(1.05);
-            background: linear-gradient(135deg, 
-                rgba(255, 255, 255, 0.2) 0%,
-                rgba(255, 255, 255, 0.1) 100%);
+            transform: translate(-2px, -2px);
+            box-shadow: 6px 6px 0px 0px #000;
+            background: #ff6b6b;
         }
 
-        .search-input {
-            background: rgba(255, 255, 255, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            backdrop-filter: blur(10px);
-            transition: all 0.3s ease;
+        .emoji-item:active {
+            transform: translate(2px, 2px);
+            box-shadow: 2px 2px 0px 0px #000;
+            animation: glitch 0.3s ease-in-out;
         }
 
-        .search-input:focus {
-            background: rgba(255, 255, 255, 0.15);
-            border-color: rgba(139, 69, 255, 0.5);
-            box-shadow: 0 0 0 4px rgba(139, 69, 255, 0.1);
+        .dark .emoji-item {
+            background: #2a2a2a;
+            border-color: #fff;
+            box-shadow: 4px 4px 0px 0px #fff;
+        }
+
+        .dark .emoji-item:hover {
+            box-shadow: 6px 6px 0px 0px #fff;
+            background: #ff6b6b;
+        }
+
+        .dark .emoji-item:active {
+            box-shadow: 2px 2px 0px 0px #fff;
+        }
+
+        .category-tab {
+            background: white;
+            border: 3px solid #000;
+            color: #000;
+            font-weight: 900;
+            box-shadow: 4px 4px 0px 0px #000;
+            transition: all 0.1s ease;
+        }
+
+        .category-tab:hover {
+            transform: translate(-1px, -1px);
+            box-shadow: 5px 5px 0px 0px #000;
+        }
+
+        .category-tab.active {
+            background: #ff6b6b;
+            transform: translate(2px, 2px);
+            box-shadow: 2px 2px 0px 0px #000;
+        }
+
+        .dark .category-tab {
+            background: #2a2a2a;
+            border-color: #fff;
+            color: #fff;
+            box-shadow: 4px 4px 0px 0px #fff;
+        }
+
+        .dark .category-tab:hover {
+            box-shadow: 5px 5px 0px 0px #fff;
+        }
+
+        .dark .category-tab.active {
+            background: #ff6b6b;
+            box-shadow: 2px 2px 0px 0px #fff;
+            color: #000;
+        }
+
+        .recent-emoji {
+            animation: bounce-brutal 0.4s ease-out;
+            background: #4ecdc4;
+            border: 3px solid #000;
+            box-shadow: 4px 4px 0px 0px #000;
+            transition: all 0.1s ease;
+        }
+
+        .recent-emoji:hover {
+            transform: translate(-2px, -2px) scale(1.1);
+            box-shadow: 6px 6px 0px 0px #000;
+            background: #ff6b6b;
+        }
+
+        .dark .recent-emoji {
+            background: #4ecdc4;
+            border-color: #fff;
+            box-shadow: 4px 4px 0px 0px #fff;
+        }
+
+        .dark .recent-emoji:hover {
+            box-shadow: 6px 6px 0px 0px #fff;
         }
 
         /* Custom scrollbar */
         .custom-scrollbar::-webkit-scrollbar {
-            width: 6px;
+            width: 8px;
         }
 
         .custom-scrollbar::-webkit-scrollbar-track {
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 3px;
+            background: #f5f5f5;
+            border: 2px solid #000;
         }
 
         .custom-scrollbar::-webkit-scrollbar-thumb {
-            background: linear-gradient(180deg, 
-                rgba(139, 69, 255, 0.6) 0%, 
-                rgba(59, 130, 246, 0.6) 100%);
-            border-radius: 3px;
+            background: #ff6b6b;
+            border: 2px solid #000;
         }
 
         .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-            background: linear-gradient(180deg, 
-                rgba(139, 69, 255, 0.8) 0%, 
-                rgba(59, 130, 246, 0.8) 100%);
+            background: #ff5252;
+        }
+
+        .dark .custom-scrollbar::-webkit-scrollbar-track {
+            background: #1a1a1a;
+            border-color: #fff;
+        }
+
+        .dark .custom-scrollbar::-webkit-scrollbar-thumb {
+            border-color: #fff;
+        }
+
+        .toast {
+            background: #66bb6a;
+            border: 3px solid #000;
+            color: #000;
+            font-weight: 900;
+            box-shadow: 6px 6px 0px 0px #000;
+        }
+
+        .dark .toast {
+            border-color: #fff;
+            box-shadow: 6px 6px 0px 0px #fff;
+            color: #fff;
+        }
+
+        .combo-suggestion {
+            background: #ffa726;
+            border: 3px solid #000;
+            box-shadow: 4px 4px 0px 0px #000;
+            transition: all 0.1s ease;
+        }
+
+        .combo-suggestion:hover {
+            transform: translate(-2px, -2px);
+            box-shadow: 6px 6px 0px 0px #000;
+        }
+
+        .dark .combo-suggestion {
+            border-color: #fff;
+            box-shadow: 4px 4px 0px 0px #fff;
+        }
+
+        .dark .combo-suggestion:hover {
+            box-shadow: 6px 6px 0px 0px #fff;
+        }
+
+        .stats-card {
+            background: linear-gradient(45deg, #ff6b6b 0%, #4ecdc4 50%, #45b7d1 100%);
+            border: 4px solid #000;
+            box-shadow: 8px 8px 0px 0px #000;
+        }
+
+        .dark .stats-card {
+            border-color: #fff;
+            box-shadow: 8px 8px 0px 0px #fff;
+        }
+
+        .glitch-text {
+            animation: glitch 2s infinite;
+        }
+
+        @keyframes fadeOut {
+            to { opacity: 0; transform: translate(-50%, -50%) scale(0.5); }
         }
     </style>
 </head>
 <body class="font-sans transition-all duration-300">
     <div class="min-h-screen flex items-center justify-center p-4">
-        <div class="relative animate-float">
-            <!-- Main Button -->
-            <button id="emoji-button" class="liquid-glass rounded-2xl px-6 py-4 text-white font-medium text-base w-72 flex items-center justify-between transition-all duration-300 hover:scale-105 animate-glow group">
-                <span id="selected-emoji-content" class="flex items-center gap-3 shimmer-effect">
-                    <i class="fas fa-smile text-xl opacity-70"></i>
-                    Select Emoji
-                </span>
-                <i class="fas fa-chevron-down transition-transform duration-300 group-hover:rotate-180"></i>
-            </button>
+        <div class="w-full max-w-2xl mx-auto space-y-6 animate-slide-brutal">
+            
+            <!-- Header -->
+            <div class="text-center mb-8">
+                <h1 class="text-5xl font-black text-black dark:text-white mb-4 glitch-text">
+                    <i class="fas fa-skull mr-3"></i>
+                    EMOJI BRUTALIST
+                </h1>
+                <p class="text-black dark:text-white text-xl font-bold">HARDCORE EMOJI ENGINEERING</p>
+                
+                <!-- Stats Bar -->
+                <div class="stats-card p-4 mt-6">
+                    <div class="grid grid-cols-3 gap-4 text-center">
+                        <div>
+                            <div class="text-2xl font-black text-black" id="total-emojis">0</div>
+                            <div class="text-sm font-bold text-black">TOTAL USED</div>
+                        </div>
+                        <div>
+                            <div class="text-2xl font-black text-black" id="session-count">0</div>
+                            <div class="text-sm font-bold text-black">THIS SESSION</div>
+                        </div>
+                        <div>
+                            <div class="text-2xl font-black text-black" id="combo-count">0</div>
+                            <div class="text-sm font-bold text-black">COMBOS MADE</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
-            <!-- Dropdown Panel -->
-            <div id="emoji-options" class="absolute top-full left-0 mt-4 w-80 liquid-glass rounded-3xl overflow-hidden opacity-0 invisible transform scale-95 transition-all duration-300 z-50 shadow-2xl">
-                <!-- Search Bar -->
-                <div class="p-6 border-b border-white/10">
+            <!-- Main Input Area -->
+            <div class="neo-card p-6">
+                <div class="space-y-6">
+                    <!-- Text Input -->
+                    <div>
+                        <label class="block text-black dark:text-white font-black mb-3 text-xl uppercase tracking-wider">
+                            <i class="fas fa-terminal mr-2"></i>MESSAGE CONSTRUCTOR
+                        </label>
+                        <textarea 
+                            id="main-input" 
+                            placeholder="ENTER YOUR BRUTAL MESSAGE..."
+                            class="neo-input w-full h-32 p-4 text-base resize-none"
+                            style="font-size: 16px;"
+                        ></textarea>
+                        <div class="flex justify-between items-center mt-3 text-sm font-bold">
+                            <span id="char-count" class="text-black dark:text-white">0 CHARS</span>
+                            <span id="emoji-count" class="text-black dark:text-white">0 EMOJIS</span>
+                        </div>
+                    </div>
+
+                    <!-- Action Buttons -->
+                    <div class="grid grid-cols-2 sm:grid-cols-5 gap-3">
+                        <button id="copy-btn" class="neo-button px-4 py-3 flex items-center justify-center gap-2">
+                            <i class="fas fa-copy"></i>COPY
+                        </button>
+                        <button id="clear-btn" class="neo-button secondary px-4 py-3 flex items-center justify-center gap-2">
+                            <i class="fas fa-trash"></i>CLEAR
+                        </button>
+                        <button id="save-btn" class="neo-button tertiary px-4 py-3 flex items-center justify-center gap-2">
+                            <i class="fas fa-save"></i>SAVE
+                        </button>
+                        <button id="random-btn" class="neo-button warning px-4 py-3 flex items-center justify-center gap-2">
+                            <i class="fas fa-dice"></i>RANDOM
+                        </button>
+                        <button id="combo-btn" class="neo-button success px-4 py-3 flex items-center justify-center gap-2">
+                            <i class="fas fa-magic"></i>COMBO
+                        </button>
+                    </div>
+
+                    <!-- Quick Actions -->
+                    <div class="grid grid-cols-2 gap-3">
+                        <button id="caps-btn" class="neo-button px-4 py-2 text-sm">
+                            <i class="fas fa-font"></i> CAPS LOCK
+                        </button>
+                        <button id="reverse-btn" class="neo-button secondary px-4 py-2 text-sm">
+                            <i class="fas fa-undo"></i> REVERSE
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Combo Suggestions -->
+            <div id="combo-section" class="neo-card p-6" style="display: none;">
+                <h3 class="text-black dark:text-white font-black mb-4 flex items-center gap-2 text-xl uppercase">
+                    <i class="fas fa-fire"></i>COMBO SUGGESTIONS
+                </h3>
+                <div id="combo-suggestions" class="grid grid-cols-1 sm:grid-cols-2 gap-3"></div>
+            </div>
+
+            <!-- Recent Emojis -->
+            <div id="recent-section" class="neo-card p-6" style="display: none;">
+                <h3 class="text-black dark:text-white font-black mb-4 flex items-center gap-2 text-xl uppercase">
+                    <i class="fas fa-history"></i>RECENT ARSENAL
+                </h3>
+                <div id="recent-emojis" class="flex flex-wrap gap-3"></div>
+            </div>
+
+            <!-- Emoji Arsenal -->
+            <div class="neo-card p-6">
+                <div class="space-y-6">
+                    <!-- Search Bar -->
                     <div class="relative">
-                        <i class="fas fa-search absolute left-4 top-1/2 transform -translate-y-1/2 text-white/50"></i>
+                        <i class="fas fa-search absolute left-4 top-1/2 transform -translate-y-1/2 text-black dark:text-white"></i>
                         <input 
                             type="text" 
                             id="emoji-search" 
-                            placeholder="Search emojis..." 
-                            class="search-input w-full pl-12 pr-4 py-3 rounded-xl text-white placeholder-white/50 outline-none text-base border-0 focus:ring-0"
+                            placeholder="SEARCH EMOJIS..." 
+                            class="neo-input w-full pl-12 pr-4 py-3 text-base font-bold"
+                            style="font-size: 16px;"
                         >
                     </div>
-                </div>
 
-                <!-- Emoji Grid -->
-                <div class="emoji-list p-4 max-h-64 overflow-y-auto custom-scrollbar">
-                    <div class="grid grid-cols-1 gap-2">
-                        <div class="emoji-option emoji-item liquid-glass rounded-xl p-3 cursor-pointer flex items-center gap-3" data-emoji-name="smirk" data-emoji-code="1F60F">
-                            <div class="text-2xl">😏</div>
-                            <div class="text-white font-medium">Smirk</div>
-                        </div>
-                        <div class="emoji-option emoji-item liquid-glass rounded-xl p-3 cursor-pointer flex items-center gap-3" data-emoji-name="grinning face with sweat" data-emoji-code="1F605">
-                            <div class="text-2xl">😅</div>
-                            <div class="text-white font-medium">Grinning Face with Sweat</div>
-                        </div>
-                        <div class="emoji-option emoji-item liquid-glass rounded-xl p-3 cursor-pointer flex items-center gap-3" data-emoji-name="ghost" data-emoji-code="1F47B">
-                            <div class="text-2xl">👻</div>
-                            <div class="text-white font-medium">Ghost</div>
-                        </div>
-                        <div class="emoji-option emoji-item liquid-glass rounded-xl p-3 cursor-pointer flex items-center gap-3" data-emoji-name="heart eyes" data-emoji-code="1F60D">
-                            <div class="text-2xl">😍</div>
-                            <div class="text-white font-medium">Heart Eyes</div>
-                        </div>
-                        <div class="emoji-option emoji-item liquid-glass rounded-xl p-3 cursor-pointer flex items-center gap-3" data-emoji-name="joy" data-emoji-code="1F602">
-                            <div class="text-2xl">😂</div>
-                            <div class="text-white font-medium">Joy</div>
-                        </div>
-                        <div class="emoji-option emoji-item liquid-glass rounded-xl p-3 cursor-pointer flex items-center gap-3" data-emoji-name="thumbs up" data-emoji-code="1F44D">
-                            <div class="text-2xl">👍</div>
-                            <div class="text-white font-medium">Thumbs Up</div>
-                        </div>
-                        <div class="emoji-option emoji-item liquid-glass rounded-xl p-3 cursor-pointer flex items-center gap-3" data-emoji-name="fire" data-emoji-code="1F525">
-                            <div class="text-2xl">🔥</div>
-                            <div class="text-white font-medium">Fire</div>
-                        </div>
-                        <div class="emoji-option emoji-item liquid-glass rounded-xl p-3 cursor-pointer flex items-center gap-3" data-emoji-name="sparkles" data-emoji-code="2728">
-                            <div class="text-2xl">✨</div>
-                            <div class="text-white font-medium">Sparkles</div>
-                        </div>
-                        <div class="emoji-option emoji-item liquid-glass rounded-xl p-3 cursor-pointer flex items-center gap-3" data-emoji-name="rocket" data-emoji-code="1F680">
-                            <div class="text-2xl">🚀</div>
-                            <div class="text-white font-medium">Rocket</div>
-                        </div>
-                        <div class="emoji-option emoji-item liquid-glass rounded-xl p-3 cursor-pointer flex items-center gap-3" data-emoji-name="party" data-emoji-code="1F389">
-                            <div class="text-2xl">🎉</div>
-                            <div class="text-white font-medium">Party</div>
-                        </div>
+                    <!-- Category Tabs -->
+                    <div class="flex gap-3 overflow-x-auto pb-2">
+                        <button class="category-tab active px-4 py-3 whitespace-nowrap text-sm" data-category="all">
+                            <i class="fas fa-star"></i> ALL
+                        </button>
+                        <button class="category-tab px-4 py-3 whitespace-nowrap text-sm" data-category="faces">
+                            <i class="fas fa-smile"></i> FACES
+                        </button>
+                        <button class="category-tab px-4 py-3 whitespace-nowrap text-sm" data-category="gestures">
+                            <i class="fas fa-hand"></i> HANDS
+                        </button>
+                        <button class="category-tab px-4 py-3 whitespace-nowrap text-sm" data-category="objects">
+                            <i class="fas fa-rocket"></i> OBJECTS
+                        </button>
+                        <button class="category-tab px-4 py-3 whitespace-nowrap text-sm" data-category="nature">
+                            <i class="fas fa-leaf"></i> NATURE
+                        </button>
+                    </div>
+
+                    <!-- Emoji Grid -->
+                    <div class="emoji-list max-h-80 overflow-y-auto custom-scrollbar">
+                        <div id="emoji-grid" class="grid grid-cols-2 sm:grid-cols-3 gap-3"></div>
                     </div>
                 </div>
+            </div>
+
+            <!-- Saved Messages -->
+            <div id="saved-section" class="neo-card p-6" style="display: none;">
+                <h3 class="text-black dark:text-white font-black mb-4 flex items-center gap-2 text-xl uppercase">
+                    <i class="fas fa-bookmark"></i>MESSAGE VAULT
+                </h3>
+                <div id="saved-messages" class="space-y-3"></div>
             </div>
         </div>
     </div>
@@ -254,133 +523,624 @@
             }
         });
 
+        // Emoji data with categories
+        const emojiData = {
+            faces: [
+                { emoji: '😀', name: 'Grinning Face', code: '1F600' },
+                { emoji: '😃', name: 'Grinning Face with Big Eyes', code: '1F603' },
+                { emoji: '😄', name: 'Grinning Face with Smiling Eyes', code: '1F604' },
+                { emoji: '😁', name: 'Beaming Face with Smiling Eyes', code: '1F601' },
+                { emoji: '😆', name: 'Grinning Squinting Face', code: '1F606' },
+                { emoji: '😅', name: 'Grinning Face with Sweat', code: '1F605' },
+                { emoji: '😂', name: 'Face with Tears of Joy', code: '1F602' },
+                { emoji: '🤣', name: 'Rolling on the Floor Laughing', code: '1F923' },
+                { emoji: '😊', name: 'Smiling Face with Smiling Eyes', code: '1F60A' },
+                { emoji: '😇', name: 'Smiling Face with Halo', code: '1F607' },
+                { emoji: '🙂', name: 'Slightly Smiling Face', code: '1F642' },
+                { emoji: '🙃', name: 'Upside-Down Face', code: '1F643' },
+                { emoji: '😉', name: 'Winking Face', code: '1F609' },
+                { emoji: '😌', name: 'Relieved Face', code: '1F60C' },
+                { emoji: '😍', name: 'Smiling Face with Heart-Eyes', code: '1F60D' },
+                { emoji: '🥰', name: 'Smiling Face with Hearts', code: '1F970' },
+                { emoji: '😘', name: 'Face Blowing a Kiss', code: '1F618' },
+                { emoji: '😗', name: 'Kissing Face', code: '1F617' },
+                { emoji: '😙', name: 'Kissing Face with Smiling Eyes', code: '1F619' },
+                { emoji: '😚', name: 'Kissing Face with Closed Eyes', code: '1F61A' },
+                { emoji: '😋', name: 'Face Savoring Food', code: '1F60B' },
+                { emoji: '😛', name: 'Face with Tongue', code: '1F61B' },
+                { emoji: '😜', name: 'Winking Face with Tongue', code: '1F61C' },
+                { emoji: '🤪', name: 'Zany Face', code: '1F929' },
+                { emoji: '😝', name: 'Squinting Face with Tongue', code: '1F61D' },
+                { emoji: '🤑', name: 'Money-Mouth Face', code: '1F911' },
+                { emoji: '🤗', name: 'Hugging Face', code: '1F917' },
+                { emoji: '🤭', name: 'Face with Hand Over Mouth', code: '1F92D' },
+                { emoji: '🤫', name: 'Shushing Face', code: '1F92B' },
+                { emoji: '🤔', name: 'Thinking Face', code: '1F914' },
+                { emoji: '🤐', name: 'Zipper-Mouth Face', code: '1F910' },
+                { emoji: '🤨', name: 'Face with Raised Eyebrow', code: '1F928' },
+                { emoji: '😐', name: 'Neutral Face', code: '1F610' },
+                { emoji: '😑', name: 'Expressionless Face', code: '1F611' },
+                { emoji: '😶', name: 'Face Without Mouth', code: '1F636' },
+                { emoji: '😏', name: 'Smirking Face', code: '1F60F' },
+                { emoji: '😒', name: 'Unamused Face', code: '1F612' },
+                { emoji: '🙄', name: 'Face with Rolling Eyes', code: '1F644' },
+                { emoji: '😬', name: 'Grimacing Face', code: '1F62C' },
+                { emoji: '🤥', name: 'Lying Face', code: '1F925' },
+                { emoji: '😔', name: 'Pensive Face', code: '1F614' },
+                { emoji: '😪', name: 'Sleepy Face', code: '1F62A' },
+                { emoji: '🤤', name: 'Drooling Face', code: '1F924' },
+                { emoji: '😴', name: 'Sleeping Face', code: '1F634' },
+                { emoji: '😷', name: 'Face with Medical Mask', code: '1F637' },
+                { emoji: '🤒', name: 'Face with Thermometer', code: '1F912' },
+                { emoji: '🤕', name: 'Face with Head-Bandage', code: '1F915' },
+                { emoji: '🤢', name: 'Nauseated Face', code: '1F922' },
+                { emoji: '🤮', name: 'Face Vomiting', code: '1F92E' },
+                { emoji: '🤧', name: 'Sneezing Face', code: '1F927' },
+                { emoji: '🥵', name: 'Hot Face', code: '1F975' },
+                { emoji: '🥶', name: 'Cold Face', code: '1F976' },
+                { emoji: '🥴', name: 'Woozy Face', code: '1F974' },
+                { emoji: '😵', name: 'Dizzy Face', code: '1F635' },
+                { emoji: '🤯', name: 'Exploding Head', code: '1F92F' },
+                { emoji: '🤠', name: 'Cowboy Hat Face', code: '1F920' },
+                { emoji: '🥳', name: 'Partying Face', code: '1F973' },
+                { emoji: '😎', name: 'Smiling Face with Sunglasses', code: '1F60E' },
+                { emoji: '🤓', name: 'Nerd Face', code: '1F913' },
+                { emoji: '🧐', name: 'Face with Monocle', code: '1F9D0' }
+            ],
+            gestures: [
+                { emoji: '👍', name: 'Thumbs Up', code: '1F44D' },
+                { emoji: '👎', name: 'Thumbs Down', code: '1F44E' },
+                { emoji: '👌', name: 'OK Hand', code: '1F44C' },
+                { emoji: '✌️', name: 'Victory Hand', code: '270C' },
+                { emoji: '🤞', name: 'Crossed Fingers', code: '1F91E' },
+                { emoji: '🤟', name: 'Love-You Gesture', code: '1F91F' },
+                { emoji: '🤘', name: 'Sign of the Horns', code: '1F918' },
+                { emoji: '🤙', name: 'Call Me Hand', code: '1F919' },
+                { emoji: '👈', name: 'Backhand Index Pointing Left', code: '1F448' },
+                { emoji: '👉', name: 'Backhand Index Pointing Right', code: '1F449' },
+                { emoji: '👆', name: 'Backhand Index Pointing Up', code: '1F446' },
+                { emoji: '🖕', name: 'Middle Finger', code: '1F595' },
+                { emoji: '👇', name: 'Backhand Index Pointing Down', code: '1F447' },
+                { emoji: '☝️', name: 'Index Pointing Up', code: '261D' },
+                { emoji: '👋', name: 'Waving Hand', code: '1F44B' },
+                { emoji: '🤚', name: 'Raised Back of Hand', code: '1F91A' },
+                { emoji: '🖐️', name: 'Hand with Fingers Splayed', code: '1F590' },
+                { emoji: '✋', name: 'Raised Hand', code: '270B' },
+                { emoji: '🖖', name: 'Vulcan Salute', code: '1F596' },
+                { emoji: '👏', name: 'Clapping Hands', code: '1F44F' },
+                { emoji: '🙌', name: 'Raising Hands', code: '1F64C' },
+                { emoji: '👐', name: 'Open Hands', code: '1F450' },
+                { emoji: '🤲', name: 'Palms Up Together', code: '1F932' },
+                { emoji: '🤝', name: 'Handshake', code: '1F91D' },
+                { emoji: '🙏', name: 'Folded Hands', code: '1F64F' },
+                { emoji: '✍️', name: 'Writing Hand', code: '270D' },
+                { emoji: '💪', name: 'Flexed Biceps', code: '1F4AA' },
+                { emoji: '🦾', name: 'Mechanical Arm', code: '1F9BE' },
+                { emoji: '🦿', name: 'Mechanical Leg', code: '1F9BF' },
+                { emoji: '🦵', name: 'Leg', code: '1F9B5' },
+                { emoji: '🦶', name: 'Foot', code: '1F9B6' },
+                { emoji: '👂', name: 'Ear', code: '1F442' },
+                { emoji: '🦻', name: 'Ear with Hearing Aid', code: '1F9BB' },
+                { emoji: '👃', name: 'Nose', code: '1F443' },
+                { emoji: '🧠', name: 'Brain', code: '1F9E0' },
+                { emoji: '🦷', name: 'Tooth', code: '1F9B7' },
+                { emoji: '🦴', name: 'Bone', code: '1F9B4' },
+                { emoji: '👀', name: 'Eyes', code: '1F440' },
+                { emoji: '👁️', name: 'Eye', code: '1F441' },
+                { emoji: '👅', name: 'Tongue', code: '1F445' },
+                { emoji: '👄', name: 'Mouth', code: '1F444' }
+            ],
+            objects: [
+                { emoji: '🚀', name: 'Rocket', code: '1F680' },
+                { emoji: '🛸', name: 'Flying Saucer', code: '1F6F8' },
+                { emoji: '🛰️', name: 'Satellite', code: '1F6F0' },
+                { emoji: '🌙', name: 'Crescent Moon', code: '1F319' },
+                { emoji: '⭐', name: 'Star', code: '2B50' },
+                { emoji: '🌟', name: 'Glowing Star', code: '1F31F' },
+                { emoji: '✨', name: 'Sparkles', code: '2728' },
+                { emoji: '⚡', name: 'High Voltage', code: '26A1' },
+                { emoji: '🔥', name: 'Fire', code: '1F525' },
+                { emoji: '💥', name: 'Collision', code: '1F4A5' },
+                { emoji: '💫', name: 'Dizzy', code: '1F4AB' },
+                { emoji: '💦', name: 'Sweat Droplets', code: '1F4A6' },
+                { emoji: '💨', name: 'Dashing Away', code: '1F4A8' },
+                { emoji: '🌈', name: 'Rainbow', code: '1F308' },
+                { emoji: '☀️', name: 'Sun', code: '2600' },
+                { emoji: '🌤️', name: 'Sun Behind Small Cloud', code: '1F324' },
+                { emoji: '⛅', name: 'Sun Behind Cloud', code: '26C5' },
+                { emoji: '🌦️', name: 'Sun Behind Rain Cloud', code: '1F326' },
+                { emoji: '🌧️', name: 'Cloud with Rain', code: '1F327' },
+                { emoji: '⛈️', name: 'Cloud with Lightning and Rain', code: '26C8' },
+                { emoji: '🌩️', name: 'Cloud with Lightning', code: '1F329' },
+                { emoji: '🌨️', name: 'Cloud with Snow', code: '1F328' },
+                { emoji: '❄️', name: 'Snowflake', code: '2744' },
+                { emoji: '☃️', name: 'Snowman', code: '2603' },
+                { emoji: '⛄', name: 'Snowman Without Snow', code: '26C4' },
+                { emoji: '🌬️', name: 'Wind Face', code: '1F32C' },
+                { emoji: '💨', name: 'Dashing Away', code: '1F4A8' },
+                { emoji: '🌪️', name: 'Tornado', code: '1F32A' },
+                { emoji: '🌫️', name: 'Fog', code: '1F32B' },
+                { emoji: '🌊', name: 'Water Wave', code: '1F30A' },
+                { emoji: '💧', name: 'Droplet', code: '1F4A7' },
+                { emoji: '💎', name: 'Gem Stone', code: '1F48E' },
+                { emoji: '🔮', name: 'Crystal Ball', code: '1F52E' },
+                { emoji: '🏆', name: 'Trophy', code: '1F3C6' },
+                { emoji: '🥇', name: 'First Place Medal', code: '1F947' },
+                { emoji: '🥈', name: 'Second Place Medal', code: '1F948' },
+                { emoji: '🥉', name: 'Third Place Medal', code: '1F949' },
+                { emoji: '🏅', name: 'Sports Medal', code: '1F3C5' },
+                { emoji: '🎖️', name: 'Military Medal', code: '1F396' },
+                { emoji: '🏵️', name: 'Rosette', code: '1F3F5' },
+                { emoji: '🎗️', name: 'Reminder Ribbon', code: '1F397' },
+                { emoji: '🎫', name: 'Ticket', code: '1F3AB' },
+                { emoji: '🎟️', name: 'Admission Tickets', code: '1F39F' },
+                { emoji: '🎪', name: 'Circus Tent', code: '1F3AA' },
+                { emoji: '🎭', name: 'Performing Arts', code: '1F3AD' },
+                { emoji: '🎨', name: 'Artist Palette', code: '1F3A8' },
+                { emoji: '🎬', name: 'Clapper Board', code: '1F3AC' },
+                { emoji: '🎤', name: 'Microphone', code: '1F3A4' },
+                { emoji: '🎧', name: 'Headphone', code: '1F3A7' },
+                { emoji: '🎼', name: 'Musical Score', code: '1F3BC' },
+                { emoji: '🎵', name: 'Musical Note', code: '1F3B5' },
+                { emoji: '🎶', name: 'Musical Notes', code: '1F3B6' },
+                { emoji: '🎹', name: 'Musical Keyboard', code: '1F3B9' },
+                { emoji: '🥁', name: 'Drum', code: '1F941' },
+                { emoji: '🎷', name: 'Saxophone', code: '1F3B7' },
+                { emoji: '🎺', name: 'Trumpet', code: '1F3BA' },
+                { emoji: '🎸', name: 'Guitar', code: '1F3B8' },
+                { emoji: '🎻', name: 'Violin', code: '1F3BB' }
+            ],
+            nature: [
+                { emoji: '🌱', name: 'Seedling', code: '1F331' },
+                { emoji: '🌿', name: 'Herb', code: '1F33F' },
+                { emoji: '☘️', name: 'Shamrock', code: '2618' },
+                { emoji: '🍀', name: 'Four Leaf Clover', code: '1F340' },
+                { emoji: '🎋', name: 'Tanabata Tree', code: '1F38B' },
+                { emoji: '🎍', name: 'Pine Decoration', code: '1F38D' },
+                { emoji: '🌾', name: 'Sheaf of Rice', code: '1F33E' },
+                { emoji: '🌲', name: 'Evergreen Tree', code: '1F332' },
+                { emoji: '🌳', name: 'Deciduous Tree', code: '1F333' },
+                { emoji: '🌴', name: 'Palm Tree', code: '1F334' },
+                { emoji: '🌵', name: 'Cactus', code: '1F335' },
+                { emoji: '🌶️', name: 'Hot Pepper', code: '1F336' },
+                { emoji: '🍄', name: 'Mushroom', code: '1F344' },
+                { emoji: '🌰', name: 'Chestnut', code: '1F330' },
+                { emoji: '🌍', name: 'Earth Globe Europe-Africa', code: '1F30D' },
+                { emoji: '🌎', name: 'Earth Globe Americas', code: '1F30E' },
+                { emoji: '🌏', name: 'Earth Globe Asia-Australia', code: '1F30F' },
+                { emoji: '🌐', name: 'Globe with Meridians', code: '1F310' },
+                { emoji: '🌑', name: 'New Moon', code: '1F311' },
+                { emoji: '🌒', name: 'Waxing Crescent Moon', code: '1F312' },
+                { emoji: '🌓', name: 'First Quarter Moon', code: '1F313' },
+                { emoji: '🌔', name: 'Waxing Gibbous Moon', code: '1F314' },
+                { emoji: '🌕', name: 'Full Moon', code: '1F315' },
+                { emoji: '🌖', name: 'Waning Gibbous Moon', code: '1F316' },
+                { emoji: '🌗', name: 'Last Quarter Moon', code: '1F317' },
+                { emoji: '🌘', name: 'Waning Crescent Moon', code: '1F318' },
+                { emoji: '🌙', name: 'Crescent Moon', code: '1F319' },
+                { emoji: '🌚', name: 'New Moon Face', code: '1F31A' },
+                { emoji: '🌛', name: 'First Quarter Moon Face', code: '1F31B' },
+                { emoji: '🌜', name: 'Last Quarter Moon Face', code: '1F31C' },
+                { emoji: '🌝', name: 'Full Moon Face', code: '1F31D' },
+                { emoji: '🌞', name: 'Sun with Face', code: '1F31E' },
+                { emoji: '🪐', name: 'Ringed Planet', code: '1FA90' },
+                { emoji: '💫', name: 'Dizzy', code: '1F4AB' },
+                { emoji: '⭐', name: 'Star', code: '2B50' },
+                { emoji: '🌟', name: 'Glowing Star', code: '1F31F' },
+                { emoji: '✨', name: 'Sparkles', code: '2728' },
+                { emoji: '🌠', name: 'Shooting Star', code: '1F320' },
+                { emoji: '🌌', name: 'Milky Way', code: '1F30C' },
+                { emoji: '☄️', name: 'Comet', code: '2604' },
+                { emoji: '☀️', name: 'Sun', code: '2600' },
+                { emoji: '🌤️', name: 'Sun Behind Small Cloud', code: '1F324' },
+                { emoji: '⛅', name: 'Sun Behind Cloud', code: '26C5' },
+                { emoji: '🌦️', name: 'Sun Behind Rain Cloud', code: '1F326' },
+                { emoji: '🌧️', name: 'Cloud with Rain', code: '1F327' },
+                { emoji: '⛈️', name: 'Cloud with Lightning and Rain', code: '26C8' },
+                { emoji: '🌩️', name: 'Cloud with Lightning', code: '1F329' },
+                { emoji: '🌨️', name: 'Cloud with Snow', code: '1F328' },
+                { emoji: '❄️', name: 'Snowflake', code: '2744' },
+                { emoji: '☃️', name: 'Snowman', code: '2603' },
+                { emoji: '⛄', name: 'Snowman Without Snow', code: '26C4' },
+                { emoji: '🌬️', name: 'Wind Face', code: '1F32C' },
+                { emoji: '💨', name: 'Dashing Away', code: '1F4A8' },
+                { emoji: '🌪️', name: 'Tornado', code: '1F32A' },
+                { emoji: '🌫️', name: 'Fog', code: '1F32B' },
+                { emoji: '🌊', name: 'Water Wave', code: '1F30A' },
+                { emoji: '💧', name: 'Droplet', code: '1F4A7' }
+            ]
+        };
+
+        // Get all emojis for 'all' category
+        const allEmojis = Object.values(emojiData).flat();
+
+        // App state
+        let recentEmojis = JSON.parse(localStorage.getItem('recentEmojis') || '[]');
+        let savedMessages = JSON.parse(localStorage.getItem('savedMessages') || '[]');
+        let currentCategory = 'all';
+        let totalEmojisUsed = parseInt(localStorage.getItem('totalEmojisUsed') || '0');
+        let sessionEmojiCount = 0;
+        let comboCount = parseInt(localStorage.getItem('comboCount') || '0');
+
+        // Emoji combinations for suggestions
+        const emojiCombos = [
+            { name: "CELEBRATION", emojis: "🎉🎊🥳✨", description: "PARTY TIME" },
+            { name: "LOVE ATTACK", emojis: "💕💖💝💘", description: "LOVE OVERLOAD" },
+            { name: "FIRE SQUAD", emojis: "🔥💥⚡🌟", description: "PURE ENERGY" },
+            { name: "SKULL GANG", emojis: "💀☠️👹🔪", description: "DANGER ZONE" },
+            { name: "MONEY TALKS", emojis: "💰💎💸🤑", description: "RICH VIBES" },
+            { name: "SPACE FORCE", emojis: "🚀🛸🌙⭐", description: "COSMIC POWER" },
+            { name: "BEAST MODE", emojis: "💪🦁🔥⚡", description: "UNSTOPPABLE" },
+            { name: "TECH STACK", emojis: "💻🔧⚙️🤖", description: "NERD ALERT" },
+            { name: "NATURE FURY", emojis: "🌪️⛈️🌊🔥", description: "ELEMENTAL" },
+            { name: "FOOD COMA", emojis: "🍕🍔🌮🍰", description: "FEAST MODE" }
+        ];
+
         document.addEventListener('DOMContentLoaded', () => {
-            const emojiButton = document.getElementById('emoji-button');
-            const emojiOptions = document.getElementById('emoji-options');
-            const selectedEmojiContent = document.getElementById('selected-emoji-content');
+            const mainInput = document.getElementById('main-input');
             const emojiSearch = document.getElementById('emoji-search');
-            const emojiList = document.querySelector('.emoji-list');
+            const emojiGrid = document.getElementById('emoji-grid');
+            const charCount = document.getElementById('char-count');
+            const emojiCount = document.getElementById('emoji-count');
+            const copyBtn = document.getElementById('copy-btn');
+            const clearBtn = document.getElementById('clear-btn');
+            const saveBtn = document.getElementById('save-btn');
+            const randomBtn = document.getElementById('random-btn');
+            const comboBtn = document.getElementById('combo-btn');
+            const capsBtn = document.getElementById('caps-btn');
+            const reverseBtn = document.getElementById('reverse-btn');
+            const comboSection = document.getElementById('combo-section');
+            const comboSuggestions = document.getElementById('combo-suggestions');
+            const categoryTabs = document.querySelectorAll('.category-tab');
+            const recentSection = document.getElementById('recent-section');
+            const recentEmojisContainer = document.getElementById('recent-emojis');
+            const savedSection = document.getElementById('saved-section');
+            const savedMessagesContainer = document.getElementById('saved-messages');
 
-            // Toggle emoji options visibility with smooth animations
-            emojiButton.addEventListener('click', (event) => {
-                event.stopPropagation();
-                
-                if (emojiOptions.classList.contains('opacity-0')) {
-                    // Show
-                    emojiOptions.classList.remove('opacity-0', 'invisible', 'scale-95');
-                    emojiOptions.classList.add('opacity-100', 'visible', 'scale-100');
-                    emojiSearch.focus();
-                } else {
-                    // Hide
-                    emojiOptions.classList.remove('opacity-100', 'visible', 'scale-100');
-                    emojiOptions.classList.add('opacity-0', 'invisible', 'scale-95');
-                }
-            });
+            // Initialize
+            renderEmojis(allEmojis);
+            updateCounts();
+            updateStats();
+            renderRecentEmojis();
+            renderSavedMessages();
+            renderComboSuggestions();
 
-            // Close emoji options when clicking outside
-            document.addEventListener('click', (event) => {
-                if (!emojiOptions.contains(event.target) && event.target !== emojiButton) {
-                    emojiOptions.classList.remove('opacity-100', 'visible', 'scale-100');
-                    emojiOptions.classList.add('opacity-0', 'invisible', 'scale-95');
-                }
-            });
-
-            // Select emoji with smooth animation
-            emojiList.addEventListener('click', (event) => {
-                const emojiOption = event.target.closest('.emoji-option');
-                if (emojiOption) {
-                    const emojiName = emojiOption.dataset.emojiName;
-                    const emojiIcon = emojiOption.querySelector('div').textContent;
+            // Category switching
+            categoryTabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    categoryTabs.forEach(t => t.classList.remove('active'));
+                    tab.classList.add('active');
                     
-                    // Add selection animation
-                    emojiOption.style.transform = 'scale(0.95)';
-                    setTimeout(() => {
-                        emojiOption.style.transform = '';
-                    }, 150);
+                    const category = tab.dataset.category;
+                    currentCategory = category;
                     
-                    selectedEmojiContent.innerHTML = `
-                        <span class="flex items-center gap-3">
-                            <span class="text-xl">${emojiIcon}</span>
-                            ${emojiName}
-                        </span>
-                    `;
-                    
-                    // Close dropdown with animation
-                    setTimeout(() => {
-                        emojiOptions.classList.remove('opacity-100', 'visible', 'scale-100');
-                        emojiOptions.classList.add('opacity-0', 'invisible', 'scale-95');
-                    }, 100);
-                }
-            });
-
-            // Enhanced search functionality with smooth filtering
-            emojiSearch.addEventListener('input', () => {
-                const searchTerm = emojiSearch.value.toLowerCase();
-                const emojiOptionsArray = Array.from(document.querySelectorAll('.emoji-option'));
-
-                emojiOptionsArray.forEach((option, index) => {
-                    const emojiName = option.dataset.emojiName.toLowerCase();
-                    setTimeout(() => {
-                        if (emojiName.includes(searchTerm)) {
-                            option.style.display = 'flex';
-                            option.style.opacity = '0';
-                            option.style.transform = 'translateY(10px)';
-                            setTimeout(() => {
-                                option.style.opacity = '1';
-                                option.style.transform = 'translateY(0)';
-                            }, 50);
-                        } else {
-                            option.style.opacity = '0';
-                            option.style.transform = 'translateY(-10px)';
-                            setTimeout(() => {
-                                option.style.display = 'none';
-                            }, 200);
-                        }
-                    }, index * 20);
+                    const emojisToShow = category === 'all' ? allEmojis : emojiData[category];
+                    renderEmojis(emojisToShow);
                 });
             });
 
-            // Add ripple effect to button clicks
-            function createRipple(event) {
-                const button = event.currentTarget;
-                const circle = document.createElement('span');
-                const diameter = Math.max(button.clientWidth, button.clientHeight);
-                const radius = diameter / 2;
-
-                circle.style.width = circle.style.height = `${diameter}px`;
-                circle.style.left = `${event.clientX - button.offsetLeft - radius}px`;
-                circle.style.top = `${event.clientY - button.offsetTop - radius}px`;
-                circle.classList.add('ripple');
-                circle.style.cssText = `
-                    position: absolute;
-                    border-radius: 50%;
-                    background: rgba(255, 255, 255, 0.3);
-                    transform: scale(0);
-                    animation: ripple 0.6s linear;
-                    pointer-events: none;
-                `;
-
-                const rippleStyle = document.createElement('style');
-                rippleStyle.textContent = `
-                    @keyframes ripple {
-                        to {
-                            transform: scale(4);
-                            opacity: 0;
-                        }
-                    }
-                `;
-                document.head.appendChild(rippleStyle);
-
-                const rippleEffect = button.getElementsByClassName('ripple')[0];
-                if (rippleEffect) {
-                    rippleEffect.remove();
+            // Search functionality
+            emojiSearch.addEventListener('input', () => {
+                const searchTerm = emojiSearch.value.toLowerCase();
+                const emojisToSearch = currentCategory === 'all' ? allEmojis : emojiData[currentCategory];
+                
+                if (searchTerm === '') {
+                    renderEmojis(emojisToSearch);
+                } else {
+                    const filteredEmojis = emojisToSearch.filter(emoji => 
+                        emoji.name.toLowerCase().includes(searchTerm)
+                    );
+                    renderEmojis(filteredEmojis);
                 }
+            });
 
-                button.appendChild(circle);
-                setTimeout(() => circle.remove(), 600);
+            // Input monitoring
+            mainInput.addEventListener('input', updateCounts);
+
+            // Button actions
+            copyBtn.addEventListener('click', () => copyToClipboard(mainInput.value));
+            clearBtn.addEventListener('click', clearInput);
+            saveBtn.addEventListener('click', saveMessage);
+            randomBtn.addEventListener('click', addRandomEmoji);
+            comboBtn.addEventListener('click', toggleComboSuggestions);
+            capsBtn.addEventListener('click', toggleCaps);
+            reverseBtn.addEventListener('click', reverseText);
+
+            function renderEmojis(emojis) {
+                emojiGrid.innerHTML = '';
+                emojis.forEach((emoji, index) => {
+                    const emojiElement = document.createElement('div');
+                    emojiElement.className = 'emoji-item p-4 cursor-pointer flex items-center gap-3 opacity-0';
+                    emojiElement.innerHTML = `
+                        <div class="text-3xl">${emoji.emoji}</div>
+                        <div class="text-black dark:text-white font-bold text-sm uppercase">${emoji.name}</div>
+                    `;
+                    
+                    // Add click handler
+                    emojiElement.addEventListener('click', () => insertEmoji(emoji));
+                    
+                    emojiGrid.appendChild(emojiElement);
+                    
+                    // Animate in
+                    setTimeout(() => {
+                        emojiElement.style.opacity = '1';
+                        emojiElement.style.transform = 'translateY(0)';
+                        emojiElement.classList.add('animate-slide-brutal');
+                    }, index * 20);
+                });
             }
 
-            emojiButton.addEventListener('click', createRipple);
+            function insertEmoji(emoji) {
+                const cursorPos = mainInput.selectionStart;
+                const textBefore = mainInput.value.substring(0, cursorPos);
+                const textAfter = mainInput.value.substring(mainInput.selectionEnd);
+                
+                mainInput.value = textBefore + emoji.emoji + textAfter;
+                mainInput.setSelectionRange(cursorPos + emoji.emoji.length, cursorPos + emoji.emoji.length);
+                mainInput.focus();
+                
+                // Add to recent emojis
+                addToRecent(emoji);
+                updateCounts();
+                updateStats();
+                
+                // Add animation feedback
+                createEmojiAnimation(emoji.emoji);
+            }
+
+            function addToRecent(emoji) {
+                // Remove if already exists
+                recentEmojis = recentEmojis.filter(recent => recent.emoji !== emoji.emoji);
+                // Add to beginning
+                recentEmojis.unshift(emoji);
+                // Keep only last 15
+                recentEmojis = recentEmojis.slice(0, 15);
+                
+                // Update stats
+                totalEmojisUsed++;
+                sessionEmojiCount++;
+                localStorage.setItem('totalEmojisUsed', totalEmojisUsed.toString());
+                localStorage.setItem('recentEmojis', JSON.stringify(recentEmojis));
+                renderRecentEmojis();
+            }
+
+            function renderRecentEmojis() {
+                if (recentEmojis.length === 0) {
+                    recentSection.style.display = 'none';
+                    return;
+                }
+                
+                recentSection.style.display = 'block';
+                recentEmojisContainer.innerHTML = '';
+                
+                recentEmojis.forEach(emoji => {
+                    const emojiElement = document.createElement('button');
+                    emojiElement.className = 'recent-emoji p-3 text-3xl';
+                    emojiElement.textContent = emoji.emoji;
+                    emojiElement.title = emoji.name;
+                    emojiElement.addEventListener('click', () => insertEmoji(emoji));
+                    recentEmojisContainer.appendChild(emojiElement);
+                });
+            }
+
+            function updateCounts() {
+                const text = mainInput.value;
+                const emojiRegex = /[\u{1F600}-\u{1F64F}]|[\u{1F300}-\u{1F5FF}]|[\u{1F680}-\u{1F6FF}]|[\u{1F1E0}-\u{1F1FF}]|[\u{2600}-\u{26FF}]|[\u{2700}-\u{27BF}]/gu;
+                const emojiMatches = text.match(emojiRegex) || [];
+                
+                charCount.textContent = `${text.length} CHARS`;
+                emojiCount.textContent = `${emojiMatches.length} EMOJIS`;
+            }
+
+            function updateStats() {
+                document.getElementById('total-emojis').textContent = totalEmojisUsed;
+                document.getElementById('session-count').textContent = sessionEmojiCount;
+                document.getElementById('combo-count').textContent = comboCount;
+            }
+
+            async function copyToClipboard(text) {
+                try {
+                    await navigator.clipboard.writeText(text);
+                    showToast('✅ COPIED!', 'success');
+                    copyBtn.classList.add('animate-shake');
+                    setTimeout(() => copyBtn.classList.remove('animate-shake'), 500);
+                } catch (err) {
+                    showToast('❌ COPY FAILED!', 'error');
+                }
+            }
+
+            function clearInput() {
+                mainInput.value = '';
+                updateCounts();
+                showToast('🧹 CLEARED!', 'secondary');
+                clearBtn.classList.add('animate-glitch');
+                setTimeout(() => clearBtn.classList.remove('animate-glitch'), 300);
+            }
+
+            function saveMessage() {
+                const message = mainInput.value.trim();
+                if (!message) {
+                    showToast('❌ NOTHING TO SAVE!', 'error');
+                    return;
+                }
+                
+                const savedMessage = {
+                    id: Date.now(),
+                    text: message,
+                    timestamp: new Date().toLocaleString()
+                };
+                
+                savedMessages.unshift(savedMessage);
+                savedMessages = savedMessages.slice(0, 10); // Keep only last 10
+                
+                localStorage.setItem('savedMessages', JSON.stringify(savedMessages));
+                renderSavedMessages();
+                showToast('💾 SAVED!', 'success');
+                saveBtn.classList.add('animate-bounce-brutal');
+                setTimeout(() => saveBtn.classList.remove('animate-bounce-brutal'), 400);
+            }
+
+            function addRandomEmoji() {
+                const randomEmoji = allEmojis[Math.floor(Math.random() * allEmojis.length)];
+                insertEmoji(randomEmoji);
+                showToast('🎲 RANDOM DEPLOYED!', 'warning');
+                randomBtn.classList.add('animate-shake');
+                setTimeout(() => randomBtn.classList.remove('animate-shake'), 500);
+            }
+
+            function toggleComboSuggestions() {
+                if (comboSection.style.display === 'none') {
+                    comboSection.style.display = 'block';
+                    comboBtn.textContent = '✨ HIDE';
+                    showToast('🔥 COMBO MODE!', 'success');
+                } else {
+                    comboSection.style.display = 'none';
+                    comboBtn.innerHTML = '<i class="fas fa-magic"></i> COMBO';
+                }
+            }
+
+            function toggleCaps() {
+                const text = mainInput.value;
+                if (text === text.toUpperCase()) {
+                    mainInput.value = text.toLowerCase();
+                    showToast('📝 LOWERCASE!', 'secondary');
+                } else {
+                    mainInput.value = text.toUpperCase();
+                    showToast('📢 UPPERCASE!', 'warning');
+                }
+                updateCounts();
+            }
+
+            function reverseText() {
+                const text = mainInput.value;
+                mainInput.value = text.split('').reverse().join('');
+                updateCounts();
+                showToast('🔄 REVERSED!', 'tertiary');
+                reverseBtn.classList.add('animate-glitch');
+                setTimeout(() => reverseBtn.classList.remove('animate-glitch'), 300);
+            }
+
+            function renderComboSuggestions() {
+                comboSuggestions.innerHTML = '';
+                emojiCombos.forEach(combo => {
+                    const comboElement = document.createElement('div');
+                    comboElement.className = 'combo-suggestion p-4 cursor-pointer';
+                    comboElement.innerHTML = `
+                        <div class="text-center">
+                            <div class="text-2xl mb-2">${combo.emojis}</div>
+                            <div class="text-black font-black text-sm">${combo.name}</div>
+                            <div class="text-black font-bold text-xs opacity-70">${combo.description}</div>
+                        </div>
+                    `;
+                    
+                    comboElement.addEventListener('click', () => {
+                        const cursorPos = mainInput.selectionStart;
+                        const textBefore = mainInput.value.substring(0, cursorPos);
+                        const textAfter = mainInput.value.substring(mainInput.selectionEnd);
+                        
+                        mainInput.value = textBefore + combo.emojis + textAfter;
+                        mainInput.setSelectionRange(cursorPos + combo.emojis.length, cursorPos + combo.emojis.length);
+                        mainInput.focus();
+                        
+                        comboCount++;
+                        localStorage.setItem('comboCount', comboCount.toString());
+                        updateCounts();
+                        updateStats();
+                        showToast(`🔥 ${combo.name} DEPLOYED!`, 'success');
+                        
+                        comboElement.classList.add('animate-bounce-brutal');
+                        setTimeout(() => comboElement.classList.remove('animate-bounce-brutal'), 400);
+                    });
+                    
+                    comboSuggestions.appendChild(comboElement);
+                });
+            }
+
+            function renderSavedMessages() {
+                if (savedMessages.length === 0) {
+                    savedSection.style.display = 'none';
+                    return;
+                }
+                
+                savedSection.style.display = 'block';
+                savedMessagesContainer.innerHTML = '';
+                
+                savedMessages.forEach(message => {
+                    const messageElement = document.createElement('div');
+                    messageElement.className = 'neo-card p-4 space-y-3';
+                    messageElement.innerHTML = `
+                        <div class="text-black dark:text-white font-bold text-sm">${message.text}</div>
+                        <div class="flex justify-between items-center">
+                            <span class="text-black dark:text-white opacity-60 text-xs font-bold">${message.timestamp}</span>
+                            <div class="flex gap-2">
+                                <button class="load-message neo-button tertiary px-3 py-1 text-xs">
+                                    <i class="fas fa-upload"></i> LOAD
+                                </button>
+                                <button class="copy-message neo-button success px-3 py-1 text-xs">
+                                    <i class="fas fa-copy"></i> COPY
+                                </button>
+                                <button class="delete-message neo-button px-3 py-1 text-xs">
+                                    <i class="fas fa-trash"></i> DELETE
+                                </button>
+                            </div>
+                        </div>
+                    `;
+                    
+                    // Add event listeners
+                    messageElement.querySelector('.load-message').addEventListener('click', () => {
+                        mainInput.value = message.text;
+                        updateCounts();
+                        showToast('📤 LOADED!', 'tertiary');
+                    });
+                    
+                    messageElement.querySelector('.copy-message').addEventListener('click', () => {
+                        copyToClipboard(message.text);
+                    });
+                    
+                    messageElement.querySelector('.delete-message').addEventListener('click', () => {
+                        savedMessages = savedMessages.filter(m => m.id !== message.id);
+                        localStorage.setItem('savedMessages', JSON.stringify(savedMessages));
+                        renderSavedMessages();
+                        showToast('🗑️ DELETED!', 'error');
+                    });
+                    
+                    savedMessagesContainer.appendChild(messageElement);
+                });
+            }
+
+            function createEmojiAnimation(emoji) {
+                const animatedEmoji = document.createElement('div');
+                animatedEmoji.className = 'fixed text-6xl pointer-events-none z-50 font-black';
+                animatedEmoji.textContent = emoji;
+                animatedEmoji.style.left = Math.random() * window.innerWidth + 'px';
+                animatedEmoji.style.top = Math.random() * window.innerHeight + 'px';
+                animatedEmoji.style.animation = 'bounce-brutal 0.6s ease-out forwards';
+                
+                document.body.appendChild(animatedEmoji);
+                
+                setTimeout(() => {
+                    animatedEmoji.style.animation = 'fadeOut 0.5s ease-out forwards';
+                    setTimeout(() => animatedEmoji.remove(), 500);
+                }, 600);
+            }
+
+            function showToast(message, type = 'primary') {
+                const toast = document.createElement('div');
+                const typeClass = type === 'success' ? 'success' : type === 'error' ? '' : type === 'warning' ? 'warning' : type === 'secondary' ? 'secondary' : type === 'tertiary' ? 'tertiary' : '';
+                toast.className = `toast fixed top-4 right-4 px-6 py-3 font-black z-50 transform translate-x-full transition-all duration-300 neo-button ${typeClass}`;
+                toast.textContent = message;
+                
+                document.body.appendChild(toast);
+                
+                setTimeout(() => {
+                    toast.style.transform = 'translateX(0)';
+                }, 100);
+                
+                setTimeout(() => {
+                    toast.style.transform = 'translateX(100%)';
+                    setTimeout(() => toast.remove(), 300);
+                }, 2000);
+            }
         });
     </script>
 </body>
