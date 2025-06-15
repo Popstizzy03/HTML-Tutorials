@@ -238,3 +238,48 @@
                 { emoji: '💧', name: 'Droplet', code: '1F4A7' }
             ]
         };
+        // Get all emojis for 'all' category
+        const allEmojis = Object.values(emojiData).flat();
+
+        // App state
+        let recentEmojis = JSON.parse(localStorage.getItem('recentEmojis') || '[]');
+        let savedMessages = JSON.parse(localStorage.getItem('savedMessages') || '[]');
+        let currentCategory = 'all';
+        let totalEmojisUsed = parseInt(localStorage.getItem('totalEmojisUsed') || '0');
+        let sessionEmojiCount = 0;
+        let comboCount = parseInt(localStorage.getItem('comboCount') || '0');
+
+        // Emoji combinations for suggestions
+        const emojiCombos = [
+            { name: "CELEBRATION", emojis: "🎉🎊🥳✨", description: "PARTY TIME" },
+            { name: "LOVE ATTACK", emojis: "💕💖💝💘", description: "LOVE OVERLOAD" },
+            { name: "FIRE SQUAD", emojis: "🔥💥⚡🌟", description: "PURE ENERGY" },
+            { name: "SKULL GANG", emojis: "💀☠️👹🔪", description: "DANGER ZONE" },
+            { name: "MONEY TALKS", emojis: "💰💎💸🤑", description: "RICH VIBES" },
+            { name: "SPACE FORCE", emojis: "🚀🛸🌙⭐", description: "COSMIC POWER" },
+            { name: "BEAST MODE", emojis: "💪🦁🔥⚡", description: "UNSTOPPABLE" },
+            { name: "TECH STACK", emojis: "💻🔧⚙️🤖", description: "NERD ALERT" },
+            { name: "NATURE FURY", emojis: "🌪️⛈️🌊🔥", description: "ELEMENTAL" },
+            { name: "FOOD COMA", emojis: "🍕🍔🌮🍰", description: "FEAST MODE" }
+        ];
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const mainInput = document.getElementById('main-input');
+            const emojiSearch = document.getElementById('emoji-search');
+            const emojiGrid = document.getElementById('emoji-grid');
+            const charCount = document.getElementById('char-count');
+            const emojiCount = document.getElementById('emoji-count');
+            const copyBtn = document.getElementById('copy-btn');
+            const clearBtn = document.getElementById('clear-btn');
+            const saveBtn = document.getElementById('save-btn');
+            const randomBtn = document.getElementById('random-btn');
+            const comboBtn = document.getElementById('combo-btn');
+            const capsBtn = document.getElementById('caps-btn');
+            const reverseBtn = document.getElementById('reverse-btn');
+            const comboSection = document.getElementById('combo-section');
+            const comboSuggestions = document.getElementById('combo-suggestions');
+            const categoryTabs = document.querySelectorAll('.category-tab');
+            const recentSection = document.getElementById('recent-section');
+            const recentEmojisContainer = document.getElementById('recent-emojis');
+            const savedSection = document.getElementById('saved-section');
+            const savedMessagesContainer = document.getElementById('saved-messages');
