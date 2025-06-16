@@ -283,3 +283,40 @@
             const recentEmojisContainer = document.getElementById('recent-emojis');
             const savedSection = document.getElementById('saved-section');
             const savedMessagesContainer = document.getElementById('saved-messages');
+
+                                              // Initialize
+            renderEmojis(allEmojis);
+            updateCounts();
+            updateStats();
+            renderRecentEmojis();
+            renderSavedMessages();
+            renderComboSuggestions();
+
+            // Category switching
+            categoryTabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    categoryTabs.forEach(t => t.classList.remove('active'));
+                    tab.classList.add('active');
+                    
+                    const category = tab.dataset.category;
+                    currentCategory = category;
+                    
+                    const emojisToShow = category === 'all' ? allEmojis : emojiData[category];
+                    renderEmojis(emojisToShow);
+                });
+            });
+
+            // Search functionality
+            emojiSearch.addEventListener('input', () => {
+                const searchTerm = emojiSearch.value.toLowerCase();
+                const emojisToSearch = currentCategory === 'all' ? allEmojis : emojiData[currentCategory];
+                
+                if (searchTerm === '') {
+                    renderEmojis(emojisToSearch);
+                } else {
+                    const filteredEmojis = emojisToSearch.filter(emoji => 
+                        emoji.name.toLowerCase().includes(searchTerm)
+                    );
+                    renderEmojis(filteredEmojis);
+                }
+            });
