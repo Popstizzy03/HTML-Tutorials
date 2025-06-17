@@ -1145,3 +1145,38 @@
     </script>
 </body>
 </html>
+// Input monitoring
+            mainInput.addEventListener('input', updateCounts);
+
+            // Button actions
+            copyBtn.addEventListener('click', () => copyToClipboard(mainInput.value));
+            clearBtn.addEventListener('click', clearInput);
+            saveBtn.addEventListener('click', saveMessage);
+            randomBtn.addEventListener('click', addRandomEmoji);
+            comboBtn.addEventListener('click', toggleComboSuggestions);
+            capsBtn.addEventListener('click', toggleCaps);
+            reverseBtn.addEventListener('click', reverseText);
+
+            function renderEmojis(emojis) {
+                emojiGrid.innerHTML = '';
+                emojis.forEach((emoji, index) => {
+                    const emojiElement = document.createElement('div');
+                    emojiElement.className = 'emoji-item p-4 cursor-pointer flex items-center gap-3 opacity-0';
+                    emojiElement.innerHTML = `
+                        <div class="text-3xl">${emoji.emoji}</div>
+                        <div class="text-black dark:text-white font-bold text-sm uppercase">${emoji.name}</div>
+                    `;
+                    
+                    // Add click handler
+                    emojiElement.addEventListener('click', () => insertEmoji(emoji));
+                    
+                    emojiGrid.appendChild(emojiElement);
+                    
+                    // Animate in
+                    setTimeout(() => {
+                        emojiElement.style.opacity = '1';
+                        emojiElement.style.transform = 'translateY(0)';
+                        emojiElement.classList.add('animate-slide-brutal');
+                    }, index * 20);
+                });
+            }
