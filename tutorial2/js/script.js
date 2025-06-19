@@ -1,3 +1,10 @@
+/**
+ * @file script.js
+ * @description This script provides the functionality for an emoji input interface.
+ * It includes features like emoji selection, search, categorization, recent emojis,
+ * saved messages, dark mode detection, and various text manipulation utilities.
+ */
+
         // Dark mode detection
         if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
             document.documentElement.classList.add('dark');
@@ -10,7 +17,10 @@
             }
         });
 
-        // Emoji data with categories
+/**
+ * @constant {object} emojiData
+ * @description Contains categorized emoji objects, each with emoji, name, and code.
+ */
         const emojiData = {
             faces: [
                 { emoji: '😀', name: 'Grinning Face', code: '1F600' },
@@ -239,17 +249,34 @@
         };
 
         // Get all emojis for 'all' category
+/**
+ * @constant {Array<object>} allEmojis
+ * @description A flat array of all emojis from all categories.
+ */
         const allEmojis = Object.values(emojiData).flat();
 
-        // App state
+/**
+ * @namespace AppState
+ * @description Holds the application's state variables.
+ */
+/** @member {Array<object>} AppState#recentEmojis Recently used emojis, stored in localStorage. */
         let recentEmojis = JSON.parse(localStorage.getItem('recentEmojis') || '[]');
+/** @member {Array<object>} AppState#savedMessages User-saved messages, stored in localStorage. */
         let savedMessages = JSON.parse(localStorage.getItem('savedMessages') || '[]');
+/** @member {string} AppState#currentCategory The currently selected emoji category. */
         let currentCategory = 'all';
+/** @member {number} AppState#totalEmojisUsed Total number of emojis used by the user, stored in localStorage. */
         let totalEmojisUsed = parseInt(localStorage.getItem('totalEmojisUsed') || '0');
+/** @member {number} AppState#sessionEmojiCount Number of emojis used in the current session. */
         let sessionEmojiCount = 0;
+/** @member {number} AppState#comboCount Number of emoji combos used, stored in localStorage. */
         let comboCount = parseInt(localStorage.getItem('comboCount') || '0');
 
-        // Emoji combinations for suggestions
+/**
+ * @constant {Array<object>} emojiCombos
+ * @description Defines predefined emoji combinations for quick insertion.
+ * Each object contains a name, the emoji string, and a description.
+ */
         const emojiCombos = [
             { name: "CELEBRATION", emojis: "🎉🎊🥳✨", description: "PARTY TIME" },
             { name: "LOVE ATTACK", emojis: "💕💖💝💘", description: "LOVE OVERLOAD" },
@@ -263,25 +290,50 @@
             { name: "FOOD COMA", emojis: "🍕🍔🌮🍰", description: "FEAST MODE" }
         ];
 
+/**
+ * @event DOMContentLoaded
+ * @description Initializes the application once the DOM is fully loaded.
+ * This includes getting references to DOM elements, setting up event listeners,
+ * and rendering initial data.
+ */
         document.addEventListener('DOMContentLoaded', () => {
+            /** @type {HTMLInputElement} Reference to the main text input field. */
             const mainInput = document.getElementById('main-input');
+            /** @type {HTMLInputElement} Reference to the emoji search input field. */
             const emojiSearch = document.getElementById('emoji-search');
+            /** @type {HTMLElement} Reference to the grid displaying emojis. */
             const emojiGrid = document.getElementById('emoji-grid');
+            /** @type {HTMLElement} Reference to the character count display. */
             const charCount = document.getElementById('char-count');
+            /** @type {HTMLElement} Reference to the emoji count display. */
             const emojiCount = document.getElementById('emoji-count');
+            /** @type {HTMLButtonElement} Reference to the copy button. */
             const copyBtn = document.getElementById('copy-btn');
+            /** @type {HTMLButtonElement} Reference to the clear button. */
             const clearBtn = document.getElementById('clear-btn');
+            /** @type {HTMLButtonElement} Reference to the save button. */
             const saveBtn = document.getElementById('save-btn');
+            /** @type {HTMLButtonElement} Reference to the random emoji button. */
             const randomBtn = document.getElementById('random-btn');
+            /** @type {HTMLButtonElement} Reference to the combo button. */
             const comboBtn = document.getElementById('combo-btn');
+            /** @type {HTMLButtonElement} Reference to the caps toggle button. */
             const capsBtn = document.getElementById('caps-btn');
+            /** @type {HTMLButtonElement} Reference to the reverse text button. */
             const reverseBtn = document.getElementById('reverse-btn');
+            /** @type {HTMLElement} Reference to the combo suggestions section. */
             const comboSection = document.getElementById('combo-section');
+            /** @type {HTMLElement} Reference to the container for combo suggestions. */
             const comboSuggestions = document.getElementById('combo-suggestions');
+            /** @type {NodeListOf<HTMLElement>} Reference to all category tab elements. */
             const categoryTabs = document.querySelectorAll('.category-tab');
+            /** @type {HTMLElement} Reference to the recent emojis section. */
             const recentSection = document.getElementById('recent-section');
+            /** @type {HTMLElement} Reference to the container for recent emojis. */
             const recentEmojisContainer = document.getElementById('recent-emojis');
+            /** @type {HTMLElement} Reference to the saved messages section. */
             const savedSection = document.getElementById('saved-section');
+            /** @type {HTMLElement} Reference to the container for saved messages. */
             const savedMessagesContainer = document.getElementById('saved-messages');
 
             // Initialize
@@ -333,6 +385,11 @@
             capsBtn.addEventListener('click', toggleCaps);
             reverseBtn.addEventListener('click', reverseText);
 
+            /**
+             * @function renderEmojis
+             * @description Renders the given emojis in the emoji grid.
+             * @param {Array<object>} emojis - An array of emoji objects to render.
+             */
             function renderEmojis(emojis) {
                 emojiGrid.innerHTML = '';
                 emojis.forEach((emoji, index) => {
@@ -357,6 +414,13 @@
                 });
             }
 
+            /**
+             * @function insertEmoji
+             * @description Inserts the given emoji into the main input field at the current cursor position.
+             * @param {object} emoji - The emoji object to insert.
+             * @param {string} emoji.emoji - The emoji character.
+             * @param {string} emoji.name - The name of the emoji.
+             */
             function insertEmoji(emoji) {
                 const cursorPos = mainInput.selectionStart;
                 const textBefore = mainInput.value.substring(0, cursorPos);
@@ -375,6 +439,11 @@
                 createEmojiAnimation(emoji.emoji);
             }
 
+            /**
+             * @function addToRecent
+             * @description Adds an emoji to the list of recent emojis and updates localStorage.
+             * @param {object} emoji - The emoji object to add.
+             */
             function addToRecent(emoji) {
                 // Remove if already exists
                 recentEmojis = recentEmojis.filter(recent => recent.emoji !== emoji.emoji);
@@ -391,6 +460,11 @@
                 renderRecentEmojis();
             }
 
+            /**
+             * @function renderRecentEmojis
+             * @description Renders the list of recent emojis in its container.
+             * Hides the section if there are no recent emojis.
+             */
             function renderRecentEmojis() {
                 if (recentEmojis.length === 0) {
                     recentSection.style.display = 'none';
@@ -410,8 +484,16 @@
                 });
             }
 
+            /**
+             * @function updateCounts
+             * @description Updates the character and emoji counts displayed below the main input.
+             */
             function updateCounts() {
                 const text = mainInput.value;
+                /**
+                 * @constant {RegExp} emojiRegex
+                 * @description Regular expression to match common emoji Unicode ranges.
+                 */
                 const emojiRegex = /[\u{1F600}-\u{1F64F}]|[\u{1F300}-\u{1F5FF}]|[\u{1F680}-\u{1F6FF}]|[\u{1F1E0}-\u{1F1FF}]|[\u{2600}-\u{26FF}]|[\u{2700}-\u{27BF}]/gu;
                 const emojiMatches = text.match(emojiRegex) || [];
                 
@@ -419,12 +501,23 @@
                 emojiCount.textContent = `${emojiMatches.length} EMOJIS`;
             }
 
+            /**
+             * @function updateStats
+             * @description Updates the displayed statistics like total emojis used, session count, and combo count.
+             */
             function updateStats() {
                 document.getElementById('total-emojis').textContent = totalEmojisUsed;
                 document.getElementById('session-count').textContent = sessionEmojiCount;
                 document.getElementById('combo-count').textContent = comboCount;
             }
 
+            /**
+             * @async
+             * @function copyToClipboard
+             * @description Copies the given text to the clipboard.
+             * Shows a success or error toast message.
+             * @param {string} text - The text to copy.
+             */
             async function copyToClipboard(text) {
                 try {
                     await navigator.clipboard.writeText(text);
@@ -436,6 +529,11 @@
                 }
             }
 
+            /**
+             * @function clearInput
+             * @description Clears the main input field and updates counts.
+             * Shows a toast message.
+             */
             function clearInput() {
                 mainInput.value = '';
                 updateCounts();
@@ -444,6 +542,11 @@
                 setTimeout(() => clearBtn.classList.remove('animate-glitch'), 300);
             }
 
+            /**
+             * @function saveMessage
+             * @description Saves the current message from the main input to localStorage.
+             * Shows a toast message. Limits saved messages to the last 10.
+             */
             function saveMessage() {
                 const message = mainInput.value.trim();
                 if (!message) {
@@ -467,6 +570,11 @@
                 setTimeout(() => saveBtn.classList.remove('animate-bounce-brutal'), 400);
             }
 
+            /**
+             * @function addRandomEmoji
+             * @description Inserts a random emoji from the `allEmojis` list into the main input.
+             * Shows a toast message.
+             */
             function addRandomEmoji() {
                 const randomEmoji = allEmojis[Math.floor(Math.random() * allEmojis.length)];
                 insertEmoji(randomEmoji);
@@ -475,6 +583,11 @@
                 setTimeout(() => randomBtn.classList.remove('animate-shake'), 500);
             }
 
+            /**
+             * @function toggleComboSuggestions
+             * @description Toggles the visibility of the emoji combo suggestions section.
+             * Updates the button text accordingly.
+             */
             function toggleComboSuggestions() {
                 if (comboSection.style.display === 'none') {
                     comboSection.style.display = 'block';
@@ -486,6 +599,11 @@
                 }
             }
 
+            /**
+             * @function toggleCaps
+             * @description Toggles the text in the main input field between uppercase and lowercase.
+             * Shows a toast message.
+             */
             function toggleCaps() {
                 const text = mainInput.value;
                 if (text === text.toUpperCase()) {
@@ -498,6 +616,11 @@
                 updateCounts();
             }
 
+            /**
+             * @function reverseText
+             * @description Reverses the text in the main input field.
+             * Shows a toast message.
+             */
             function reverseText() {
                 const text = mainInput.value;
                 mainInput.value = text.split('').reverse().join('');
@@ -507,6 +630,11 @@
                 setTimeout(() => reverseBtn.classList.remove('animate-glitch'), 300);
             }
 
+            /**
+             * @function renderComboSuggestions
+             * @description Renders the predefined emoji combo suggestions.
+             * Adds click listeners to insert combos into the main input.
+             */
             function renderComboSuggestions() {
                 comboSuggestions.innerHTML = '';
                 emojiCombos.forEach(combo => {
@@ -543,6 +671,12 @@
                 });
             }
 
+            /**
+             * @function renderSavedMessages
+             * @description Renders the list of saved messages.
+             * Hides the section if there are no saved messages.
+             * Adds event listeners for loading, copying, and deleting messages.
+             */
             function renderSavedMessages() {
                 if (savedMessages.length === 0) {
                     savedSection.style.display = 'none';
@@ -595,6 +729,11 @@
                 });
             }
 
+            /**
+             * @function createEmojiAnimation
+             * @description Creates a short bouncing animation for an emoji at a random position on the screen.
+             * @param {string} emoji - The emoji character to animate.
+             */
             function createEmojiAnimation(emoji) {
                 const animatedEmoji = document.createElement('div');
                 animatedEmoji.className = 'fixed text-6xl pointer-events-none z-50 font-black';
@@ -611,6 +750,13 @@
                 }, 600);
             }
 
+            /**
+             * @function showToast
+             * @description Displays a toast message at the top-right of the screen.
+             * @param {string} message - The message to display in the toast.
+             * @param {string} [type='primary'] - The type of toast (e.g., 'success', 'error', 'warning').
+             * This determines the styling of the toast.
+             */
             function showToast(message, type = 'primary') {
                 const toast = document.createElement('div');
                 const typeClass = type === 'success' ? 'success' : type === 'error' ? '' : type === 'warning' ? 'warning' : type === 'secondary' ? 'secondary' : type === 'tertiary' ? 'tertiary' : '';

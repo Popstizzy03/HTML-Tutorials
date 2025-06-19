@@ -8,10 +8,12 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
 <body class="font-sans transition-all duration-300">
+    <!-- Main container for the entire application -->
     <div class="min-h-screen flex items-center justify-center p-4">
+        <!-- Content wrapper with max width and centering -->
         <div class="w-full max-w-2xl mx-auto space-y-6 animate-slide-brutal">
             
-            <!-- Header -->
+            <!-- Header Section: Contains the title and stats bar -->
             <div class="text-center mb-8">
                 <h1 class="text-5xl font-black text-black dark:text-white mb-4 glitch-text">
                     <i class="fas fa-skull mr-3"></i>
@@ -38,10 +40,10 @@
                 </div>
             </div>
 
-            <!-- Main Input Area -->
+            <!-- Main Input Area Section: Contains the text area for message input and action buttons -->
             <div class="neo-card p-6">
                 <div class="space-y-6">
-                    <!-- Text Input -->
+                    <!-- Text Input Field -->
                     <div>
                         <label class="block text-black dark:text-white font-black mb-3 text-xl uppercase tracking-wider">
                             <i class="fas fa-terminal mr-2"></i>MESSAGE CONSTRUCTOR
@@ -52,13 +54,14 @@
                             class="neo-input w-full h-32 p-4 text-base resize-none"
                             style="font-size: 16px;"
                         ></textarea>
+                        <!-- Character and Emoji Counts -->
                         <div class="flex justify-between items-center mt-3 text-sm font-bold">
                             <span id="char-count" class="text-black dark:text-white">0 CHARS</span>
                             <span id="emoji-count" class="text-black dark:text-white">0 EMOJIS</span>
                         </div>
                     </div>
 
-                    <!-- Action Buttons -->
+                    <!-- Primary Action Buttons: Copy, Clear, Save, Random, Combo -->
                     <div class="grid grid-cols-2 sm:grid-cols-5 gap-3">
                         <button id="copy-btn" class="neo-button px-4 py-3 flex items-center justify-center gap-2">
                             <i class="fas fa-copy"></i>COPY
@@ -89,7 +92,7 @@
                 </div>
             </div>
 
-            <!-- Combo Suggestions -->
+            <!-- Combo Suggestions Section: Displays predefined emoji combinations. Initially hidden. -->
             <div id="combo-section" class="neo-card p-6" style="display: none;">
                 <h3 class="text-black dark:text-white font-black mb-4 flex items-center gap-2 text-xl uppercase">
                     <i class="fas fa-fire"></i>COMBO SUGGESTIONS
@@ -97,7 +100,7 @@
                 <div id="combo-suggestions" class="grid grid-cols-1 sm:grid-cols-2 gap-3"></div>
             </div>
 
-            <!-- Recent Emojis -->
+            <!-- Recent Emojis Section: Displays recently used emojis. Initially hidden. -->
             <div id="recent-section" class="neo-card p-6" style="display: none;">
                 <h3 class="text-black dark:text-white font-black mb-4 flex items-center gap-2 text-xl uppercase">
                     <i class="fas fa-history"></i>RECENT ARSENAL
@@ -105,10 +108,10 @@
                 <div id="recent-emojis" class="flex flex-wrap gap-3"></div>
             </div>
 
-            <!-- Emoji Arsenal -->
+            <!-- Emoji Arsenal Section: Contains emoji search, category tabs, and the emoji grid -->
             <div class="neo-card p-6">
                 <div class="space-y-6">
-                    <!-- Search Bar -->
+                    <!-- Emoji Search Input -->
                     <div class="relative">
                         <i class="fas fa-search absolute left-4 top-1/2 transform -translate-y-1/2 text-black dark:text-white"></i>
                         <input 
@@ -120,7 +123,7 @@
                         >
                     </div>
 
-                    <!-- Category Tabs -->
+                    <!-- Emoji Category Tabs: Allows filtering emojis by category -->
                     <div class="flex gap-3 overflow-x-auto pb-2">
                         <button class="category-tab active px-4 py-3 whitespace-nowrap text-sm" data-category="all">
                             <i class="fas fa-star"></i> ALL
@@ -139,14 +142,14 @@
                         </button>
                     </div>
 
-                    <!-- Emoji Grid -->
+                    <!-- Emoji Display Grid: Shows the emojis based on search and category -->
                     <div class="emoji-list max-h-80 overflow-y-auto custom-scrollbar">
                         <div id="emoji-grid" class="grid grid-cols-2 sm:grid-cols-3 gap-3"></div>
                     </div>
                 </div>
             </div>
 
-            <!-- Saved Messages -->
+            <!-- Saved Messages Section: Displays messages saved by the user. Initially hidden. -->
             <div id="saved-section" class="neo-card p-6" style="display: none;">
                 <h3 class="text-black dark:text-white font-black mb-4 flex items-center gap-2 text-xl uppercase">
                     <i class="fas fa-bookmark"></i>MESSAGE VAULT
@@ -156,6 +159,7 @@
         </div>
     </div>
 
+    <!-- JavaScript file include -->
     <script src="js/script.js"></script>
 </body>
 </html>
