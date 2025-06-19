@@ -1,3 +1,23 @@
+        :root {
+            --primary-color: #2A52BE; /* AliceBlue (shade) */
+            --secondary-color: #1E90FF; /* DodgerBlue */
+            --background-color: #F8F9FA; /* Light Gray */
+            --card-background-color: #FFFFFF; /* White */
+            --text-primary-color: #333333; /* Dark Gray */
+            --text-secondary-color: #555555; /* Medium Gray */
+            --accent-highlight-color: #D3D3D3; /* LightGray (for borders, etc.) */
+            --success-color: #28A745; /* Green */
+            --warning-color: #FFC107; /* Yellow */
+            --error-color: #DC3545; /* Red */
+
+            /* Dark Mode Colors */
+            --dark-background-color: #1A202C; /* Dark Slate Gray */
+            --dark-card-background-color: #2D3748; /* Darker Slate Gray */
+            --dark-text-primary-color: #E2E8F0; /* Light Grayish Blue */
+            --dark-text-secondary-color: #A0AEC0; /* Grayish Blue */
+            --dark-accent-highlight-color: #4A5568; /* Dark Grayish Blue */
+        }
+
         @keyframes bounce-brutal {
             0% { transform: scale(0.8) translateY(10px); }
             50% { transform: scale(1.1) translateY(-5px); }
@@ -25,295 +45,436 @@
         }
 
         .dark {
-            background: #1a1a1a !important;
+            background: var(--dark-background-color) !important;
+            color: var(--dark-text-primary-color);
         }
 
+        .dark * {
+            color: var(--dark-text-primary-color);
+        }
+        .dark .text-black {
+            color: var(--dark-text-primary-color) !important;
+        }
+        .dark .dark\:text-white {
+            color: var(--dark-text-primary-color) !important;
+        }
+         .dark .text-sm {
+            color: var(--dark-text-secondary-color) !important;
+        }
+
+
         body {
-            background: #f5f5f5;
+            background: var(--background-color);
+            color: var(--text-primary-color);
             min-height: 100vh;
             transition: all 0.3s ease;
-            font-family: 'Arial Black', Arial, sans-serif;
+            font-family: 'Arial', sans-serif; /* More professional font */
         }
 
         .neo-card {
-            background: white;
-            border: 4px solid #000;
-            box-shadow: 8px 8px 0px 0px #000;
+            background: var(--card-background-color);
+            border: 2px solid var(--accent-highlight-color); /* Softer border */
+            box-shadow: 4px 4px 8px 0px rgba(0,0,0,0.1); /* Softer shadow */
             transition: all 0.2s ease;
+            border-radius: 8px; /* Rounded corners */
         }
 
         .neo-card:hover {
             transform: translate(-2px, -2px);
-            box-shadow: 10px 10px 0px 0px #000;
+            box-shadow: 6px 6px 12px 0px rgba(0,0,0,0.15);
         }
 
         .dark .neo-card {
-            background: #2a2a2a;
-            border-color: #fff;
-            box-shadow: 8px 8px 0px 0px #fff;
+            background: var(--dark-card-background-color);
+            border-color: var(--dark-accent-highlight-color);
+            box-shadow: 4px 4px 8px 0px rgba(255,255,255,0.05);
         }
 
         .dark .neo-card:hover {
-            box-shadow: 10px 10px 0px 0px #fff;
+            box-shadow: 6px 6px 12px 0px rgba(255,255,255,0.1);
         }
 
         .neo-button {
-            background: #ff6b6b;
-            border: 3px solid #000;
-            color: #000;
-            font-weight: 900;
+            background: var(--primary-color);
+            border: 2px solid var(--primary-color); /* Border same as bg for solid feel */
+            color: var(--card-background-color); /* White text on primary */
+            font-weight: bold; /* Slightly less bold */
             text-transform: uppercase;
-            letter-spacing: 1px;
-            transition: all 0.1s ease;
-            box-shadow: 4px 4px 0px 0px #000;
+            letter-spacing: 0.5px; /* Reduced spacing */
+            transition: all 0.15s ease;
+            box-shadow: 2px 2px 4px 0px rgba(0,0,0,0.1);
+            border-radius: 6px; /* Rounded corners */
         }
 
         .neo-button:hover {
-            transform: translate(-2px, -2px);
-            box-shadow: 6px 6px 0px 0px #000;
+            background: var(--secondary-color);
+            border-color: var(--secondary-color);
+            transform: translateY(-1px); /* Subtle lift */
+            box-shadow: 3px 3px 6px 0px rgba(0,0,0,0.15);
         }
 
         .neo-button:active {
-            transform: translate(2px, 2px);
-            box-shadow: 2px 2px 0px 0px #000;
+            transform: translateY(1px);
+            box-shadow: 1px 1px 2px 0px rgba(0,0,0,0.1);
         }
 
         .neo-button.secondary {
-            background: #4ecdc4;
+            background: var(--secondary-color);
+            border-color: var(--secondary-color);
+        }
+        .neo-button.secondary:hover {
+            background: var(--primary-color); /* Darken secondary on hover */
+            border-color: var(--primary-color);
         }
 
-        .neo-button.tertiary {
-            background: #45b7d1;
+
+        .neo-button.tertiary { /* Using accent for tertiary */
+            background: var(--accent-highlight-color);
+            border-color: var(--accent-highlight-color);
+            color: var(--text-primary-color);
+        }
+        .neo-button.tertiary:hover {
+            background: #B0B0B0; /* Darken accent */
+            border-color: #B0B0B0;
         }
 
         .neo-button.warning {
-            background: #ffa726;
+            background: var(--warning-color);
+            border-color: var(--warning-color);
+            color: var(--text-primary-color); /* Dark text on yellow */
+        }
+        .neo-button.warning:hover {
+            background: #FFB300; /* Darken warning */
+            border-color: #FFB300;
         }
 
         .neo-button.success {
-            background: #66bb6a;
+            background: var(--success-color);
+            border-color: var(--success-color);
         }
+         .neo-button.success:hover {
+            background: #1E7E34; /* Darken success */
+            border-color: #1E7E34;
+        }
+
+        .neo-button.error { /* Added for completeness */
+            background: var(--error-color);
+            border-color: var(--error-color);
+        }
+        .neo-button.error:hover {
+            background: #C82333; /* Darken error */
+            border-color: #C82333;
+        }
+
 
         .dark .neo-button {
-            border-color: #fff;
-            box-shadow: 4px 4px 0px 0px #fff;
-            color: #fff;
+            border-color: var(--secondary-color); /* Use a theme color for dark mode borders */
+            box-shadow: 2px 2px 4px 0px rgba(255,255,255,0.05);
+            color: var(--dark-text-primary-color);
         }
-
         .dark .neo-button:hover {
-            box-shadow: 6px 6px 0px 0px #fff;
+            box-shadow: 3px 3px 6px 0px rgba(255,255,255,0.1);
+        }
+        .dark .neo-button:active {
+            box-shadow: 1px 1px 2px 0px rgba(255,255,255,0.05);
+        }
+        .dark .neo-button.tertiary {
+            background: var(--dark-accent-highlight-color);
+            border-color: var(--dark-accent-highlight-color);
+            color: var(--dark-text-primary-color);
+        }
+        .dark .neo-button.tertiary:hover {
+            background: #3A4454;
+            border-color: #3A4454;
+        }
+        .dark .neo-button.warning {
+            color: var(--dark-background-color); /* Ensure contrast on warning */
         }
 
-        .dark .neo-button:active {
-            box-shadow: 2px 2px 0px 0px #fff;
-        }
 
         .neo-input {
-            background: white;
-            border: 3px solid #000;
-            color: #000;
-            font-weight: 600;
-            box-shadow: 4px 4px 0px 0px #000;
+            background: var(--card-background-color);
+            border: 2px solid var(--accent-highlight-color);
+            color: var(--text-primary-color);
+            font-weight: normal; /* Standard weight */
+            box-shadow: 2px 2px 4px 0px rgba(0,0,0,0.05) inset; /* Inner shadow for depth */
             transition: all 0.2s ease;
+            border-radius: 6px;
         }
 
         .neo-input:focus {
             outline: none;
-            transform: translate(-2px, -2px);
-            box-shadow: 6px 6px 0px 0px #000;
-            border-color: #ff6b6b;
+            transform: none; /* No translate on focus */
+            box-shadow: 0 0 0 2px var(--primary-color), 2px 2px 4px 0px rgba(0,0,0,0.05) inset; /* Focus ring */
+            border-color: var(--primary-color);
         }
 
         .dark .neo-input {
-            background: #2a2a2a;
-            border-color: #fff;
-            color: #fff;
-            box-shadow: 4px 4px 0px 0px #fff;
+            background: var(--dark-card-background-color);
+            border-color: var(--dark-accent-highlight-color);
+            color: var(--dark-text-primary-color);
+            box-shadow: 2px 2px 4px 0px rgba(255,255,255,0.03) inset;
         }
 
         .dark .neo-input:focus {
-            box-shadow: 6px 6px 0px 0px #fff;
-            border-color: #ff6b6b;
+            box-shadow: 0 0 0 2px var(--secondary-color), 2px 2px 4px 0px rgba(255,255,255,0.03) inset;
+            border-color: var(--secondary-color);
         }
 
         .neo-input::placeholder {
-            color: #666;
-            font-weight: 600;
+            color: var(--text-secondary-color);
+            font-weight: normal;
         }
 
         .dark .neo-input::placeholder {
-            color: #ccc;
+            color: var(--dark-text-secondary-color);
         }
 
         .emoji-item {
-            background: white;
-            border: 3px solid #000;
+            background: var(--card-background-color);
+            border: 2px solid var(--accent-highlight-color);
             transition: all 0.1s ease;
-            box-shadow: 4px 4px 0px 0px #000;
+            box-shadow: 2px 2px 4px 0px rgba(0,0,0,0.05);
             cursor: pointer;
+            border-radius: 6px;
         }
 
         .emoji-item:hover {
-            transform: translate(-2px, -2px);
-            box-shadow: 6px 6px 0px 0px #000;
-            background: #ff6b6b;
+            transform: translateY(-2px);
+            box-shadow: 3px 3px 6px 0px rgba(0,0,0,0.1);
+            background: var(--primary-color);
+            color: var(--card-background-color); /* White text */
+            border-color: var(--primary-color);
+        }
+        .emoji-item:hover .text-black { /* Ensure text inside becomes white on hover */
+            color: var(--card-background-color) !important;
         }
 
+
         .emoji-item:active {
-            transform: translate(2px, 2px);
-            box-shadow: 2px 2px 0px 0px #000;
+            transform: translateY(1px);
+            box-shadow: 1px 1px 2px 0px rgba(0,0,0,0.05);
             animation: glitch 0.3s ease-in-out;
         }
 
         .dark .emoji-item {
-            background: #2a2a2a;
-            border-color: #fff;
-            box-shadow: 4px 4px 0px 0px #fff;
+            background: var(--dark-card-background-color);
+            border-color: var(--dark-accent-highlight-color);
+            box-shadow: 2px 2px 4px 0px rgba(255,255,255,0.03);
+        }
+        .dark .emoji-item .text-black { /* For emoji name in dark mode */
+            color: var(--dark-text-primary-color) !important;
         }
 
         .dark .emoji-item:hover {
-            box-shadow: 6px 6px 0px 0px #fff;
-            background: #ff6b6b;
+            box-shadow: 3px 3px 6px 0px rgba(255,255,255,0.05);
+            background: var(--secondary-color);
+            border-color: var(--secondary-color);
+            color: var(--dark-card-background-color); /* Dark text on hover */
+        }
+         .dark .emoji-item:hover .text-black, .dark .emoji-item:hover .dark\:text-white {
+            color: var(--dark-card-background-color) !important;
         }
 
+
         .dark .emoji-item:active {
-            box-shadow: 2px 2px 0px 0px #fff;
+            box-shadow: 1px 1px 2px 0px rgba(255,255,255,0.03);
         }
 
         .category-tab {
-            background: white;
-            border: 3px solid #000;
-            color: #000;
-            font-weight: 900;
-            box-shadow: 4px 4px 0px 0px #000;
+            background: var(--card-background-color);
+            border: 2px solid var(--accent-highlight-color);
+            color: var(--text-primary-color);
+            font-weight: bold;
+            box-shadow: 2px 2px 4px 0px rgba(0,0,0,0.05);
             transition: all 0.1s ease;
+            border-radius: 6px;
+            padding: 0.75rem 1rem; /* Adjusted padding */
         }
 
         .category-tab:hover {
-            transform: translate(-1px, -1px);
-            box-shadow: 5px 5px 0px 0px #000;
+            transform: translateY(-1px);
+            box-shadow: 3px 3px 6px 0px rgba(0,0,0,0.1);
+            background: var(--primary-color);
+            color: var(--card-background-color);
+            border-color: var(--primary-color);
         }
 
         .category-tab.active {
-            background: #ff6b6b;
-            transform: translate(2px, 2px);
-            box-shadow: 2px 2px 0px 0px #000;
+            background: var(--primary-color);
+            color: var(--card-background-color);
+            border-color: var(--primary-color);
+            transform: none; /* No translate for active */
+            box-shadow: 1px 1px 2px 0px rgba(0,0,0,0.05) inset; /* Inner shadow for active */
         }
 
         .dark .category-tab {
-            background: #2a2a2a;
-            border-color: #fff;
-            color: #fff;
-            box-shadow: 4px 4px 0px 0px #fff;
+            background: var(--dark-card-background-color);
+            border-color: var(--dark-accent-highlight-color);
+            color: var(--dark-text-primary-color);
+            box-shadow: 2px 2px 4px 0px rgba(255,255,255,0.03);
         }
 
         .dark .category-tab:hover {
-            box-shadow: 5px 5px 0px 0px #fff;
+            box-shadow: 3px 3px 6px 0px rgba(255,255,255,0.05);
+            background: var(--secondary-color);
+            color: var(--dark-card-background-color);
+            border-color: var(--secondary-color);
         }
 
         .dark .category-tab.active {
-            background: #ff6b6b;
-            box-shadow: 2px 2px 0px 0px #fff;
-            color: #000;
+            background: var(--secondary-color);
+            box-shadow: 1px 1px 2px 0px rgba(255,255,255,0.03) inset;
+            color: var(--dark-card-background-color);
+            border-color: var(--secondary-color);
         }
 
         .recent-emoji {
             animation: bounce-brutal 0.4s ease-out;
-            background: #4ecdc4;
-            border: 3px solid #000;
-            box-shadow: 4px 4px 0px 0px #000;
+            background: var(--secondary-color);
+            border: 2px solid var(--secondary-color);
+            color: var(--card-background-color);
+            box-shadow: 2px 2px 4px 0px rgba(0,0,0,0.1);
             transition: all 0.1s ease;
+            border-radius: 50%; /* Circular recent emojis */
+            width: 48px; /* Fixed size */
+            height: 48px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem; /* Adjusted emoji size */
         }
 
         .recent-emoji:hover {
-            transform: translate(-2px, -2px) scale(1.1);
-            box-shadow: 6px 6px 0px 0px #000;
-            background: #ff6b6b;
+            transform: translateY(-2px) scale(1.1);
+            box-shadow: 3px 3px 6px 0px rgba(0,0,0,0.15);
+            background: var(--primary-color);
+            border-color: var(--primary-color);
         }
 
         .dark .recent-emoji {
-            background: #4ecdc4;
-            border-color: #fff;
-            box-shadow: 4px 4px 0px 0px #fff;
+            background: var(--secondary-color); /* Keep it vibrant */
+            border-color: var(--secondary-color);
+            color: var(--dark-card-background-color);
+            box-shadow: 2px 2px 4px 0px rgba(255,255,255,0.05);
         }
 
         .dark .recent-emoji:hover {
-            box-shadow: 6px 6px 0px 0px #fff;
+            box-shadow: 3px 3px 6px 0px rgba(255,255,255,0.1);
+            background: var(--primary-color);
+            border-color: var(--primary-color);
         }
 
         /* Custom scrollbar */
         .custom-scrollbar::-webkit-scrollbar {
-            width: 8px;
+            width: 10px; /* Slightly wider */
         }
 
         .custom-scrollbar::-webkit-scrollbar-track {
-            background: #f5f5f5;
-            border: 2px solid #000;
+            background: var(--background-color);
+            border: 1px solid var(--accent-highlight-color);
+            border-radius: 10px;
         }
 
         .custom-scrollbar::-webkit-scrollbar-thumb {
-            background: #ff6b6b;
-            border: 2px solid #000;
+            background: var(--primary-color);
+            border: 1px solid var(--primary-color);
+            border-radius: 10px;
         }
 
         .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-            background: #ff5252;
+            background: var(--secondary-color);
+            border-color: var(--secondary-color);
         }
 
         .dark .custom-scrollbar::-webkit-scrollbar-track {
-            background: #1a1a1a;
-            border-color: #fff;
+            background: var(--dark-background-color);
+            border-color: var(--dark-accent-highlight-color);
         }
 
         .dark .custom-scrollbar::-webkit-scrollbar-thumb {
-            border-color: #fff;
+            background: var(--secondary-color);
+            border-color: var(--secondary-color);
+        }
+         .dark .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: var(--primary-color);
+            border-color: var(--primary-color);
         }
 
         .toast {
-            background: #66bb6a;
-            border: 3px solid #000;
-            color: #000;
-            font-weight: 900;
-            box-shadow: 6px 6px 0px 0px #000;
+            background: var(--success-color); /* Default to success color */
+            border: 2px solid var(--success-color);
+            color: var(--card-background-color);
+            font-weight: bold;
+            box-shadow: 3px 3px 6px 0px rgba(0,0,0,0.15);
+            border-radius: 6px;
+            padding: 0.75rem 1.25rem;
         }
+        .toast.secondary { background: var(--secondary-color); border-color: var(--secondary-color); }
+        .toast.warning { background: var(--warning-color); border-color: var(--warning-color); color: var(--text-primary-color);}
+        .toast.error { background: var(--error-color); border-color: var(--error-color); }
+
 
         .dark .toast {
-            border-color: #fff;
-            box-shadow: 6px 6px 0px 0px #fff;
-            color: #fff;
+            border-color: transparent; /* Let background define edge */
+            box-shadow: 3px 3px 6px 0px rgba(255,255,255,0.1);
+            color: var(--dark-text-primary-color); /* Ensure text is light */
         }
+        .dark .toast.warning {
+            color: var(--dark-background-color); /* Dark text on light warning for dark mode */
+        }
+
 
         .combo-suggestion {
-            background: #ffa726;
-            border: 3px solid #000;
-            box-shadow: 4px 4px 0px 0px #000;
+            background: var(--warning-color); /* Use warning for combo suggestions */
+            border: 2px solid var(--warning-color);
+            box-shadow: 2px 2px 4px 0px rgba(0,0,0,0.1);
             transition: all 0.1s ease;
+            border-radius: 6px;
+        }
+        .combo-suggestion .text-black {
+            color: var(--text-primary-color) !important;
         }
 
+
         .combo-suggestion:hover {
-            transform: translate(-2px, -2px);
-            box-shadow: 6px 6px 0px 0px #000;
+            transform: translateY(-2px);
+            box-shadow: 3px 3px 6px 0px rgba(0,0,0,0.15);
         }
 
         .dark .combo-suggestion {
-            border-color: #fff;
-            box-shadow: 4px 4px 0px 0px #fff;
+            background: var(--warning-color); /* Keep warning color distinct in dark mode */
+            border-color: var(--warning-color);
+            box-shadow: 2px 2px 4px 0px rgba(255,255,255,0.05);
+        }
+         .dark .combo-suggestion .text-black, .dark .combo-suggestion .font-black {
+            color: var(--dark-background-color) !important; /* Dark text on light warning */
         }
 
         .dark .combo-suggestion:hover {
-            box-shadow: 6px 6px 0px 0px #fff;
+            box-shadow: 3px 3px 6px 0px rgba(255,255,255,0.1);
         }
 
         .stats-card {
-            background: linear-gradient(45deg, #ff6b6b 0%, #4ecdc4 50%, #45b7d1 100%);
-            border: 4px solid #000;
-            box-shadow: 8px 8px 0px 0px #000;
+            background: linear-gradient(45deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            border: 2px solid var(--primary-color);
+            box-shadow: 4px 4px 8px 0px rgba(0,0,0,0.1);
+            border-radius: 8px;
+            color: var(--card-background-color); /* White text on gradient */
         }
+         .stats-card .text-black {
+             color: var(--card-background-color) !important;
+         }
+
 
         .dark .stats-card {
-            border-color: #fff;
-            box-shadow: 8px 8px 0px 0px #fff;
+            border-color: var(--secondary-color);
+            box-shadow: 4px 4px 8px 0px rgba(255,255,255,0.05);
         }
+        .dark .stats-card .text-black {
+             color: var(--dark-text-primary-color) !important;
+         }
+
 
         .glitch-text {
             animation: glitch 2s infinite;
@@ -321,4 +482,198 @@
 
         @keyframes fadeOut {
             to { opacity: 0; transform: translate(-50%, -50%) scale(0.5); }
+        }
+
+        /* Tailwind class overrides for text color */
+        .text-black { color: var(--text-primary-color); }
+        .dark .text-black { color: var(--dark-text-primary-color) !important; }
+
+        .text-xl, .text-2xl, .text-5xl, h1, h3 {
+            color: var(--text-primary-color);
+        }
+        .dark .text-xl, .dark .text-2xl, .dark .text-5xl, .dark h1, .dark h3 {
+            color: var(--dark-text-primary-color);
+        }
+
+        label, .text-sm, p {
+            color: var(--text-secondary-color);
+        }
+        .dark label, .dark .text-sm, .dark p {
+            color: var(--dark-text-secondary-color);
+        }
+
+        /* Ensure FontAwesome icons inherit text color */
+        .fas {
+            color: inherit;
+        }
+
+        /* Pixel Mascot Styles */
+        #pixel-mascot-container {
+            width: 48px; /* 6 pixels * 8px/pixel */
+            height: 48px; /* 6 pixels * 8px/pixel */
+            margin-top: 1rem; /* Space from the paragraph above */
+        }
+
+        #pixel-mascot {
+            width: 100%;
+            height: 100%;
+            position: relative; /* For positioning pseudo-elements if needed, or direct pixel elements */
+            animation: blink 2.5s infinite steps(1, start);
+            /* Using box-shadow to create pixels. Each shadow is one pixel. */
+            /* A 6x6 pixel grid. Each pixel is 8x8px. */
+        }
+
+        /* Base for pixel color - can be overridden for specific pixels */
+        #pixel-mascot::before {
+            content: '';
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            background: transparent; /* Base pixel, can be transparent or a bg color */
+            /* Pixel definitions:
+               Format: box-shadow: X Y Color, X Y Color, ...
+               (0,0) is top-left pixel of the mascot itself.
+               The mascot is 48x48, pixels are 8x8.
+               So, 0*8px, 1*8px, ..., 5*8px for coordinates.
+            */
+            /* Eyes (Yellow part of smiley) */
+            box-shadow:
+                /* Face Outline (Primary Color) */
+                0px 8px 0 0 var(--primary-color), 8px 0px 0 0 var(--primary-color), 16px 0px 0 0 var(--primary-color), 24px 0px 0 0 var(--primary-color), 32px 0px 0 0 var(--primary-color), 40px 8px 0 0 var(--primary-color),
+                0px 16px 0 0 var(--primary-color), 40px 16px 0 0 var(--primary-color),
+                0px 24px 0 0 var(--primary-color), 40px 24px 0 0 var(--primary-color),
+                0px 32px 0 0 var(--primary-color), 40px 32px 0 0 var(--primary-color),
+                8px 40px 0 0 var(--primary-color), 16px 40px 0 0 var(--primary-color), 24px 40px 0 0 var(--primary-color), 32px 40px 0 0 var(--primary-color),
+
+                /* Face Fill (Warning Color - Yellow) */
+                8px 8px 0 0 var(--warning-color), 16px 8px 0 0 var(--warning-color), 24px 8px 0 0 var(--warning-color), 32px 8px 0 0 var(--warning-color),
+                8px 16px 0 0 var(--warning-color), 16px 16px 0 0 var(--warning-color), 24px 16px 0 0 var(--warning-color), 32px 16px 0 0 var(--warning-color),
+                8px 24px 0 0 var(--warning-color), 16px 24px 0 0 var(--warning-color), 24px 24px 0 0 var(--warning-color), 32px 24px 0 0 var(--warning-color),
+                8px 32px 0 0 var(--warning-color), 16px 32px 0 0 var(--warning-color), 24px 32px 0 0 var(--warning-color), 32px 32px 0 0 var(--warning-color),
+
+                /* Eyes (Text Primary Color) - Initially open */
+                16px 16px 0 0 var(--text-primary-color), /* Left eye */
+                32px 16px 0 0 var(--text-primary-color), /* Right eye */
+
+                /* Mouth (Text Primary Color) */
+                16px 32px 0 0 var(--text-primary-color), 24px 32px 0 0 var(--text-primary-color)
+            ;
+        }
+
+        /* Dark mode adjustments for mascot pixels */
+        .dark #pixel-mascot::before {
+             box-shadow:
+                /* Face Outline (Secondary Color for Dark Mode) */
+                0px 8px 0 0 var(--secondary-color), 8px 0px 0 0 var(--secondary-color), 16px 0px 0 0 var(--secondary-color), 24px 0px 0 0 var(--secondary-color), 32px 0px 0 0 var(--secondary-color), 40px 8px 0 0 var(--secondary-color),
+                0px 16px 0 0 var(--secondary-color), 40px 16px 0 0 var(--secondary-color),
+                0px 24px 0 0 var(--secondary-color), 40px 24px 0 0 var(--secondary-color),
+                0px 32px 0 0 var(--secondary-color), 40px 32px 0 0 var(--secondary-color),
+                8px 40px 0 0 var(--secondary-color), 16px 40px 0 0 var(--secondary-color), 24px 40px 0 0 var(--secondary-color), 32px 40px 0 0 var(--secondary-color),
+
+                /* Face Fill (Warning Color - Yellow, still looks good in dark) */
+                8px 8px 0 0 var(--warning-color), 16px 8px 0 0 var(--warning-color), 24px 8px 0 0 var(--warning-color), 32px 8px 0 0 var(--warning-color),
+                8px 16px 0 0 var(--warning-color), 16px 16px 0 0 var(--warning-color), 24px 16px 0 0 var(--warning-color), 32px 16px 0 0 var(--warning-color),
+                8px 24px 0 0 var(--warning-color), 16px 24px 0 0 var(--warning-color), 24px 24px 0 0 var(--warning-color), 32px 24px 0 0 var(--warning-color),
+                8px 32px 0 0 var(--warning-color), 16px 32px 0 0 var(--warning-color), 24px 32px 0 0 var(--warning-color), 32px 32px 0 0 var(--warning-color),
+
+                /* Eyes (Dark Text Primary Color) - Initially open */
+                16px 16px 0 0 var(--dark-text-primary-color), /* Left eye */
+                32px 16px 0 0 var(--dark-text-primary-color), /* Right eye */
+
+                /* Mouth (Dark Text Primary Color) */
+                16px 32px 0 0 var(--dark-text-primary-color), 24px 32px 0 0 var(--dark-text-primary-color)
+            ;
+        }
+
+
+        @keyframes blink {
+            0%, 90% { /* Eyes open */
+                /* Standard eyes are drawn by the base style */
+            }
+            92%, 100% { /* Eyes closed (wink one eye, or blink both) */
+                /* Re-draw all pixels, but change the eye pixels */
+                 /* Using a pseudo-element to change the box-shadow for blinking */
+            }
+        }
+
+        /* Blinking state - achieved by changing the box-shadow for the eye pixels */
+        #pixel-mascot.blinking::before, /* For JS toggle if needed */
+        #pixel-mascot:hover::before /* Example: blink on hover, or use animation keyframes */
+        {
+            /* This approach is tricky with pure CSS animation of box-shadow if you need to "remove" pixels.
+               A simpler blink might involve just changing the color of the eye pixels to the face fill color.
+            */
+        }
+
+        /* Simpler blink animation: change eye color to face color */
+        @keyframes blink {
+            0%, 85% { /* Eyes open */
+                /* Eyes are var(--text-primary-color) or var(--dark-text-primary-color) */
+                /* This state is covered by the default #pixel-mascot::before */
+            }
+            90%, 100% { /* Eyes closed - change eye color to face fill color */
+                 /* We need to redefine the entire box-shadow here, changing only the eye pixels */
+            }
+        }
+
+        /* Updated blink animation using direct box-shadow redefinition */
+        @keyframes blink {
+            0%, 85% { /* Eyes open - Standard Definition */
+                /* Light Mode Eyes */
+                --eye-left-color: var(--text-primary-color);
+                --eye-right-color: var(--text-primary-color);
+                /* Dark Mode Eyes are handled by .dark #pixel-mascot::before */
+            }
+            90%, 100% { /* Eyes closed - change eye color to face fill color */
+                --eye-left-color: var(--warning-color); /* Match face fill */
+                --eye-right-color: var(--warning-color); /* Match face fill */
+            }
+        }
+
+        /* Apply animated variables to the box-shadow */
+        #pixel-mascot::before {
+            content: '';
+            position: absolute;
+            width: 8px; /* Size of one 'pixel' */
+            height: 8px; /* Size of one 'pixel' */
+            /* Base pixel color/transparent */
+            background: transparent;
+            /* Define pixels using box-shadow */
+            box-shadow:
+                /* Face Outline */
+                0px 8px 0 0 var(--primary-color), 8px 0px 0 0 var(--primary-color), 16px 0px 0 0 var(--primary-color), 24px 0px 0 0 var(--primary-color), 32px 0px 0 0 var(--primary-color), 40px 8px 0 0 var(--primary-color),
+                0px 16px 0 0 var(--primary-color), 40px 16px 0 0 var(--primary-color),
+                0px 24px 0 0 var(--primary-color), 40px 24px 0 0 var(--primary-color),
+                0px 32px 0 0 var(--primary-color), 40px 32px 0 0 var(--primary-color),
+                8px 40px 0 0 var(--primary-color), 16px 40px 0 0 var(--primary-color), 24px 40px 0 0 var(--primary-color), 32px 40px 0 0 var(--primary-color),
+                /* Face Fill */
+                8px 8px 0 0 var(--warning-color), 16px 8px 0 0 var(--warning-color), 24px 8px 0 0 var(--warning-color), 32px 8px 0 0 var(--warning-color),
+                8px 16px 0 0 var(--warning-color), 16px 16px 0 0 var(--warning-color), 24px 16px 0 0 var(--warning-color), 32px 16px 0 0 var(--warning-color),
+                8px 24px 0 0 var(--warning-color), 16px 24px 0 0 var(--warning-color), 24px 24px 0 0 var(--warning-color), 32px 24px 0 0 var(--warning-color),
+                8px 32px 0 0 var(--warning-color), 16px 32px 0 0 var(--warning-color), 24px 32px 0 0 var(--warning-color), 32px 32px 0 0 var(--warning-color),
+                /* Eyes - using CSS variables that will be animated */
+                16px 16px 0 0 var(--eye-left-color, var(--text-primary-color)), /* Left eye, fallback to open */
+                32px 16px 0 0 var(--eye-right-color, var(--text-primary-color)), /* Right eye, fallback to open */
+                /* Mouth */
+                16px 32px 0 0 var(--text-primary-color), 24px 32px 0 0 var(--text-primary-color);
+        }
+
+        .dark #pixel-mascot::before {
+             box-shadow:
+                /* Face Outline */
+                0px 8px 0 0 var(--secondary-color), 8px 0px 0 0 var(--secondary-color), 16px 0px 0 0 var(--secondary-color), 24px 0px 0 0 var(--secondary-color), 32px 0px 0 0 var(--secondary-color), 40px 8px 0 0 var(--secondary-color),
+                0px 16px 0 0 var(--secondary-color), 40px 16px 0 0 var(--secondary-color),
+                0px 24px 0 0 var(--secondary-color), 40px 24px 0 0 var(--secondary-color),
+                0px 32px 0 0 var(--secondary-color), 40px 32px 0 0 var(--secondary-color),
+                8px 40px 0 0 var(--secondary-color), 16px 40px 0 0 var(--secondary-color), 24px 40px 0 0 var(--secondary-color), 32px 40px 0 0 var(--secondary-color),
+                /* Face Fill */
+                8px 8px 0 0 var(--warning-color), 16px 8px 0 0 var(--warning-color), 24px 8px 0 0 var(--warning-color), 32px 8px 0 0 var(--warning-color),
+                8px 16px 0 0 var(--warning-color), 16px 16px 0 0 var(--warning-color), 24px 16px 0 0 var(--warning-color), 32px 16px 0 0 var(--warning-color),
+                8px 24px 0 0 var(--warning-color), 16px 24px 0 0 var(--warning-color), 24px 24px 0 0 var(--warning-color), 32px 24px 0 0 var(--warning-color),
+                8px 32px 0 0 var(--warning-color), 16px 32px 0 0 var(--warning-color), 24px 32px 0 0 var(--warning-color), 32px 32px 0 0 var(--warning-color),
+                /* Eyes - using CSS variables that will be animated, specific for dark mode */
+                16px 16px 0 0 var(--eye-left-color, var(--dark-text-primary-color)), /* Left eye, fallback to open */
+                32px 16px 0 0 var(--eye-right-color, var(--dark-text-primary-color)), /* Right eye, fallback to open */
+                /* Mouth */
+                16px 32px 0 0 var(--dark-text-primary-color), 24px 32px 0 0 var(--dark-text-primary-color);
         }
