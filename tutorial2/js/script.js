@@ -10,7 +10,6 @@
             }
         });
 
-
         // Emoji data with categories
         const emojiData = {
             faces: [
@@ -238,6 +237,7 @@
                 { emoji: '💧', name: 'Droplet', code: '1F4A7' }
             ]
         };
+
         // Get all emojis for 'all' category
         const allEmojis = Object.values(emojiData).flat();
 
@@ -284,7 +284,7 @@
             const savedSection = document.getElementById('saved-section');
             const savedMessagesContainer = document.getElementById('saved-messages');
 
-                                              // Initialize
+            // Initialize
             renderEmojis(allEmojis);
             updateCounts();
             updateStats();
@@ -320,3 +320,312 @@
                     renderEmojis(filteredEmojis);
                 }
             });
+
+            // Input monitoring
+            mainInput.addEventListener('input', updateCounts);
+
+            // Button actions
+            copyBtn.addEventListener('click', () => copyToClipboard(mainInput.value));
+            clearBtn.addEventListener('click', clearInput);
+            saveBtn.addEventListener('click', saveMessage);
+            randomBtn.addEventListener('click', addRandomEmoji);
+            comboBtn.addEventListener('click', toggleComboSuggestions);
+            capsBtn.addEventListener('click', toggleCaps);
+            reverseBtn.addEventListener('click', reverseText);
+
+            function renderEmojis(emojis) {
+                emojiGrid.innerHTML = '';
+                emojis.forEach((emoji, index) => {
+                    const emojiElement = document.createElement('div');
+                    emojiElement.className = 'emoji-item p-4 cursor-pointer flex items-center gap-3 opacity-0';
+                    emojiElement.innerHTML = `
+                        <div class="text-3xl">${emoji.emoji}</div>
+                        <div class="text-black dark:text-white font-bold text-sm uppercase">${emoji.name}</div>
+                    `;
+                    
+                    // Add click handler
+                    emojiElement.addEventListener('click', () => insertEmoji(emoji));
+                    
+                    emojiGrid.appendChild(emojiElement);
+                    
+                    // Animate in
+                    setTimeout(() => {
+                        emojiElement.style.opacity = '1';
+                        emojiElement.style.transform = 'translateY(0)';
+                        emojiElement.classList.add('animate-slide-brutal');
+                    }, index * 20);
+                });
+            }
+
+            function insertEmoji(emoji) {
+                const cursorPos = mainInput.selectionStart;
+                const textBefore = mainInput.value.substring(0, cursorPos);
+                const textAfter = mainInput.value.substring(mainInput.selectionEnd);
+                
+                mainInput.value = textBefore + emoji.emoji + textAfter;
+                mainInput.setSelectionRange(cursorPos + emoji.emoji.length, cursorPos + emoji.emoji.length);
+                mainInput.focus();
+                
+                // Add to recent emojis
+                addToRecent(emoji);
+                updateCounts();
+                updateStats();
+                
+                // Add animation feedback
+                createEmojiAnimation(emoji.emoji);
+            }
+
+            function addToRecent(emoji) {
+                // Remove if already exists
+                recentEmojis = recentEmojis.filter(recent => recent.emoji !== emoji.emoji);
+                // Add to beginning
+                recentEmojis.unshift(emoji);
+                // Keep only last 15
+                recentEmojis = recentEmojis.slice(0, 15);
+                
+                // Update stats
+                totalEmojisUsed++;
+                sessionEmojiCount++;
+                localStorage.setItem('totalEmojisUsed', totalEmojisUsed.toString());
+                localStorage.setItem('recentEmojis', JSON.stringify(recentEmojis));
+                renderRecentEmojis();
+            }
+
+            function renderRecentEmojis() {
+                if (recentEmojis.length === 0) {
+                    recentSection.style.display = 'none';
+                    return;
+                }
+                
+                recentSection.style.display = 'block';
+                recentEmojisContainer.innerHTML = '';
+                
+                recentEmojis.forEach(emoji => {
+                    const emojiElement = document.createElement('button');
+                    emojiElement.className = 'recent-emoji p-3 text-3xl';
+                    emojiElement.textContent = emoji.emoji;
+                    emojiElement.title = emoji.name;
+                    emojiElement.addEventListener('click', () => insertEmoji(emoji));
+                    recentEmojisContainer.appendChild(emojiElement);
+                });
+            }
+
+            function updateCounts() {
+                const text = mainInput.value;
+                const emojiRegex = /[\u{1F600}-\u{1F64F}]|[\u{1F300}-\u{1F5FF}]|[\u{1F680}-\u{1F6FF}]|[\u{1F1E0}-\u{1F1FF}]|[\u{2600}-\u{26FF}]|[\u{2700}-\u{27BF}]/gu;
+                const emojiMatches = text.match(emojiRegex) || [];
+                
+                charCount.textContent = `${text.length} CHARS`;
+                emojiCount.textContent = `${emojiMatches.length} EMOJIS`;
+            }
+
+            function updateStats() {
+                document.getElementById('total-emojis').textContent = totalEmojisUsed;
+                document.getElementById('session-count').textContent = sessionEmojiCount;
+                document.getElementById('combo-count').textContent = comboCount;
+            }
+
+            async function copyToClipboard(text) {
+                try {
+                    await navigator.clipboard.writeText(text);
+                    showToast('✅ COPIED!', 'success');
+                    copyBtn.classList.add('animate-shake');
+                    setTimeout(() => copyBtn.classList.remove('animate-shake'), 500);
+                } catch (err) {
+                    showToast('❌ COPY FAILED!', 'error');
+                }
+            }
+
+            function clearInput() {
+                mainInput.value = '';
+                updateCounts();
+                showToast('🧹 CLEARED!', 'secondary');
+                clearBtn.classList.add('animate-glitch');
+                setTimeout(() => clearBtn.classList.remove('animate-glitch'), 300);
+            }
+
+            function saveMessage() {
+                const message = mainInput.value.trim();
+                if (!message) {
+                    showToast('❌ NOTHING TO SAVE!', 'error');
+                    return;
+                }
+                
+                const savedMessage = {
+                    id: Date.now(),
+                    text: message,
+                    timestamp: new Date().toLocaleString()
+                };
+                
+                savedMessages.unshift(savedMessage);
+                savedMessages = savedMessages.slice(0, 10); // Keep only last 10
+                
+                localStorage.setItem('savedMessages', JSON.stringify(savedMessages));
+                renderSavedMessages();
+                showToast('💾 SAVED!', 'success');
+                saveBtn.classList.add('animate-bounce-brutal');
+                setTimeout(() => saveBtn.classList.remove('animate-bounce-brutal'), 400);
+            }
+
+            function addRandomEmoji() {
+                const randomEmoji = allEmojis[Math.floor(Math.random() * allEmojis.length)];
+                insertEmoji(randomEmoji);
+                showToast('🎲 RANDOM DEPLOYED!', 'warning');
+                randomBtn.classList.add('animate-shake');
+                setTimeout(() => randomBtn.classList.remove('animate-shake'), 500);
+            }
+
+            function toggleComboSuggestions() {
+                if (comboSection.style.display === 'none') {
+                    comboSection.style.display = 'block';
+                    comboBtn.textContent = '✨ HIDE';
+                    showToast('🔥 COMBO MODE!', 'success');
+                } else {
+                    comboSection.style.display = 'none';
+                    comboBtn.innerHTML = '<i class="fas fa-magic"></i> COMBO';
+                }
+            }
+
+            function toggleCaps() {
+                const text = mainInput.value;
+                if (text === text.toUpperCase()) {
+                    mainInput.value = text.toLowerCase();
+                    showToast('📝 LOWERCASE!', 'secondary');
+                } else {
+                    mainInput.value = text.toUpperCase();
+                    showToast('📢 UPPERCASE!', 'warning');
+                }
+                updateCounts();
+            }
+
+            function reverseText() {
+                const text = mainInput.value;
+                mainInput.value = text.split('').reverse().join('');
+                updateCounts();
+                showToast('🔄 REVERSED!', 'tertiary');
+                reverseBtn.classList.add('animate-glitch');
+                setTimeout(() => reverseBtn.classList.remove('animate-glitch'), 300);
+            }
+
+            function renderComboSuggestions() {
+                comboSuggestions.innerHTML = '';
+                emojiCombos.forEach(combo => {
+                    const comboElement = document.createElement('div');
+                    comboElement.className = 'combo-suggestion p-4 cursor-pointer';
+                    comboElement.innerHTML = `
+                        <div class="text-center">
+                            <div class="text-2xl mb-2">${combo.emojis}</div>
+                            <div class="text-black font-black text-sm">${combo.name}</div>
+                            <div class="text-black font-bold text-xs opacity-70">${combo.description}</div>
+                        </div>
+                    `;
+                    
+                    comboElement.addEventListener('click', () => {
+                        const cursorPos = mainInput.selectionStart;
+                        const textBefore = mainInput.value.substring(0, cursorPos);
+                        const textAfter = mainInput.value.substring(mainInput.selectionEnd);
+                        
+                        mainInput.value = textBefore + combo.emojis + textAfter;
+                        mainInput.setSelectionRange(cursorPos + combo.emojis.length, cursorPos + combo.emojis.length);
+                        mainInput.focus();
+                        
+                        comboCount++;
+                        localStorage.setItem('comboCount', comboCount.toString());
+                        updateCounts();
+                        updateStats();
+                        showToast(`🔥 ${combo.name} DEPLOYED!`, 'success');
+                        
+                        comboElement.classList.add('animate-bounce-brutal');
+                        setTimeout(() => comboElement.classList.remove('animate-bounce-brutal'), 400);
+                    });
+                    
+                    comboSuggestions.appendChild(comboElement);
+                });
+            }
+
+            function renderSavedMessages() {
+                if (savedMessages.length === 0) {
+                    savedSection.style.display = 'none';
+                    return;
+                }
+                
+                savedSection.style.display = 'block';
+                savedMessagesContainer.innerHTML = '';
+                
+                savedMessages.forEach(message => {
+                    const messageElement = document.createElement('div');
+                    messageElement.className = 'neo-card p-4 space-y-3';
+                    messageElement.innerHTML = `
+                        <div class="text-black dark:text-white font-bold text-sm">${message.text}</div>
+                        <div class="flex justify-between items-center">
+                            <span class="text-black dark:text-white opacity-60 text-xs font-bold">${message.timestamp}</span>
+                            <div class="flex gap-2">
+                                <button class="load-message neo-button tertiary px-3 py-1 text-xs">
+                                    <i class="fas fa-upload"></i> LOAD
+                                </button>
+                                <button class="copy-message neo-button success px-3 py-1 text-xs">
+                                    <i class="fas fa-copy"></i> COPY
+                                </button>
+                                <button class="delete-message neo-button px-3 py-1 text-xs">
+                                    <i class="fas fa-trash"></i> DELETE
+                                </button>
+                            </div>
+                        </div>
+                    `;
+                    
+                    // Add event listeners
+                    messageElement.querySelector('.load-message').addEventListener('click', () => {
+                        mainInput.value = message.text;
+                        updateCounts();
+                        showToast('📤 LOADED!', 'tertiary');
+                    });
+                    
+                    messageElement.querySelector('.copy-message').addEventListener('click', () => {
+                        copyToClipboard(message.text);
+                    });
+                    
+                    messageElement.querySelector('.delete-message').addEventListener('click', () => {
+                        savedMessages = savedMessages.filter(m => m.id !== message.id);
+                        localStorage.setItem('savedMessages', JSON.stringify(savedMessages));
+                        renderSavedMessages();
+                        showToast('🗑️ DELETED!', 'error');
+                    });
+                    
+                    savedMessagesContainer.appendChild(messageElement);
+                });
+            }
+
+            function createEmojiAnimation(emoji) {
+                const animatedEmoji = document.createElement('div');
+                animatedEmoji.className = 'fixed text-6xl pointer-events-none z-50 font-black';
+                animatedEmoji.textContent = emoji;
+                animatedEmoji.style.left = Math.random() * window.innerWidth + 'px';
+                animatedEmoji.style.top = Math.random() * window.innerHeight + 'px';
+                animatedEmoji.style.animation = 'bounce-brutal 0.6s ease-out forwards';
+                
+                document.body.appendChild(animatedEmoji);
+                
+                setTimeout(() => {
+                    animatedEmoji.style.animation = 'fadeOut 0.5s ease-out forwards';
+                    setTimeout(() => animatedEmoji.remove(), 500);
+                }, 600);
+            }
+
+            function showToast(message, type = 'primary') {
+                const toast = document.createElement('div');
+                const typeClass = type === 'success' ? 'success' : type === 'error' ? '' : type === 'warning' ? 'warning' : type === 'secondary' ? 'secondary' : type === 'tertiary' ? 'tertiary' : '';
+                toast.className = `toast fixed top-4 right-4 px-6 py-3 font-black z-50 transform translate-x-full transition-all duration-300 neo-button ${typeClass}`;
+                toast.textContent = message;
+                
+                document.body.appendChild(toast);
+                
+                setTimeout(() => {
+                    toast.style.transform = 'translateX(0)';
+                }, 100);
+                
+                setTimeout(() => {
+                    toast.style.transform = 'translateX(100%)';
+                    setTimeout(() => toast.remove(), 300);
+                }, 2000);
+            }
+        });
