@@ -1,0 +1,1379 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/11.8.0/math.min.js"></script>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <title>PolyBrute Calculator Pro</title>
+    <style>
+        /* Neo Brutalism Theme */
+        :root {
+            --primary: #5D5CDE;
+            --secondary: #ffca28;
+            --accent: #4a4ae9;
+            --background: #ffffff;
+            --card-bg: #f0f0f0;
+            --text: #000000;
+            --shadow: 6px 6px 0px #000000;
+            --border: 3px solid #000000;
+            --input-bg: #ffffff;
+            --result-bg: #e5e5ff;
+            --error-color: #ff0000;
+            --button-hover: #e0e0e0;
+            --function-key-bg: #ffefd5;
+            --help-bg: #e0ffff;
+            --success-color: #00aa00;
+        }
+
+        .dark {
+            --background: #181818;
+            --card-bg: #2a2a2a;
+            --text: #ffffff;
+            --input-bg: #3a3a3a;
+            --result-bg: #4a4a4a;
+            --help-bg: #3a4a4a;
+            --function-key-bg: #4a3a2a;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Courier New', Courier, monospace;
+        }
+
+        body {
+            background-color: var(--background);
+            color: var(--text);
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
+        }
+
+        .calculator-container {
+            background-color: var(--card-bg);
+            width: 100%;
+            max-width: 900px;
+            border: var(--border);
+            box-shadow: var(--shadow);
+            margin-top: 20px;
+            transition: transform 0.2s;
+        }
+
+        .calculator-container:hover {
+            transform: translate(-2px, -2px);
+        }
+
+        .title-bar {
+            background-color: var(--primary);
+            padding: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: var(--border);
+        }
+
+        .title-text {
+            font-weight: bold;
+            font-size: 24px;
+            text-transform: uppercase;
+            color: white;
+        }
+
+        .close-button {
+            background-color: var(--secondary);
+            border: 2px solid black;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-weight: bold;
+            font-size: 20px;
+            cursor: pointer;
+            box-shadow: 3px 3px 0px #000000;
+            transition: all 0.1s;
+        }
+
+        .close-button:hover {
+            transform: translate(-1px, -1px);
+            box-shadow: 4px 4px 0px #000000;
+        }
+
+        .close-button:active {
+            transform: translate(2px, 2px);
+            box-shadow: 1px 1px 0px #000000;
+        }
+
+        .calculator-content {
+            padding: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            font-size: 18px;
+        }
+
+        input, select, textarea {
+            width: 100%;
+            padding: 15px;
+            background-color: var(--input-bg);
+            border: var(--border);
+            font-size: 16px;
+            color: var(--text);
+            box-shadow: 4px 4px 0px #000000;
+            transition: all 0.2s;
+        }
+
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            box-shadow: 6px 6px 0px #000000;
+            transform: translate(-2px, -2px);
+        }
+
+        .variable-container {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .variable-item {
+            display: flex;
+            align-items: center;
+            background-color: var(--secondary);
+            padding: 10px;
+            border: var(--border);
+            box-shadow: 3px 3px 0px #000000;
+            margin-bottom: 10px;
+        }
+
+        .variable-item label {
+            margin: 0 10px 0 0;
+            font-size: 16px;
+        }
+
+        .variable-item input {
+            width: 80px;
+            padding: 8px;
+            box-shadow: 2px 2px 0px #000000;
+        }
+
+        .button-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        button {
+            background-color: var(--accent);
+            color: white;
+            border: var(--border);
+            padding: 12px 20px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 4px 4px 0px #000000;
+            transition: all 0.2s;
+            text-transform: uppercase;
+        }
+
+        button:hover {
+            background-color: var(--button-hover);
+            color: var(--text);
+            transform: translate(-2px, -2px);
+            box-shadow: 6px 6px 0px #000000;
+        }
+
+        button:active {
+            transform: translate(2px, 2px);
+            box-shadow: 2px 2px 0px #000000;
+        }
+
+        .function-keys {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            gap: 10px;
+            margin: 20px 0;
+        }
+
+        @media (max-width: 700px) {
+            .function-keys {
+                grid-template-columns: repeat(4, 1fr);
+            }
+        }
+
+        @media (max-width: 500px) {
+            .function-keys {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        .function-key {
+            padding: 10px 5px;
+            background-color: var(--function-key-bg);
+            border: 2px solid black;
+            text-align: center;
+            cursor: pointer;
+            font-weight: bold;
+            box-shadow: 3px 3px 0px #000000;
+            transition: all 0.2s;
+        }
+
+        .function-key:hover {
+            transform: translate(-1px, -1px);
+            box-shadow: 4px 4px 0px #000000;
+        }
+
+        .function-key:active {
+            transform: translate(2px, 2px);
+            box-shadow: 1px 1px 0px #000000;
+        }
+
+        .result-container {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: var(--result-bg);
+            min-height: 60px;
+            color: var(--text);
+            word-wrap: break-word;
+            border: var(--border);
+            box-shadow: 4px 4px 0px #000000;
+            font-family: 'Courier New', Courier, monospace;
+        }
+
+        .error {
+            color: var(--error-color);
+            font-weight: bold;
+        }
+
+        .success {
+            color: var(--success-color);
+            font-weight: bold;
+        }
+
+        .help-text {
+            font-size: 14px;
+            margin-top: 20px;
+            color: var(--text);
+            padding: 15px;
+            background-color: var(--help-bg);
+            border: var(--border);
+            box-shadow: 4px 4px 0px #000000;
+        }
+
+        .tab-container {
+            margin-bottom: 20px;
+        }
+
+        .tab-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+        }
+
+        .tab-button {
+            background-color: var(--card-bg);
+            padding: 10px 20px;
+            border: 2px solid black;
+            border-bottom: none;
+            cursor: pointer;
+            position: relative;
+            transition: all 0.2s;
+        }
+
+        .tab-button.active {
+            background-color: var(--primary);
+            color: white;
+            font-weight: bold;
+            box-shadow: 3px 0px 0px #000000;
+        }
+
+        .tab-content {
+            border: var(--border);
+            padding: 20px;
+            background-color: var(--card-bg);
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .factor-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+            border: 2px solid black;
+        }
+
+        .factor-table th, 
+        .factor-table td {
+            padding: 10px;
+            text-align: left;
+            border: 2px solid black;
+        }
+
+        .factor-table th {
+            background-color: var(--primary);
+            color: white;
+        }
+
+        .factor-table tr:nth-child(even) {
+            background-color: var(--result-bg);
+        }
+
+        .note {
+            padding: 10px;
+            background-color: var(--secondary);
+            border: 2px solid black;
+            margin-top: 15px;
+            font-style: italic;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .graph-container {
+            width: 100%;
+            height: 400px;
+            margin-top: 20px;
+            border: var(--border);
+            box-shadow: 4px 4px 0px #000000;
+        }
+
+        .calculus-output {
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 14px;
+            white-space: pre-wrap;
+        }
+
+        .range-inputs {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            flex-wrap: wrap;
+            margin-bottom: 15px;
+        }
+
+        .range-inputs input {
+            width: 100px;
+            padding: 8px;
+        }
+
+        .loading {
+            opacity: 0.6;
+            pointer-events: none;
+        }
+
+        .step-by-step {
+            background-color: var(--help-bg);
+            padding: 15px;
+            border: var(--border);
+            margin-top: 15px;
+            box-shadow: 3px 3px 0px #000000;
+        }
+    </style>
+</head>
+<body>
+    <div class="calculator-container">
+        <div class="title-bar">
+            <div class="title-text">PolyBrute Calculator Pro</div>
+            <div class="close-button">×</div>
+        </div>
+        <div class="calculator-content">
+            <div class="tab-container">
+                <div class="tab-buttons">
+                    <div class="tab-button active" data-tab="calculator">Calculator</div>
+                    <div class="tab-button" data-tab="factors">Polynomial Factors</div>
+                    <div class="tab-button" data-tab="graphing">Graphing</div>
+                    <div class="tab-button" data-tab="calculus">Calculus</div>
+                </div>
+
+                <!-- Calculator Tab -->
+                <div class="tab-content active" id="calculator-tab">
+                    <div class="form-group">
+                        <label for="expression">Enter Expression:</label>
+                        <input type="text" id="expression" placeholder="e.g., 5*x^3 + 2*x^2 - 2*x + 7">
+                    </div>
+
+                    <div class="function-keys">
+                        <div class="function-key" data-key="+">&plus;</div>
+                        <div class="function-key" data-key="-">&minus;</div>
+                        <div class="function-key" data-key="*">&times;</div>
+                        <div class="function-key" data-key="/">&divide;</div>
+                        <div class="function-key" data-key="^">x^y</div>
+                        <div class="function-key" data-key="(">(</div>
+                        <div class="function-key" data-key=")">)</div>
+                        <div class="function-key" data-key="sqrt(">√</div>
+                        <div class="function-key" data-key="sin(">sin</div>
+                        <div class="function-key" data-key="cos(">cos</div>
+                        <div class="function-key" data-key="tan(">tan</div>
+                        <div class="function-key" data-key="log(">log</div>
+                        <div class="function-key" data-key="x">x</div>
+                        <div class="function-key" data-key="y">y</div>
+                        <div class="function-key" data-key="z">z</div>
+                        <div class="function-key" data-key="pi">π</div>
+                        <div class="function-key" data-key="e">e</div>
+                        <div class="function-key" data-key="abs(">|x|</div>
+                    </div>
+
+                    <div class="button-container">
+                        <button id="calculate-btn">Calculate</button>
+                        <button id="clear-btn">Clear</button>
+                        <button id="detect-btn">Detect Variables</button>
+                    </div>
+
+                    <div id="variable-inputs"></div>
+
+                    <div class="form-group">
+                        <label>Result:</label>
+                        <div class="result-container" id="result">
+                            Enter an expression and click Calculate
+                        </div>
+                    </div>
+
+                    <div class="help-text">
+                        <strong>Supported operations:</strong><br>
+                        • Basic: +, -, *, /, ^ (power)<br>
+                        • Functions: sin, cos, tan, sqrt, log, exp, abs<br>
+                        • Constants: pi, e<br>
+                        <br>
+                        <strong>Tips:</strong><br>
+                        • Click "Detect Variables" to find variables in your expression<br>
+                        • Try using different variables (x, y, z, etc.) in your equations<br>
+                        • Switch to other tabs for specialized functions
+                    </div>
+                </div>
+
+                <!-- Polynomial Factors Tab -->
+                <div class="tab-content" id="factors-tab">
+                    <div class="form-group">
+                        <label for="polynomial">Enter Polynomial:</label>
+                        <input type="text" id="polynomial" placeholder="e.g., x^3 - 6*x^2 + 11*x - 6">
+                    </div>
+
+                    <div class="button-container">
+                        <button id="find-factors-btn">Find Factors</button>
+                        <button id="clear-factors-btn">Clear</button>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Results:</label>
+                        <div class="result-container" id="factors-result">
+                            Enter a polynomial and click Find Factors
+                        </div>
+                    </div>
+
+                    <div id="factors-table-container" class="hidden">
+                        <h3>Potential Roots Analysis</h3>
+                        <table class="factor-table" id="factors-table">
+                            <thead>
+                                <tr>
+                                    <th>Test Value</th>
+                                    <th>P(x) Result</th>
+                                    <th>Is Root?</th>
+                                    <th>Factor</th>
+                                </tr>
+                            </thead>
+                            <tbody id="factors-table-body">
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="help-text">
+                        <strong>How to use:</strong><br>
+                        • Enter a polynomial in the form a*x^n + b*x^(n-1) + ... + c<br>
+                        • Click "Find Factors" to analyze the polynomial<br>
+                        • The calculator will test rational roots using the Rational Root Theorem<br>
+                        • If P(r) = 0, then (x-r) is a factor of the polynomial<br>
+                        <div class="note">
+                            Based on the Rational Root Theorem: if p/q is a rational root (in lowest terms),
+                            then p divides the constant term and q divides the leading coefficient.
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Graphing Tab -->
+                <div class="tab-content" id="graphing-tab">
+                    <div class="form-group">
+                        <label for="graph-function">Function to Graph:</label>
+                        <input type="text" id="graph-function" placeholder="e.g., x^2 - 4*x + 3">
+                    </div>
+
+                    <div class="range-inputs">
+                        <label>X Range:</label>
+                        <input type="number" id="x-min" value="-10" placeholder="Min">
+                        <span>to</span>
+                        <input type="number" id="x-max" value="10" placeholder="Max">
+                        <label>Y Range:</label>
+                        <input type="number" id="y-min" value="-10" placeholder="Min">
+                        <span>to</span>
+                        <input type="number" id="y-max" value="10" placeholder="Max">
+                    </div>
+
+                    <div class="button-container">
+                        <button id="graph-btn">Graph Function</button>
+                        <button id="clear-graph-btn">Clear Graph</button>
+                        <button id="analyze-graph-btn">Analyze Function</button>
+                    </div>
+
+                    <div id="graph-container" class="graph-container"></div>
+
+                    <div class="form-group">
+                        <label>Analysis:</label>
+                        <div class="result-container" id="graph-analysis">
+                            Enter a function and click Graph or Analyze
+                        </div>
+                    </div>
+
+                    <div class="help-text">
+                        <strong>Graphing Features:</strong><br>
+                        • Enter any mathematical function in terms of x<br>
+                        • Adjust X and Y ranges for better visualization<br>
+                        • Click "Analyze Function" for detailed information<br>
+                        • Interactive zooming and panning available on the graph
+                    </div>
+                </div>
+
+                <!-- Calculus Tab -->
+                <div class="tab-content" id="calculus-tab">
+                    <div class="form-group">
+                        <label for="calculus-function">Function f(x):</label>
+                        <input type="text" id="calculus-function" placeholder="e.g., x^3 - 3*x^2 + 2*x">
+                    </div>
+
+                    <div class="button-container">
+                        <button id="derivative-btn">Find Derivative</button>
+                        <button id="integral-btn">Find Integral</button>
+                        <button id="critical-points-btn">Critical Points</button>
+                        <button id="clear-calculus-btn">Clear</button>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Calculus Results:</label>
+                        <div class="result-container" id="calculus-result">
+                            Enter a function and select a calculus operation
+                        </div>
+                    </div>
+
+                    <div class="help-text">
+                        <strong>Calculus Features:</strong><br>
+                        • Find derivatives (symbolic differentiation)<br>
+                        • Find integrals (symbolic integration)<br>
+                        • Find critical points (where f'(x) = 0)<br>
+                        • All calculations show step-by-step solutions when possible
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Support for dark mode
+            if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+                document.documentElement.classList.add('dark');
+            }
+            
+            window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', event => {
+                if (event.matches) {
+                    document.documentElement.classList.add('dark');
+                } else {
+                    document.documentElement.classList.remove('dark');
+                }
+            });
+
+            // Elements
+            const expressionInput = document.getElementById('expression');
+            const calculateBtn = document.getElementById('calculate-btn');
+            const clearBtn = document.getElementById('clear-btn');
+            const detectBtn = document.getElementById('detect-btn');
+            const resultDisplay = document.getElementById('result');
+            const closeButton = document.querySelector('.close-button');
+            const functionKeys = document.querySelectorAll('.function-key');
+            const variableInputs = document.getElementById('variable-inputs');
+            const tabButtons = document.querySelectorAll('.tab-button');
+            const tabContents = document.querySelectorAll('.tab-content');
+            
+            // Polynomial factors elements
+            const polynomialInput = document.getElementById('polynomial');
+            const findFactorsBtn = document.getElementById('find-factors-btn');
+            const clearFactorsBtn = document.getElementById('clear-factors-btn');
+            const factorsResult = document.getElementById('factors-result');
+            const factorsTableContainer = document.getElementById('factors-table-container');
+            const factorsTableBody = document.getElementById('factors-table-body');
+            
+            // Graphing elements
+            const graphFunction = document.getElementById('graph-function');
+            const graphBtn = document.getElementById('graph-btn');
+            const clearGraphBtn = document.getElementById('clear-graph-btn');
+            const analyzeGraphBtn = document.getElementById('analyze-graph-btn');
+            const graphContainer = document.getElementById('graph-container');
+            const graphAnalysis = document.getElementById('graph-analysis');
+            const xMin = document.getElementById('x-min');
+            const xMax = document.getElementById('x-max');
+            const yMin = document.getElementById('y-min');
+            const yMax = document.getElementById('y-max');
+            
+            // Calculus elements
+            const calculusFunction = document.getElementById('calculus-function');
+            const derivativeBtn = document.getElementById('derivative-btn');
+            const integralBtn = document.getElementById('integral-btn');
+            const criticalPointsBtn = document.getElementById('critical-points-btn');
+            const clearCalculusBtn = document.getElementById('clear-calculus-btn');
+            const calculusResult = document.getElementById('calculus-result');
+            
+            // Tab switching
+            tabButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const tabId = this.getAttribute('data-tab');
+                    
+                    // Remove active class from all buttons and contents
+                    tabButtons.forEach(btn => btn.classList.remove('active'));
+                    tabContents.forEach(content => content.classList.remove('active'));
+                    
+                    // Add active class to clicked button and corresponding content
+                    this.classList.add('active');
+                    document.getElementById(`${tabId}-tab`).classList.add('active');
+                });
+            });
+
+            // Focus on expression input on load
+            expressionInput.focus();
+
+            // Function key insertion
+            functionKeys.forEach(key => {
+                key.addEventListener('click', function() {
+                    const value = this.getAttribute('data-key');
+                    const activeInput = document.activeElement;
+                    
+                    // If an input is focused, insert at cursor
+                    if (activeInput && activeInput.tagName === 'INPUT') {
+                        insertAtCursor(activeInput, value);
+                    } else {
+                        // Default to expression input
+                        insertAtCursor(expressionInput, value);
+                        expressionInput.focus();
+                    }
+                });
+            });
+
+            function insertAtCursor(input, text) {
+                const startPos = input.selectionStart;
+                const endPos = input.selectionEnd;
+                const scrollTop = input.scrollTop;
+                const currentValue = input.value;
+                
+                input.value = currentValue.substring(0, startPos) + text + currentValue.substring(endPos);
+                input.selectionStart = input.selectionEnd = startPos + text.length;
+                input.scrollTop = scrollTop;
+            }
+
+            // Detect variables in the expression
+            detectBtn.addEventListener('click', detectVariables);
+
+            function detectVariables() {
+                try {
+                    const expression = expressionInput.value.trim();
+                    if (!expression) {
+                        throw new Error('Please enter an expression first');
+                    }
+
+                    // More robust variable detection
+                    const functions = ['sin', 'cos', 'tan', 'asin', 'acos', 'atan', 'sqrt', 'log', 'exp', 'abs', 'ln'];
+                    const constants = ['pi', 'e'];
+                    
+                    // Remove function names and constants
+                    let tempExpr = expression;
+                    functions.concat(constants).forEach(func => {
+                        const regex = new RegExp(`\\b${func}\\b`, 'g');
+                        tempExpr = tempExpr.replace(regex, '');
+                    });
+                    
+                    // Find all single letters that could be variables
+                    const varRegex = /\b[a-zA-Z]\b/g;
+                    const matches = tempExpr.match(varRegex);
+                    
+                    // Extract unique variables
+                    const variables = [...new Set(matches || [])];
+                    
+                    if (variables.length === 0) {
+                        variableInputs.innerHTML = '<div class="help-text">No variables detected in expression</div>';
+                        return;
+                    }
+                    
+                    // Create input fields for each variable
+                    variableInputs.innerHTML = '<h3>Variables:</h3>';
+                    const container = document.createElement('div');
+                    container.className = 'variable-container';
+                    
+                    variables.forEach(variable => {
+                        const varDiv = document.createElement('div');
+                        varDiv.className = 'variable-item';
+                        
+                        const varLabel = document.createElement('label');
+                        varLabel.textContent = variable + ' =';
+                        
+                        const varInput = document.createElement('input');
+                        varInput.type = 'text';
+                        varInput.id = `var-${variable}`;
+                        varInput.setAttribute('data-var', variable);
+                        varInput.value = '1'; // Default value
+                        
+                        varDiv.appendChild(varLabel);
+                        varDiv.appendChild(varInput);
+                        container.appendChild(varDiv);
+                    });
+                    
+                    variableInputs.appendChild(container);
+                    
+                } catch (error) {
+                    resultDisplay.innerHTML = `<span class="error">Error: ${error.message}</span>`;
+                    resultDisplay.classList.add('error');
+                }
+            }
+
+            // Handle calculation
+            calculateBtn.addEventListener('click', calculateResult);
+            
+            // Allow pressing Enter to calculate
+            expressionInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') calculateResult();
+            });
+
+            // Clear inputs and result
+            clearBtn.addEventListener('click', function() {
+                expressionInput.value = '';
+                variableInputs.innerHTML = '';
+                resultDisplay.innerHTML = 'Enter an expression and click Calculate';
+                resultDisplay.classList.remove('error');
+                expressionInput.focus();
+            });
+
+            // Close button
+            closeButton.addEventListener('click', function() {
+                expressionInput.value = '';
+                variableInputs.innerHTML = '';
+                resultDisplay.innerHTML = 'Enter an expression and click Calculate';
+                resultDisplay.classList.remove('error');
+                expressionInput.focus();
+            });
+
+            function calculateResult() {
+                try {
+                    const expression = expressionInput.value.trim();
+                    if (!expression) {
+                        throw new Error('Please enter an expression');
+                    }
+
+                    // Clean expression
+                    const cleanExpression = expression.replace(/;/g, '');
+
+                    // Create a scope with all variable values
+                    const scope = {};
+                    const varInputs = document.querySelectorAll('[data-var]');
+                    
+                    if (varInputs.length > 0) {
+                        varInputs.forEach(input => {
+                            const varName = input.getAttribute('data-var');
+                            const varValue = input.value.trim();
+                            
+                            if (!varValue) {
+                                throw new Error(`Please enter a value for ${varName}`);
+                            }
+                            
+                            try {
+                                scope[varName] = math.evaluate(varValue);
+                            } catch (e) {
+                                throw new Error(`Invalid value for ${varName}: ${e.message}`);
+                            }
+                        });
+                    } else {
+                        // If no variables have been detected yet, try to detect them now
+                        detectVariables();
+                        
+                        const newVarInputs = document.querySelectorAll('[data-var]');
+                        if (newVarInputs.length > 0) {
+                            throw new Error('Variables detected. Please set values for them and calculate again.');
+                        }
+                    }
+
+                    // Evaluate the expression with the scope
+                    let result;
+                    try {
+                        result = math.evaluate(cleanExpression, scope);
+                    } catch (e) {
+                        if (e.message.includes("Undefined symbol")) {
+                            throw new Error("Unknown symbol or function. Check your expression.");
+                        } else if (e.message.includes("Unexpected end of expression")) {
+                            throw new Error("Incomplete expression. Check for missing parentheses.");
+                        } else {
+                            throw new Error(e.message);
+                        }
+                    }
+                    
+                    // Format the result
+                    let formattedResult;
+                    if (typeof result === 'number') {
+                        if (Math.abs(result - Math.round(result)) < 1e-10) {
+                            formattedResult = Math.round(result);
+                        } else {
+                            formattedResult = result.toFixed(10).replace(/\.?0+$/, '');
+                            if (formattedResult.endsWith('.')) {
+                                formattedResult = formattedResult.slice(0, -1);
+                            }
+                        }
+                    } else {
+                        formattedResult = result.toString();
+                    }
+
+                    // Build the result display
+                    let resultText = `<span class="success">Result: ${formattedResult}</span>`;
+                    
+                    // Add variable values to the display
+                    if (Object.keys(scope).length > 0) {
+                        resultText += "<br><br><strong>With variables:</strong>";
+                        for (const [key, value] of Object.entries(scope)) {
+                            resultText += `<br>${key} = ${value}`;
+                        }
+                    }
+
+                    resultDisplay.innerHTML = resultText;
+                    resultDisplay.classList.remove('error');
+                } catch (error) {
+                    resultDisplay.innerHTML = `<span class="error">Error: ${error.message}</span>`;
+                    resultDisplay.classList.add('error');
+                }
+            }
+            
+            // Polynomial Factor Finding - FIXED
+            findFactorsBtn.addEventListener('click', findFactors);
+            
+            clearFactorsBtn.addEventListener('click', function() {
+                polynomialInput.value = '';
+                factorsResult.innerHTML = 'Enter a polynomial and click Find Factors';
+                factorsTableContainer.classList.add('hidden');
+                factorsTableBody.innerHTML = '';
+            });
+
+            function findFactors() {
+                try {
+                    const polynomial = polynomialInput.value.trim();
+                    if (!polynomial) {
+                        throw new Error('Please enter a polynomial');
+                    }
+
+                    factorsResult.innerHTML = '<div class="loading">Analyzing polynomial...</div>';
+                    
+                    // Get coefficients using a more robust method
+                    const coeffs = extractCoefficients(polynomial);
+                    
+                    // Get possible rational roots using the Rational Root Theorem
+                    const rationalRoots = getPossibleRationalRoots(coeffs);
+                    
+                    // Test each potential root
+                    const actualRoots = [];
+                    const testResults = [];
+                    
+                    rationalRoots.forEach(root => {
+                        try {
+                            const scope = { x: root };
+                            let result = math.evaluate(polynomial, scope);
+                            result = Math.round(result * 1e10) / 1e10;
+                            
+                            const isRoot = Math.abs(result) < 1e-9;
+                            testResults.push({
+                                value: root,
+                                result: result,
+                                isRoot: isRoot
+                            });
+                            
+                            if (isRoot) {
+                                actualRoots.push(root);
+                            }
+                        } catch (e) {
+                            console.error(`Error evaluating at x = ${root}: ${e.message}`);
+                        }
+                    });
+                    
+                    // Display results
+                    factorsTableContainer.classList.remove('hidden');
+                    factorsTableBody.innerHTML = '';
+                    
+                    // Sort test results: roots first, then by absolute value
+                    testResults.sort((a, b) => {
+                        if (a.isRoot && !b.isRoot) return -1;
+                        if (!a.isRoot && b.isRoot) return 1;
+                        return Math.abs(a.value) - Math.abs(b.value);
+                    });
+                    
+                    testResults.forEach(test => {
+                        const row = document.createElement('tr');
+                        
+                        const valueCell = document.createElement('td');
+                        valueCell.textContent = test.value;
+                        
+                        const resultCell = document.createElement('td');
+                        resultCell.textContent = test.result;
+                        
+                        const isRootCell = document.createElement('td');
+                        const factorCell = document.createElement('td');
+                        
+                        if (test.isRoot) {
+                            isRootCell.innerHTML = '<span class="success">YES</span>';
+                            const factor = test.value === 0 ? 'x' : 
+                                          test.value > 0 ? `(x - ${test.value})` : `(x + ${Math.abs(test.value)})`;
+                            factorCell.textContent = factor;
+                        } else {
+                            isRootCell.textContent = "NO";
+                            factorCell.textContent = "-";
+                        }
+                        
+                        row.appendChild(valueCell);
+                        row.appendChild(resultCell);
+                        row.appendChild(isRootCell);
+                        row.appendChild(factorCell);
+                        factorsTableBody.appendChild(row);
+                    });
+                    
+                    // Display summary
+                    let resultHTML = `<strong>Polynomial: ${polynomial}</strong><br><br>`;
+                    
+                    if (actualRoots.length > 0) {
+                        resultHTML += `<span class="success">Found ${actualRoots.length} rational root(s):</span><br>`;
+                        actualRoots.forEach(root => {
+                            const factor = root === 0 ? 'x' : 
+                                          root > 0 ? `(x - ${root})` : `(x + ${Math.abs(root)})`;
+                            resultHTML += `• x = ${root} → Factor: ${factor}<br>`;
+                        });
+                        
+                        if (actualRoots.length > 1) {
+                            resultHTML += `<br><strong>Partial factorization:</strong><br>`;
+                            const factorString = actualRoots.map(root => 
+                                root === 0 ? 'x' : 
+                                root > 0 ? `(x - ${root})` : `(x + ${Math.abs(root)})`
+                            ).join(' × ');
+                            resultHTML += `${factorString} × (remaining factor)`;
+                        }
+                    } else {
+                        resultHTML += "<span class='error'>No rational roots found among tested values.</span><br>";
+                        resultHTML += "The polynomial might have irrational or complex roots.";
+                    }
+                    
+                    factorsResult.innerHTML = resultHTML;
+                } catch (error) {
+                    factorsResult.innerHTML = `<span class="error">Error: ${error.message}</span>`;
+                    factorsTableContainer.classList.add('hidden');
+                }
+            }
+
+            function extractCoefficients(polyString) {
+                try {
+                    // Evaluate at x = 0 for constant term
+                    const constantTerm = math.evaluate(polyString, { x: 0 });
+                    
+                    // Estimate leading coefficient by evaluating at large x
+                    let leadingCoef = 1;
+                    try {
+                        const largeX = 1000;
+                        const evaluated = math.evaluate(polyString, { x: largeX });
+                        
+                        // Find degree by testing different values
+                        let degree = 1;
+                        for (let d = 1; d <= 6; d++) {
+                            const testCoef = evaluated / Math.pow(largeX, d);
+                            if (Math.abs(testCoef) >= 0.1 && Math.abs(testCoef) <= 1000) {
+                                degree = d;
+                                leadingCoef = Math.round(testCoef);
+                                break;
+                            }
+                        }
+                    } catch (e) {
+                        console.warn("Could not determine leading coefficient:", e);
+                    }
+                    
+                    return {
+                        constant: constantTerm,
+                        leading: leadingCoef
+                    };
+                } catch (e) {
+                    throw new Error("Invalid polynomial format: " + e.message);
+                }
+            }
+            
+            function getPossibleRationalRoots(coeffs) {
+                const constantTerm = Math.abs(coeffs.constant || 1);
+                const leadingCoeff = Math.abs(coeffs.leading || 1);
+                
+                const pFactors = getFactors(constantTerm);
+                const qFactors = getFactors(leadingCoeff);
+                
+                const possibleRoots = [];
+                
+                // Add 0 if constant term is 0
+                if (coeffs.constant === 0) {
+                    possibleRoots.push(0);
+                }
+                
+                // Generate p/q values
+                pFactors.forEach(p => {
+                    qFactors.forEach(q => {
+                        const positive = p/q;
+                        const negative = -p/q;
+                        if (!possibleRoots.includes(positive)) possibleRoots.push(positive);
+                        if (!possibleRoots.includes(negative)) possibleRoots.push(negative);
+                    });
+                });
+                
+                // Add some common fractions for thoroughness
+                const commonFractions = [0.5, -0.5, 1.5, -1.5, 2.5, -2.5, 0.25, -0.25, 0.75, -0.75];
+                commonFractions.forEach(val => {
+                    if (!possibleRoots.includes(val)) {
+                        possibleRoots.push(val);
+                    }
+                });
+                
+                return [...new Set(possibleRoots)].sort((a, b) => a - b);
+            }
+            
+            function getFactors(n) {
+                if (n === 0) return [1];
+                
+                const factors = [];
+                const absN = Math.abs(Math.round(n));
+                
+                for (let i = 1; i <= Math.min(absN, 20); i++) {
+                    if (absN % i === 0) {
+                        factors.push(i);
+                        if (i !== absN / i && absN / i <= 20) {
+                            factors.push(absN / i);
+                        }
+                    }
+                }
+                
+                return [...new Set(factors)].sort((a, b) => a - b);
+            }
+
+            // Graphing functionality
+            graphBtn.addEventListener('click', graphFunction_);
+            clearGraphBtn.addEventListener('click', clearGraph);
+            analyzeGraphBtn.addEventListener('click', analyzeFunction);
+
+            function graphFunction_() {
+                try {
+                    const func = graphFunction.value.trim();
+                    if (!func) {
+                        throw new Error('Please enter a function to graph');
+                    }
+
+                    const xMinVal = parseFloat(xMin.value) || -10;
+                    const xMaxVal = parseFloat(xMax.value) || 10;
+                    const yMinVal = parseFloat(yMin.value) || -10;
+                    const yMaxVal = parseFloat(yMax.value) || 10;
+
+                    // Generate data points
+                    const xData = [];
+                    const yData = [];
+                    const step = (xMaxVal - xMinVal) / 1000;
+
+                    for (let x = xMinVal; x <= xMaxVal; x += step) {
+                        try {
+                            const y = math.evaluate(func, { x: x });
+                            if (typeof y === 'number' && isFinite(y)) {
+                                xData.push(x);
+                                yData.push(y);
+                            }
+                        } catch (e) {
+                            // Skip invalid points
+                        }
+                    }
+
+                    if (xData.length === 0) {
+                        throw new Error('No valid points found. Check your function syntax.');
+                    }
+
+                    // Create the plot
+                    const trace = {
+                        x: xData,
+                        y: yData,
+                        type: 'scatter',
+                        mode: 'lines',
+                        name: `f(x) = ${func}`,
+                        line: { color: '#5D5CDE', width: 3 }
+                    };
+
+                    const layout = {
+                        title: `Graph of f(x) = ${func}`,
+                        xaxis: { 
+                            title: 'x',
+                            range: [xMinVal, xMaxVal],
+                            gridcolor: '#ddd',
+                            zerolinecolor: '#000',
+                            zerolinewidth: 2
+                        },
+                        yaxis: { 
+                            title: 'f(x)',
+                            range: [yMinVal, yMaxVal],
+                            gridcolor: '#ddd',
+                            zerolinecolor: '#000',
+                            zerolinewidth: 2
+                        },
+                        plot_bgcolor: '#f8f9fa',
+                        paper_bgcolor: '#ffffff',
+                        font: { family: 'Courier New, monospace' }
+                    };
+
+                    Plotly.newPlot('graph-container', [trace], layout, {responsive: true});
+                    
+                    graphAnalysis.innerHTML = `<span class="success">Function graphed successfully!</span><br>Domain: [${xMinVal}, ${xMaxVal}]<br>Points plotted: ${xData.length}`;
+
+                } catch (error) {
+                    graphAnalysis.innerHTML = `<span class="error">Error: ${error.message}</span>`;
+                }
+            }
+
+            function clearGraph() {
+                Plotly.purge('graph-container');
+                graphFunction.value = '';
+                graphAnalysis.innerHTML = 'Enter a function and click Graph or Analyze';
+            }
+
+            function analyzeFunction() {
+                try {
+                    const func = graphFunction.value.trim();
+                    if (!func) {
+                        throw new Error('Please enter a function to analyze');
+                    }
+
+                    let analysisText = `<strong>Analysis of f(x) = ${func}</strong><br><br>`;
+
+                    // Find derivative
+                    try {
+                        const derivative = math.derivative(func, 'x').toString();
+                        analysisText += `<strong>Derivative:</strong> f'(x) = ${derivative}<br><br>`;
+                    } catch (e) {
+                        analysisText += `<strong>Derivative:</strong> Could not compute symbolically<br><br>`;
+                    }
+
+                    // Find some key points
+                    const testPoints = [-5, -2, -1, 0, 1, 2, 5];
+                    analysisText += `<strong>Key Points:</strong><br>`;
+                    
+                    testPoints.forEach(x => {
+                        try {
+                            const y = math.evaluate(func, { x: x });
+                            if (typeof y === 'number' && isFinite(y)) {
+                                analysisText += `f(${x}) = ${y.toFixed(3)}<br>`;
+                            }
+                        } catch (e) {
+                            analysisText += `f(${x}) = undefined<br>`;
+                        }
+                    });
+
+                    // Check for zeros near origin
+                    analysisText += `<br><strong>Behavior:</strong><br>`;
+                    try {
+                        const atZero = math.evaluate(func, { x: 0 });
+                        if (Math.abs(atZero) < 0.001) {
+                            analysisText += `• Passes through origin<br>`;
+                        } else {
+                            analysisText += `• Y-intercept: ${atZero.toFixed(3)}<br>`;
+                        }
+                    } catch (e) {
+                        analysisText += `• Undefined at x = 0<br>`;
+                    }
+
+                    graphAnalysis.innerHTML = analysisText;
+
+                    // Also graph the function
+                    graphFunction_();
+
+                } catch (error) {
+                    graphAnalysis.innerHTML = `<span class="error">Error: ${error.message}</span>`;
+                }
+            }
+
+            // Calculus functionality
+            derivativeBtn.addEventListener('click', findDerivative);
+            integralBtn.addEventListener('click', findIntegral);
+            criticalPointsBtn.addEventListener('click', findCriticalPoints);
+            clearCalculusBtn.addEventListener('click', function() {
+                calculusFunction.value = '';
+                calculusResult.innerHTML = 'Enter a function and select a calculus operation';
+            });
+
+            function findDerivative() {
+                try {
+                    const func = calculusFunction.value.trim();
+                    if (!func) {
+                        throw new Error('Please enter a function');
+                    }
+
+                    calculusResult.innerHTML = '<div class="loading">Computing derivative...</div>';
+
+                    // Calculate derivative
+                    const derivative = math.derivative(func, 'x');
+                    const derivativeStr = derivative.toString();
+
+                    let resultHTML = `<strong>Function:</strong> f(x) = ${func}<br><br>`;
+                    resultHTML += `<strong>Derivative:</strong> f'(x) = ${derivativeStr}<br><br>`;
+
+                    // Evaluate derivative at some points
+                    resultHTML += `<strong>Derivative Values:</strong><br>`;
+                    const testPoints = [-2, -1, 0, 1, 2];
+                    testPoints.forEach(x => {
+                        try {
+                            const value = derivative.evaluate({ x: x });
+                            resultHTML += `f'(${x}) = ${value.toFixed(4)}<br>`;
+                        } catch (e) {
+                            resultHTML += `f'(${x}) = undefined<br>`;
+                        }
+                    });
+
+                    calculusResult.innerHTML = resultHTML;
+
+                } catch (error) {
+                    calculusResult.innerHTML = `<span class="error">Error: ${error.message}</span>`;
+                }
+            }
+
+            function findIntegral() {
+                try {
+                    const func = calculusFunction.value.trim();
+                    if (!func) {
+                        throw new Error('Please enter a function');
+                    }
+
+                    calculusResult.innerHTML = '<div class="loading">Computing integral...</div>';
+
+                    let resultHTML = `<strong>Function:</strong> f(x) = ${func}<br><br>`;
+
+                    // For simple polynomials, we can compute symbolic integrals
+                    try {
+                        // Parse the function to check if it's a simple polynomial
+                        const node = math.parse(func);
+                        
+                        // Attempt symbolic integration for common cases
+                        if (func.includes('x^')) {
+                            resultHTML += `<strong>Indefinite Integral:</strong><br>`;
+                            resultHTML += `∫ ${func} dx = (symbolic integration not fully supported)<br><br>`;
+                        }
+
+                        // Numerical integration example
+                        resultHTML += `<strong>Numerical Integration Examples:</strong><br>`;
+                        const intervals = [
+                            { a: 0, b: 1 },
+                            { a: -1, b: 1 },
+                            { a: 0, b: 2 }
+                        ];
+
+                        intervals.forEach(({a, b}) => {
+                            try {
+                                // Simple numerical integration using trapezoidal rule
+                                const n = 1000;
+                                const h = (b - a) / n;
+                                let sum = 0;
+                                
+                                for (let i = 0; i <= n; i++) {
+                                    const x = a + i * h;
+                                    const y = math.evaluate(func, { x: x });
+                                    if (i === 0 || i === n) {
+                                        sum += y;
+                                    } else {
+                                        sum += 2 * y;
+                                    }
+                                }
+                                
+                                const integral = (h / 2) * sum;
+                                resultHTML += `∫[${a} to ${b}] ${func} dx ≈ ${integral.toFixed(6)}<br>`;
+                            } catch (e) {
+                                resultHTML += `∫[${a} to ${b}] ${func} dx = error<br>`;
+                            }
+                        });
+
+                    } catch (e) {
+                        resultHTML += `<span class="error">Could not compute integral: ${e.message}</span>`;
+                    }
+
+                    calculusResult.innerHTML = resultHTML;
+
+                } catch (error) {
+                    calculusResult.innerHTML = `<span class="error">Error: ${error.message}</span>`;
+                }
+            }
+
+            function findCriticalPoints() {
+                try {
+                    const func = calculusFunction.value.trim();
+                    if (!func) {
+                        throw new Error('Please enter a function');
+                    }
+
+                    calculusResult.innerHTML = '<div class="loading">Finding critical points...</div>';
+
+                    // Calculate derivative
+                    const derivative = math.derivative(func, 'x');
+                    const derivativeStr = derivative.toString();
+
+                    let resultHTML = `<strong>Function:</strong> f(x) = ${func}<br>`;
+                    resultHTML += `<strong>Derivative:</strong> f'(x) = ${derivativeStr}<br><br>`;
+
+                    resultHTML += `<strong>Critical Points Analysis:</strong><br>`;
+                    resultHTML += `Critical points occur where f'(x) = 0<br><br>`;
+
+                    // Check derivative at many points to find approximate zeros
+                    const criticalPoints = [];
+                    const step = 0.1;
+                    
+                    for (let x = -10; x <= 10; x += step) {
+                        try {
+                            const y = derivative.evaluate({ x: x });
+                            if (Math.abs(y) < 0.001) {
+                                // Check if this is a new critical point
+                                const isNew = criticalPoints.every(cp => Math.abs(cp - x) > 0.5);
+                                if (isNew) {
+                                    criticalPoints.push(Math.round(x * 10) / 10);
+                                }
+                            }
+                        } catch (e) {
+                            // Skip points where derivative is undefined
+                        }
+                    }
+
+                    if (criticalPoints.length > 0) {
+                        resultHTML += `<strong>Approximate Critical Points:</strong><br>`;
+                        criticalPoints.forEach(cp => {
+                            try {
+                                const fValue = math.evaluate(func, { x: cp });
+                                resultHTML += `x = ${cp}, f(${cp}) = ${fValue.toFixed(4)}<br>`;
+                            } catch (e) {
+                                resultHTML += `x = ${cp}, f(${cp}) = undefined<br>`;
+                            }
+                        });
+                    } else {
+                        resultHTML += `No critical points found in the range [-10, 10]<br>`;
+                    }
+
+                    resultHTML += `<br><em>Note: This is a numerical approximation. For exact solutions, solve f'(x) = 0 analytically.</em>`;
+
+                    calculusResult.innerHTML = resultHTML;
+
+                } catch (error) {
+                    calculusResult.innerHTML = `<span class="error">Error: ${error.message}</span>`;
+                }
+            }
+        });
+    </script>
+</body>
+</html>
