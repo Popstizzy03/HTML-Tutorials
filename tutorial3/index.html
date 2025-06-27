@@ -3,33 +3,42 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title> Social Homepage</title>
+    <title>SkillForge - Professional Skills & Certification Platform</title>
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
 <body>
 
     <header>
-        <div class="logo">SocialSphere</div>
+        <div class="logo">
+            <i class="fas fa-graduation-cap"></i>
+            SkillForge
+        </div>
         <nav>
             <ul>
-                <li><a href="#" class="active"><i class="fas fa-home"></i> Home</a></li>
-                <li><a href="#"><i class="fas fa-users"></i> Friends</a></li>
-                <li><a href="#"><i class="fas fa-envelope"></i> Messages</a></li>
-                <li><a href="#"><i class="fas fa-bell"></i> Notifications</a></li>
+                <li><a href="#" class="active"><i class="fas fa-home"></i> Dashboard</a></li>
+                <li><a href="#"><i class="fas fa-book-open"></i> Courses</a></li>
+                <li><a href="#"><i class="fas fa-certificate"></i> Certifications</a></li>
+                <li><a href="#"><i class="fas fa-briefcase"></i> Job Board</a></li>
+                <li><a href="#"><i class="fas fa-users"></i> Community</a></li>
             </ul>
         </nav>
         <div class="search-bar">
-            <input type="text" placeholder="Search...">
+            <input type="text" placeholder="Search skills, courses, jobs...">
             <button><i class="fas fa-search"></i></button>
         </div>
         <div class="profile">
             <img src="profile.jpg" alt="User Profile">
-            <span>John Doe</span>
+            <span>Alex Student</span>
+            <div class="user-level">
+                <span class="level-badge">Beginner</span>
+            </div>
             <div class="dropdown">
                 <button class="dropdown-button"><i class="fas fa-caret-down"></i></button>
                 <div class="dropdown-content">
                     <a href="#"><i class="fas fa-user"></i> Profile</a>
+                    <a href="#"><i class="fas fa-trophy"></i> Achievements</a>
+                    <a href="#"><i class="fas fa-chart-line"></i> Progress</a>
                     <a href="#"><i class="fas fa-cog"></i> Settings</a>
                     <a href="#"><i class="fas fa-sign-out-alt"></i> Logout</a>
                 </div>
@@ -40,137 +49,366 @@
     <main>
         <aside class="left-sidebar">
             <div class="sidebar-section">
-                <h3>Your Profile</h3>
-                <img src="profile.jpg" alt="User Profile">
-                <p><strong>John Doe</strong></p>
-                <p>Web Developer</p>
-                <a href="#">Edit Profile</a>
+                <h3>Your Learning Path</h3>
+                <div class="progress-circle">
+                    <div class="progress-value">65%</div>
+                </div>
+                <p><strong>Alex Student</strong></p>
+                <p>Full Stack Developer Track</p>
+                <div class="skill-stats">
+                    <div class="stat">
+                        <span class="stat-number">12</span>
+                        <span class="stat-label">Courses Completed</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-number">5</span>
+                        <span class="stat-label">Certificates Earned</span>
+                    </div>
+                </div>
+                <a href="#" class="btn-primary">View Full Profile</a>
             </div>
+
             <div class="sidebar-section">
-                <h3>Friends</h3>
+                <h3>Quick Skills</h3>
+                <div class="skill-tags">
+                    <span class="skill-tag acquired">HTML/CSS</span>
+                    <span class="skill-tag acquired">JavaScript</span>
+                    <span class="skill-tag in-progress">React.js</span>
+                    <span class="skill-tag">Node.js</span>
+                    <span class="skill-tag">Python</span>
+                    <span class="skill-tag">SQL</span>
+                </div>
+            </div>
+
+            <div class="sidebar-section">
+                <h3>Study Groups</h3>
                 <ul class="friend-list">
-                    <li><img src="friend1.jpg" alt="Friend 1"><span>Jane Smith</span></li>
-                    <li><img src="friend2.jpg" alt="Friend 2"><span>Peter Jones</span></li>
-                    <li><img src="friend3.jpg" alt="Friend 3"><span>Alice Brown</span></li>
-                    <li><img src="friend4.jpg" alt="Friend 4"><span>David Wilson</span></li>
-                    <li><img src="friend5.jpg" alt="Friend 5"><span>Emily Clark</span></li>
-                </ul>
-            </div>
-            <div class="sidebar-section">
-                <h3>Groups</h3>
-                <ul>
-                    <li><a href="#">Web Development Group</a></li>
-                    <li><a href="#">Photography Enthusiasts</a></li>
-                    <li><a href="#">Book Club</a></li>
+                    <li>
+                        <img src="friend1.jpg" alt="Study Group">
+                        <div>
+                            <span>React Developers</span>
+                            <small>234 members</small>
+                        </div>
+                    </li>
+                    <li>
+                        <img src="friend2.jpg" alt="Study Group">
+                        <div>
+                            <span>Python Beginners</span>
+                            <small>156 members</small>
+                        </div>
+                    </li>
+                    <li>
+                        <img src="friend3.jpg" alt="Study Group">
+                        <div>
+                            <span>Data Science Hub</span>
+                            <small>89 members</small>
+                        </div>
+                    </li>
                 </ul>
             </div>
         </aside>
 
         <section class="main-content">
-            <div class="post-form">
-                <textarea placeholder="What's on your mind, John?"></textarea>
-                <div class="post-options">
-                    <button><i class="fas fa-image"></i> Add Photo/Video</button>
-                    <button><i class="fas fa-location-arrow"></i> Check In</button>
-                    <button class="post-button">Post</button>
+            <div class="welcome-banner">
+                <h2>Continue Your Learning Journey</h2>
+                <p>Master industry-relevant skills and earn certificates that employers recognize</p>
+            </div>
+
+            <div class="course-progress-card">
+                <div class="course-header">
+                    <img src="react-logo.jpg" alt="React Course">
+                    <div>
+                        <h3>Advanced React Development</h3>
+                        <p>Build production-ready applications</p>
+                        <div class="course-meta">
+                            <span><i class="fas fa-clock"></i> 8 weeks</span>
+                            <span><i class="fas fa-certificate"></i> Certificate included</span>
+                            <span><i class="fas fa-dollar-sign"></i> $15-25/hr earning potential</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill" style="width: 45%"></div>
+                </div>
+                <div class="course-actions">
+                    <button class="btn-primary">Continue Learning</button>
+                    <button class="btn-secondary">View Syllabus</button>
                 </div>
             </div>
 
-            <div class="post">
-                <div class="post-header">
-                    <img src="friend1.jpg" alt="Jane Smith">
-                    <span>Jane Smith</span>
-                    <small>Posted 2 hours ago</small>
-                </div>
-                <div class="post-content">
-                    <p>Enjoying a beautiful sunset at the beach!  #beachlife #sunset</p>
-                    <img src="sunset.jpg" alt="Sunset">
-                </div>
-                <div class="post-footer">
-                    <button><i class="fas fa-thumbs-up"></i> Like (25)</button>
-                    <button><i class="fas fa-comment"></i> Comment (5)</button>
-                    <button><i class="fas fa-share"></i> Share</button>
+            <div class="featured-opportunities">
+                <h3>🚀 Income-Earning Opportunities</h3>
+                
+                <div class="opportunity-card">
+                    <div class="opportunity-header">
+                        <div class="company-logo">
+                            <i class="fas fa-building"></i>
+                        </div>
+                        <div>
+                            <h4>Frontend Developer - Remote</h4>
+                            <p>TechStart Inc. • $40-60k/year</p>
+                            <div class="required-skills">
+                                <span class="skill-match">React.js</span>
+                                <span class="skill-match">JavaScript</span>
+                                <span class="skill-needed">TypeScript</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="opportunity-actions">
+                        <button class="btn-primary">Apply Now</button>
+                        <button class="btn-secondary">Learn Required Skills</button>
+                    </div>
                 </div>
 
-                <div class="comment-section">
-                    <div class="comment">
-                        <img src="friend2.jpg" alt="Peter Jones">
-                        <p>Peter Jones: Wow, looks amazing!</p>
+                <div class="opportunity-card">
+                    <div class="opportunity-header">
+                        <div class="company-logo freelance">
+                            <i class="fas fa-laptop-code"></i>
+                        </div>
+                        <div>
+                            <h4>Freelance Web Development Projects</h4>
+                            <p>Multiple Clients • $25-75/hour</p>
+                            <div class="required-skills">
+                                <span class="skill-match">HTML/CSS</span>
+                                <span class="skill-match">JavaScript</span>
+                                <span class="skill-needed">WordPress</span>
+                            </div>
+                        </div>
                     </div>
-                    <div class="comment">
-                        <img src="friend3.jpg" alt="Alice Brown">
-                        <p>Alice Brown: Wish I was there!</p>
-                    </div>
-                    <div class="add-comment">
-                        <img src="profile.jpg" alt="John Doe">
-                        <input type="text" placeholder="Write a comment...">
-                    </div>
-                </div>
-            </div>
-
-             <div class="post">
-                <div class="post-header">
-                    <img src="friend2.jpg" alt="Peter Jones">
-                    <span>Peter Jones</span>
-                    <small>Posted 5 hours ago</small>
-                </div>
-                <div class="post-content">
-                    <p>Just finished a challenging coding project! Feeling accomplished. #coding #webdevelopment</p>
-                </div>
-                <div class="post-footer">
-                    <button><i class="fas fa-thumbs-up"></i> Like (12)</button>
-                    <button><i class="fas fa-comment"></i> Comment (2)</button>
-                    <button><i class="fas fa-share"></i> Share</button>
-                </div>
-
-                <div class="comment-section">
-                    <div class="comment">
-                        <img src="profile.jpg" alt="John Doe">
-                        <p>John Doe: Congrats, Peter!</p>
-                    </div>
-                    <div class="add-comment">
-                        <img src="profile.jpg" alt="John Doe">
-                        <input type="text" placeholder="Write a comment...">
+                    <div class="opportunity-actions">
+                        <button class="btn-primary">Browse Projects</button>
+                        <button class="btn-secondary">Build Portfolio</button>
                     </div>
                 </div>
             </div>
 
-            <!-- More posts would go here -->
+            <div class="featured-courses">
+                <h3>🎯 Recommended for You</h3>
+                
+                <div class="course-grid">
+                    <div class="course-card beginner">
+                        <div class="course-image">
+                            <i class="fab fa-python"></i>
+                        </div>
+                        <div class="course-content">
+                            <h4>Python for Beginners</h4>
+                            <p>Start your programming journey with Python</p>
+                            <div class="course-info">
+                                <span class="difficulty beginner">Beginner</span>
+                                <span class="duration">6 weeks</span>
+                                <span class="price">Free</span>
+                            </div>
+                            <div class="earning-potential">💰 $20-35/hr potential</div>
+                        </div>
+                    </div>
 
+                    <div class="course-card intermediate">
+                        <div class="course-image">
+                            <i class="fas fa-database"></i>
+                        </div>
+                        <div class="course-content">
+                            <h4>Database Design & SQL</h4>
+                            <p>Master database concepts and SQL queries</p>
+                            <div class="course-info">
+                                <span class="difficulty intermediate">Intermediate</span>
+                                <span class="duration">4 weeks</span>
+                                <span class="price">$49</span>
+                            </div>
+                            <div class="earning-potential">💰 $30-50/hr potential</div>
+                        </div>
+                    </div>
+
+                    <div class="course-card advanced">
+                        <div class="course-image">
+                            <i class="fas fa-cloud"></i>
+                        </div>
+                        <div class="course-content">
+                            <h4>AWS Cloud Architecture</h4>
+                            <p>Design scalable cloud solutions</p>
+                            <div class="course-info">
+                                <span class="difficulty advanced">Advanced</span>
+                                <span class="duration">10 weeks</span>
+                                <span class="price">$199</span>
+                            </div>
+                            <div class="earning-potential">💰 $60-120/hr potential</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="success-stories">
+                <h3>🏆 Recent Achievements</h3>
+                
+                <div class="achievement-card">
+                    <div class="achievement-header">
+                        <img src="student1.jpg" alt="Sarah Johnson">
+                        <div>
+                            <span><strong>Sarah Johnson</strong> earned certification</span>
+                            <small>2 hours ago</small>
+                        </div>
+                    </div>
+                    <div class="achievement-content">
+                        <div class="certificate-badge">
+                            <i class="fas fa-certificate"></i>
+                            <span>Full Stack Web Developer</span>
+                        </div>
+                        <p>"Just landed my first developer job at $55k/year! The hands-on projects really prepared me for real-world challenges."</p>
+                        <div class="achievement-stats">
+                            <span>🎯 Completed in 4 months</span>
+                            <span>💼 Hired within 2 weeks</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="achievement-card">
+                    <div class="achievement-header">
+                        <img src="student2.jpg" alt="Mike Chen">
+                        <div>
+                            <span><strong>Mike Chen</strong> shared an update</span>
+                            <small>1 day ago</small>
+                        </div>
+                    </div>
+                    <div class="achievement-content">
+                        <p>"Started freelancing after completing the Python course. Already earning $800/week working part-time! 🚀"</p>
+                        <div class="skill-progression">
+                            <span class="skill-level">Beginner → Intermediate</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </section>
 
         <aside class="right-sidebar">
             <div class="sidebar-section">
-                <h3>Trending</h3>
+                <h3>🔥 Trending Skills</h3>
                 <ol class="trending-list">
-                    <li>#webdevelopment</li>
-                    <li>#photography</li>
-                    <li>#codinglife</li>
-                    <li>#travel</li>
-                    <li>#music</li>
+                    <li>
+                        <span>Artificial Intelligence</span>
+                        <small>+45% demand</small>
+                    </li>
+                    <li>
+                        <span>Cybersecurity</span>
+                        <small>+38% demand</small>
+                    </li>
+                    <li>
+                        <span>Cloud Computing</span>
+                        <small>+35% demand</small>
+                    </li>
+                    <li>
+                        <span>Data Science</span>
+                        <small>+32% demand</small>
+                    </li>
+                    <li>
+                        <span>Mobile Development</span>
+                        <small>+28% demand</small>
+                    </li>
                 </ol>
             </div>
+
             <div class="sidebar-section">
-                <h3>Sponsored</h3>
-                <div class="sponsored-ad">
-                    <img src="ad1.jpg" alt="Sponsored Ad">
-                    <p>Learn to code with our online courses!</p>
-                    <a href="#">Learn More</a>
+                <h3>💼 For Recruiters</h3>
+                <div class="recruiter-section">
+                    <p>Find certified professionals ready to work</p>
+                    <div class="recruiter-stats">
+                        <div class="stat">
+                            <span class="stat-number">2,500+</span>
+                            <span class="stat-label">Certified Developers</span>
+                        </div>
+                        <div class="stat">
+                            <span class="stat-number">95%</span>
+                            <span class="stat-label">Job Placement Rate</span>
+                        </div>
+                    </div>
+                    <a href="#" class="btn-recruiter">Post a Job</a>
+                    <a href="#" class="btn-secondary">Browse Talent</a>
                 </div>
             </div>
 
             <div class="sidebar-section">
-                <h3>Events</h3>
-                <ul>
-                    <li><a href="#">Web Dev Conference - October 27th</a></li>
-                    <li><a href="#">Photography Workshop - November 10th</a></li>
+                <h3>📅 Upcoming Events</h3>
+                <ul class="events-list">
+                    <li>
+                        <div class="event-date">
+                            <span class="date">28</span>
+                            <span class="month">Oct</span>
+                        </div>
+                        <div class="event-info">
+                            <a href="#">Tech Career Fair</a>
+                            <small>Virtual Event • Free</small>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="event-date">
+                            <span class="date">05</span>
+                            <span class="month">Nov</span>
+                        </div>
+                        <div class="event-info">
+                            <a href="#">AI Workshop</a>
+                            <small>In-person • $25</small>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="event-date">
+                            <span class="date">12</span>
+                            <span class="month">Nov</span>
+                        </div>
+                        <div class="event-info">
+                            <a href="#">Freelancer Meetup</a>
+                            <small>Hybrid Event • Free</small>
+                        </div>
+                    </li>
                 </ul>
+            </div>
+
+            <div class="sidebar-section">
+                <h3>🎁 Limited Offers</h3>
+                <div class="offer-card">
+                    <div class="offer-badge">50% OFF</div>
+                    <h4>Premium Certification Bundle</h4>
+                    <p>Get 5 industry certifications for the price of 2</p>
+                    <div class="offer-timer">
+                        <span>⏰ 3 days left</span>
+                    </div>
+                    <a href="#" class="btn-offer">Claim Offer</a>
+                </div>
             </div>
         </aside>
     </main>
 
     <footer>
-        <p>© 2023 SocialSphere. All rights reserved.</p>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h4>SkillForge</h4>
+                <p>Empowering careers through practical skills and industry certifications</p>
+            </div>
+            <div class="footer-section">
+                <h4>For Students</h4>
+                <ul>
+                    <li><a href="#">Free Courses</a></li>
+                    <li><a href="#">Career Guidance</a></li>
+                    <li><a href="#">Scholarship Program</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>For Professionals</h4>
+                <ul>
+                    <li><a href="#">Advanced Courses</a></li>
+                    <li><a href="#">Industry Certifications</a></li>
+                    <li><a href="#">Consulting Opportunities</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>For Recruiters</h4>
+                <ul>
+                    <li><a href="#">Post Jobs</a></li>
+                    <li><a href="#">Talent Search</a></li>
+                    <li><a href="#">Corporate Training</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>© 2024 SkillForge. All rights reserved. | <a href="#">Privacy Policy</a> | <a href="#">Terms of Service</a></p>
+        </div>
     </footer>
 
     <script>
@@ -180,18 +418,48 @@ document.addEventListener('DOMContentLoaded', () => {
 
   if (dropdownButton && dropdownContent) {
     dropdownButton.addEventListener('click', (event) => {
-      event.stopPropagation(); // Prevent the event from bubbling up to the document
+      event.stopPropagation();
       dropdownContent.style.display = dropdownContent.style.display === 'block' ? 'none' : 'block';
     });
 
-    // Close the dropdown when clicking outside of it
     document.addEventListener('click', (event) => {
       if (!dropdownContent.contains(event.target) && event.target !== dropdownButton) {
         dropdownContent.style.display = 'none';
       }
     });
   }
+
+  // Progress animation
+  const progressBars = document.querySelectorAll('.progress-fill');
+  progressBars.forEach(bar => {
+    const width = bar.style.width;
+    bar.style.width = '0%';
+    setTimeout(() => {
+      bar.style.width = width;
+    }, 500);
+  });
+
+  // Course card interactions
+  const courseCards = document.querySelectorAll('.course-card, .opportunity-card');
+  courseCards.forEach(card => {
+    card.addEventListener('mouseenter', () => {
+      card.style.transform = 'translateY(-5px)';
+    });
+    
+    card.addEventListener('mouseleave', () => {
+      card.style.transform = 'translateY(0)';
+    });
+  });
+
+  // Skill tag interactions
+  const skillTags = document.querySelectorAll('.skill-tag');
+  skillTags.forEach(tag => {
+    tag.addEventListener('click', () => {
+      // Simulate skill selection
+      tag.classList.toggle('selected');
+    });
+  });
 });
     </script>
 </body>
-</html>
+                            </html>
