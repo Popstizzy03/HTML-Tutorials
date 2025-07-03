@@ -54,4 +54,7 @@ Our HTML Tutorials program will equip you with the skills employers are looking 
 
 [**Enroll Now**]
 
-[**Coming Soon**]
+**Coming Soon**
+[1] Nuxt JS framework
+[2] Next JS framework
+[3] SveltKit JS Framework
