@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Notes & Tasks Manager</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Header -->
+        <header class="app-header">
+            <div class="header-content">
+                <h1 class="app-title">
+                    <i class="fas fa-sticky-note"></i>
+                    Notes & Tasks Manager
+                </h1>
+                <div class="header-actions">
+                    <button id="toggle-theme" class="theme-toggle">
+                        <i class="fas fa-moon"></i>
+                    </button>
+                    <button id="clear-all" class="clear-btn">
+                        <i class="fas fa-trash-alt"></i>
+                        Clear All
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Tab Navigation -->
+            <div class="tab-container">
+                <button class="tab-btn active" data-tab="notes">
+                    <i class="fas fa-file-alt"></i>
+                    Notes
+                </button>
+                <button class="tab-btn" data-tab="tasks">
+                    <i class="fas fa-tasks"></i>
+                    Tasks
+                </button>
+            </div>
+
+            <!-- Notes Section -->
+            <section id="notes-section" class="content-section active">
+                <div class="section-header">
+                    <h2>My Notes</h2>
+                    <button id="add-note-btn" class="add-btn">
+                        <i class="fas fa-plus"></i>
+                        Add Note
+                    </button>
+                </div>
+
+                <div class="search-container">
+                    <input type="text" id="notes-search" placeholder="Search notes..." class="search-input">
+                    <i class="fas fa-search search-icon"></i>
+                </div>
+
+                <div id="notes-grid" class="notes-grid">
+                    <!-- Notes will be dynamically added here -->
+                </div>
+
+                <div id="empty-notes" class="empty-state">
+                    <i class="fas fa-sticky-note"></i>
+                    <p>No notes yet. Click "Add Note" to create your first note!</p>
+                </div>
+            </section>
+
+            <!-- Tasks Section -->
+            <section id="tasks-section" class="content-section">
+                <div class="section-header">
+                    <h2>My Tasks</h2>
+                    <button id="add-task-btn" class="add-btn">
+                        <i class="fas fa-plus"></i>
+                        Add Task
+                    </button>
+                </div>
+
+                <div class="search-container">
+                    <input type="text" id="tasks-search" placeholder="Search tasks..." class="search-input">
+                    <i class="fas fa-search search-icon"></i>
+                </div>
+
+                <div class="filter-container">
+                    <button class="filter-btn active" data-filter="all">All</button>
+                    <button class="filter-btn" data-filter="pending">Pending</button>
+                    <button class="filter-btn" data-filter="completed">Completed</button>
+                    <button class="filter-btn" data-filter="high">High Priority</button>
+                </div>
+
+                <div id="tasks-list" class="tasks-list">
+                    <!-- Tasks will be dynamically added here -->
+                </div>
+
+                <div id="empty-tasks" class="empty-state">
+                    <i class="fas fa-tasks"></i>
+                    <p>No tasks yet. Click "Add Task" to create your first task!</p>
+                </div>
+
+                <div class="tasks-summary">
+                    <div class="summary-item">
+                        <span class="summary-label">Total:</span>
+                        <span id="total-tasks">0</span>
+                    </div>
+                    <div class="summary-item">
+                        <span class="summary-label">Completed:</span>
+                        <span id="completed-tasks">0</span>
+                    </div>
+                    <div class="summary-item">
+                        <span class="summary-label">Pending:</span>
+                        <span id="pending-tasks">0</span>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Note Modal -->
+    <div id="note-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="note-modal-title">Add Note</h3>
+                <button id="close-note-modal" class="close-btn">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <form id="note-form" class="modal-form">
+                <div class="form-group">
+                    <label for="note-title">Title</label>
+                    <input type="text" id="note-title" required maxlength="100">
+                </div>
+                <div class="form-group">
+                    <label for="note-content">Content</label>
+                    <textarea id="note-content" rows="10" placeholder="Write your note here..." required></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="note-category">Category</label>
+                    <select id="note-category">
+                        <option value="general">General</option>
+                        <option value="work">Work</option>
+                        <option value="personal">Personal</option>
+                        <option value="ideas">Ideas</option>
+                        <option value="reminders">Reminders</option>
+                    </select>
+                </div>
+                <div class="modal-actions">
+                    <button type="button" id="cancel-note" class="btn-secondary">Cancel</button>
+                    <button type="submit" class="btn-primary">Save Note</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Task Modal -->
+    <div id="task-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="task-modal-title">Add Task</h3>
+                <button id="close-task-modal" class="close-btn">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <form id="task-form" class="modal-form">
+                <div class="form-group">
+                    <label for="task-title">Task Title</label>
+                    <input type="text" id="task-title" required maxlength="200">
+                </div>
+                <div class="form-group">
+                    <label for="task-description">Description</label>
+                    <textarea id="task-description" rows="4" placeholder="Task description (optional)"></textarea>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="task-priority">Priority</label>
+                        <select id="task-priority">
+                            <option value="low">Low</option>
+                            <option value="medium" selected>Medium</option>
+                            <option value="high">High</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="task-due-date">Due Date</label>
+                        <input type="date" id="task-due-date">
+                    </div>
+                </div>
+                <div class="modal-actions">
+                    <button type="button" id="cancel-task" class="btn-secondary">Cancel</button>
+                    <button type="submit" class="btn-primary">Save Task</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Confirmation Modal -->
+    <div id="confirm-modal" class="modal">
+        <div class="modal-content small">
+            <div class="modal-header">
+                <h3>Confirm Action</h3>
+            </div>
+            <div class="modal-body">
+                <p id="confirm-message">Are you sure you want to perform this action?</p>
+            </div>
+            <div class="modal-actions">
+                <button id="confirm-cancel" class="btn-secondary">Cancel</button>
+                <button id="confirm-ok" class="btn-danger">Confirm</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
