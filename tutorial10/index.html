@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CodeMaster: Interactive Algorithm Learning Platform</title>
+    <meta name="description" content="Learn algorithms interactively with adaptive learning, spaced repetition, and community features">
+    <meta name="theme-color" content="#1a73e8">
+    <link rel="stylesheet" href="style.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-core.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
+</head>
+<body>
+    <!-- Skip Link for Accessibility -->
+    <a href="#main-content" class="skip-link">Skip to main content</a>
+    
+    <!-- ARIA Live Regions -->
+    <div aria-live="polite" aria-atomic="true" class="live-region" id="status-updates"></div>
+    <div aria-live="assertive" aria-atomic="true" class="live-region" id="urgent-updates"></div>
+    
+    <!-- Loading Screen -->
+    <div id="loading-screen" class="loading-screen">
+        <div class="loading-content">
+            <div class="logo-animation">
+                <div class="code-symbol">&lt;/&gt;</div>
+                <div class="loading-text">CodeMaster</div>
+            </div>
+            <div class="loading-bar">
+                <div class="loading-progress"></div>
+            </div>
+            <p class="loading-subtitle">Preparing your interactive learning experience...</p>
+        </div>
+    </div>
+
+    <!-- Main App Container -->
+    <div class="app-container">
+        <!-- Header -->
+        <header class="app-header">
+            <div class="header-content">
+                <div class="logo">
+                    <div class="logo-icon">&lt;/&gt;</div>
+                    <h1>CodeMaster</h1>
+                    <span class="logo-subtitle">Interactive FizzBuzz Quiz</span>
+                </div>
+                
+                <div class="header-stats">
+                    <div class="stat-item">
+                        <i class="fas fa-trophy"></i>
+                        <span class="stat-value" id="total-score">0</span>
+                        <span class="stat-label">Score</span>
+                    </div>
+                    <div class="stat-item">
+                        <i class="fas fa-fire"></i>
+                        <span class="stat-value" id="streak-count">0</span>
+                        <span class="stat-label">Streak</span>
+                    </div>
+                    <div class="stat-item">
+                        <i class="fas fa-star"></i>
+                        <span class="stat-value" id="level-indicator">1</span>
+                        <span class="stat-label">Level</span>
+                    </div>
+                </div>
+
+                <div class="header-actions">
+                    <button class="icon-btn" id="hint-btn" title="Get a hint">
+                        <i class="fas fa-lightbulb"></i>
+                    </button>
+                    <button class="icon-btn" id="reset-btn" title="Reset progress">
+                        <i class="fas fa-redo"></i>
+                    </button>
+                    <button class="icon-btn" id="theme-toggle" title="Toggle theme">
+                        <i class="fas fa-moon"></i>
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Progress Bar -->
+        <div class="progress-container">
+            <div class="progress-track">
+                <div class="progress-fill" id="overall-progress"></div>
+            </div>
+            <span class="progress-text" id="progress-text">0% Complete</span>
+        </div>
+
+        <!-- Main Content -->
+        <main class="main-content" id="main-content" role="main">
+            <!-- Welcome Screen -->
+            <div id="welcome-screen" class="screen active">
+                <div class="welcome-content">
+                    <div class="welcome-hero">
+                        <div class="hero-icon">
+                            <i class="fas fa-code"></i>
+                        </div>
+                        <h2>Master FizzBuzz with Interactive Learning</h2>
+                        <p>Learn programming logic through hands-on exercises, visual explanations, and adaptive challenges.</p>
+                    </div>
+                    
+                    <div class="algorithm-selector">
+                        <h3>Choose Your Algorithm Adventure</h3>
+                        <div class="algorithms-grid">
+                            <div class="algorithm-card active" data-algorithm="fizzbuzz">
+                                <div class="algorithm-icon">🔢</div>
+                                <h4>FizzBuzz</h4>
+                                <p>Master conditional logic and loops</p>
+                                <div class="difficulty">Beginner</div>
+                            </div>
+                            <div class="algorithm-card" data-algorithm="twosum">
+                                <div class="algorithm-icon">🎯</div>
+                                <h4>Two Sum</h4>
+                                <p>Learn hash maps and optimization</p>
+                                <div class="difficulty">Intermediate</div>
+                            </div>
+                            <div class="algorithm-card" data-algorithm="palindrome">
+                                <div class="algorithm-icon">🔄</div>
+                                <h4>Palindrome</h4>
+                                <p>String manipulation and patterns</p>
+                                <div class="difficulty">Beginner</div>
+                            </div>
+                            <div class="algorithm-card" data-algorithm="binary-search">
+                                <div class="algorithm-icon">🔍</div>
+                                <h4>Binary Search</h4>
+                                <p>Divide and conquer strategies</p>
+                                <div class="difficulty">Intermediate</div>
+                            </div>
+                            <div class="algorithm-card" data-algorithm="dynamic-programming">
+                                <div class="algorithm-icon">⚡</div>
+                                <h4>Dynamic Programming</h4>
+                                <p>Optimization and memoization</p>
+                                <div class="difficulty">Advanced</div>
+                            </div>
+                            <div class="algorithm-card" data-algorithm="trees">
+                                <div class="algorithm-icon">🌳</div>
+                                <h4>Tree Traversal</h4>
+                                <p>Recursive data structures</p>
+                                <div class="difficulty">Advanced</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="learning-path">
+                        <h3>Your Learning Journey</h3>
+                        <div class="path-steps">
+                            <div class="path-step">
+                                <div class="step-number">1</div>
+                                <div class="step-content">
+                                    <h4>Understand the Problem</h4>
+                                    <p>Learn the concept with visual examples</p>
+                                </div>
+                            </div>
+                            <div class="path-step">
+                                <div class="step-number">2</div>
+                                <div class="step-content">
+                                    <h4>Interactive Learning</h4>
+                                    <p>Explore with hands-on visualizations</p>
+                                </div>
+                            </div>
+                            <div class="path-step">
+                                <div class="step-number">3</div>
+                                <div class="step-content">
+                                    <h4>Code Implementation</h4>
+                                    <p>Complete coding challenges step by step</p>
+                                </div>
+                            </div>
+                            <div class="path-step">
+                                <div class="step-number">4</div>
+                                <div class="step-content">
+                                    <h4>Master Quiz</h4>
+                                    <p>Test understanding with adaptive questions</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <button class="start-btn" id="start-learning">
+                        <i class="fas fa-play"></i>
+                        Start Learning
+                    </button>
+                </div>
+            </div>
+
+            <!-- Lesson Screen -->
+            <div id="lesson-screen" class="screen">
+                <div class="lesson-content">
+                    <div class="lesson-header">
+                        <button class="back-btn" id="back-to-welcome">
+                            <i class="fas fa-arrow-left"></i>
+                        </button>
+                        <div class="lesson-info">
+                            <h2 id="lesson-title">Understanding FizzBuzz</h2>
+                            <div class="lesson-progress">
+                                <span id="lesson-step">1</span> of <span id="total-steps">4</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Lesson Content Container -->
+                    <div class="lesson-container" id="lesson-container">
+                        <!-- Dynamic lesson content will be inserted here -->
+                    </div>
+
+                    <div class="lesson-navigation">
+                        <button class="nav-btn secondary" id="prev-lesson" disabled>
+                            <i class="fas fa-chevron-left"></i>
+                            Previous
+                        </button>
+                        <button class="nav-btn primary" id="next-lesson">
+                            Next
+                            <i class="fas fa-chevron-right"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quiz Screen -->
+            <div id="quiz-screen" class="screen">
+                <div class="quiz-content">
+                    <div class="quiz-header">
+                        <button class="back-btn" id="back-to-lesson">
+                            <i class="fas fa-arrow-left"></i>
+                        </button>
+                        <div class="quiz-info">
+                            <h2>Interactive Quiz</h2>
+                            <div class="question-counter">
+                                Question <span id="current-question">1</span> of <span id="total-questions">10</span>
+                            </div>
+                        </div>
+                        <div class="quiz-timer">
+                            <i class="fas fa-clock"></i>
+                            <span id="timer">30</span>s
+                        </div>
+                    </div>
+
+                    <div class="question-container" id="question-container">
+                        <!-- Dynamic quiz questions will be inserted here -->
+                    </div>
+
+                    <div class="quiz-actions">
+                        <button class="action-btn secondary" id="skip-question">
+                            Skip Question
+                        </button>
+                        <button class="action-btn primary" id="submit-answer" disabled>
+                            Submit Answer
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Code Challenge Screen -->
+            <div id="code-screen" class="screen">
+                <div class="code-content">
+                    <div class="code-header">
+                        <button class="back-btn" id="back-to-quiz">
+                            <i class="fas fa-arrow-left"></i>
+                        </button>
+                        <div class="challenge-info">
+                            <h2 id="challenge-title">Code Challenge</h2>
+                            <div class="difficulty-badge" id="difficulty-badge">
+                                <i class="fas fa-star"></i>
+                                Beginner
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="code-layout">
+                        <div class="code-instructions">
+                            <div class="instruction-header">
+                                <h3>Instructions</h3>
+                                <button class="toggle-btn" id="toggle-instructions">
+                                    <i class="fas fa-chevron-up"></i>
+                                </button>
+                            </div>
+                            <div class="instruction-content" id="instruction-content">
+                                <!-- Dynamic instructions will be inserted here -->
+                            </div>
+                        </div>
+
+                        <div class="code-editor-container">
+                            <div class="editor-header">
+                                <h3>Code Editor</h3>
+                                <div class="editor-actions">
+                                    <button class="editor-btn" id="format-code">
+                                        <i class="fas fa-indent"></i>
+                                        Format
+                                    </button>
+                                    <button class="editor-btn" id="reset-code">
+                                        <i class="fas fa-undo"></i>
+                                        Reset
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="code-editor" id="code-editor">
+                                <pre><code id="editable-code" contenteditable="true" spellcheck="false"></code></pre>
+                                <div class="line-numbers" id="line-numbers"></div>
+                            </div>
+                            
+                            <div class="code-actions">
+                                <button class="code-btn secondary" id="get-hint">
+                                    <i class="fas fa-lightbulb"></i>
+                                    Get Hint
+                                </button>
+                                <button class="code-btn primary" id="run-code">
+                                    <i class="fas fa-play"></i>
+                                    Run Code
+                                </button>
+                                <button class="code-btn success" id="check-solution" disabled>
+                                    <i class="fas fa-check"></i>
+                                    Check Solution
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="output-container">
+                            <div class="output-header">
+                                <h3>Output</h3>
+                                <button class="clear-btn" id="clear-output">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </div>
+                            <div class="output-content" id="output-content">
+                                <div class="output-placeholder">
+                                    <i class="fas fa-terminal"></i>
+                                    <p>Run your code to see the output here</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Results Screen -->
+            <div id="results-screen" class="screen">
+                <div class="results-content">
+                    <div class="results-header">
+                        <div class="results-icon">
+                            <i class="fas fa-trophy"></i>
+                        </div>
+                        <h2>Congratulations!</h2>
+                        <p>You've completed the Interactive FizzBuzz Quiz</p>
+                    </div>
+
+                    <div class="results-stats">
+                        <div class="stat-card">
+                            <div class="stat-icon">
+                                <i class="fas fa-percent"></i>
+                            </div>
+                            <div class="stat-details">
+                                <span class="stat-number" id="final-score">95%</span>
+                                <span class="stat-description">Overall Score</span>
+                            </div>
+                        </div>
+
+                        <div class="stat-card">
+                            <div class="stat-icon">
+                                <i class="fas fa-clock"></i>
+                            </div>
+                            <div class="stat-details">
+                                <span class="stat-number" id="total-time">12:34</span>
+                                <span class="stat-description">Total Time</span>
+                            </div>
+                        </div>
+
+                        <div class="stat-card">
+                            <div class="stat-icon">
+                                <i class="fas fa-fire"></i>
+                            </div>
+                            <div class="stat-details">
+                                <span class="stat-number" id="max-streak">8</span>
+                                <span class="stat-description">Best Streak</span>
+                            </div>
+                        </div>
+
+                        <div class="stat-card">
+                            <div class="stat-icon">
+                                <i class="fas fa-star"></i>
+                            </div>
+                            <div class="stat-details">
+                                <span class="stat-number" id="achievements">5</span>
+                                <span class="stat-description">Achievements</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="skills-section">
+                        <h3>Skill Mastery</h3>
+                        <div class="skills-progress" id="skills-progress">
+                            <!-- Dynamic skill progress will be inserted here -->
+                        </div>
+                    </div>
+
+                    <div class="achievements-section">
+                        <h3>Achievements Unlocked</h3>
+                        <div class="achievements-grid" id="achievements-grid">
+                            <!-- Dynamic achievements will be inserted here -->
+                        </div>
+                    </div>
+
+                    <div class="results-actions">
+                        <button class="result-btn secondary" id="review-answers">
+                            <i class="fas fa-eye"></i>
+                            Review Answers
+                        </button>
+                        <button class="result-btn primary" id="try-again">
+                            <i class="fas fa-redo"></i>
+                            Try Again
+                        </button>
+                        <button class="result-btn success" id="next-challenge">
+                            <i class="fas fa-arrow-right"></i>
+                            Next Challenge
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Hint Modal -->
+    <div id="hint-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>💡 Hint</h3>
+                <button class="close-btn" id="close-hint">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="hint-content" id="hint-content">
+                    <!-- Dynamic hint content -->
+                </div>
+                <div class="hint-actions">
+                    <button class="hint-btn" id="another-hint">
+                        <i class="fas fa-lightbulb"></i>
+                        Another Hint
+                    </button>
+                    <button class="hint-btn primary" id="got-it">
+                        <i class="fas fa-check"></i>
+                        Got It!
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Explanation Modal -->
+    <div id="explanation-modal" class="modal">
+        <div class="modal-content large">
+            <div class="modal-header">
+                <h3 id="explanation-title">🎯 Explanation</h3>
+                <button class="close-btn" id="close-explanation">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="explanation-content" id="explanation-content">
+                    <!-- Dynamic explanation content -->
+                </div>
+                <div class="explanation-actions">
+                    <button class="explanation-btn secondary" id="show-code">
+                        <i class="fas fa-code"></i>
+                        Show Code
+                    </button>
+                    <button class="explanation-btn primary" id="understand">
+                        <i class="fas fa-check"></i>
+                        I Understand
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Achievement Notification -->
+    <div id="achievement-notification" class="achievement-notification">
+        <div class="achievement-content">
+            <div class="achievement-icon">
+                <i class="fas fa-trophy"></i>
+            </div>
+            <div class="achievement-text">
+                <h4 id="achievement-title">Achievement Unlocked!</h4>
+                <p id="achievement-description">You've mastered the basics!</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Visual Feedback Particles -->
+    <div id="particles-container" class="particles-container"></div>
+
+    <!-- Audio for feedback (optional) -->
+    <audio id="success-sound" preload="auto">
+        <source src="data:audio/wav;base64,UklGRnoGAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQoGAACBhYqFbF1fdJivrJBhNjVgodDbq2EcBj+a2/LDciUFLIHO8tiJNwgZaLvt559NEAxQp+PwtmMcBjiR1/LMeSwFJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBT+b3PLEeiwELYPP8diJOAkZZ7zj46NOEAFSZ0I" type="audio/wav">
+    </audio>
+
+    <script src="script.js"></script>
+</body>
+</html>
