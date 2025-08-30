@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Percentager</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        'sf': ['-apple-system', 'BlinkMacSystemFont', 'SF Pro Display', 'Segoe UI', 'Roboto', 'sans-serif']
+                    },
+                    colors: {
+                        'apple-blue': '#007AFF',
+                        'apple-gray': '#F2F2F7',
+                        'apple-dark-gray': '#1C1C1E'
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .slide-up {
+            animation: slideUp 0.3s ease-out;
+        }
+        @keyframes progressFill {
+            from { width: 0%; }
+        }
+        .progress-animation {
+            animation: progressFill 1s ease-out;
+        }
+    </style>
+</head>
+<body class="font-sf bg-white dark:bg-apple-dark-gray min-h-screen transition-colors duration-300">
+    <div class="max-w-md mx-auto px-6 py-12">
+        <!-- Header -->
+        <div class="text-center mb-12">
+            <h1 class="text-3xl font-bold text-gray-900 dark:text-white mb-2">Percentager</h1>
+            <p class="text-gray-600 dark:text-gray-400">Calculate percentages with style</p>
+        </div>
+
+        <!-- Input Card -->
+        <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg border border-gray-100 dark:border-gray-700 p-6 mb-6">
+            <div class="space-y-6">
+                <!-- Total Input -->
+                <div>
+                    <label for="total" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                        Total Amount
+                    </label>
+                    <input 
+                        type="number" 
+                        id="total" 
+                        placeholder="Enter total number"
+                        class="w-full px-4 py-3 text-base bg-apple-gray dark:bg-gray-700 border-0 rounded-xl focus:ring-2 focus:ring-apple-blue focus:outline-none transition-all duration-200 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400"
+                        min="0"
+                        step="any"
+                    >
+                </div>
+
+                <!-- Part Input -->
+                <div>
+                    <label for="part" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                        Part Amount
+                    </label>
+                    <input 
+                        type="number" 
+                        id="part" 
+                        placeholder="Enter part number"
+                        class="w-full px-4 py-3 text-base bg-apple-gray dark:bg-gray-700 border-0 rounded-xl focus:ring-2 focus:ring-apple-blue focus:outline-none transition-all duration-200 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400"
+                        min="0"
+                        step="any"
+                    >
+                    <div id="error-message" class="text-red-500 text-sm mt-2 hidden">
+                        Part amount cannot be greater than total amount
+                    </div>
+                </div>
+
+                <!-- Calculate Button -->
+                <button 
+                    id="calculate-btn"
+                    class="w-full bg-apple-blue hover:bg-blue-600 disabled:bg-gray-400 disabled:cursor-not-allowed text-white font-semibold py-3 px-6 rounded-xl transition-all duration-200 transform active:scale-95"
+                    disabled
+                >
+                    Calculate Percentage
+                </button>
+            </div>
+        </div>
+
+        <!-- Result Card -->
+        <div id="result-card" class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg border border-gray-100 dark:border-gray-700 p-6 hidden">
+            <div class="text-center mb-6">
+                <div class="text-4xl font-bold text-apple-blue mb-2" id="percentage-result">
+                    0%
+                </div>
+                <div class="text-gray-600 dark:text-gray-400 mb-4" id="calculation-details">
+                    0 is 0% of 0
+                </div>
+            </div>
+
+            <!-- Math Formula Section -->
+            <div class="bg-apple-gray dark:bg-gray-700 rounded-xl p-4 mb-6">
+                <h3 class="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3">Formula & Calculation:</h3>
+                
+                <!-- Basic Formula -->
+                <div class="text-center mb-3">
+                    <div class="text-lg font-mono text-gray-800 dark:text-gray-200">
+                        Percentage = (Part ÷ Total) × 100
+                    </div>
+                </div>
+                
+                <!-- Substituted Values -->
+                <div class="text-center mb-3">
+                    <div class="text-base font-mono text-gray-700 dark:text-gray-300" id="substituted-formula">
+                        Percentage = (0 ÷ 0) × 100
+                    </div>
+                </div>
+                
+                <!-- Step by step -->
+                <div class="text-center mb-3">
+                    <div class="text-base font-mono text-gray-700 dark:text-gray-300" id="step-calculation">
+                        Percentage = 0 × 100
+                    </div>
+                </div>
+                
+                <!-- Final result -->
+                <div class="text-center">
+                    <div class="text-lg font-mono font-semibold text-apple-blue" id="final-calculation">
+                        Percentage = 0%
+                    </div>
+                </div>
+            </div>
+
+            <!-- Progress Bar Visualization -->
+            <div class="mb-6">
+                <div class="flex justify-between text-sm text-gray-600 dark:text-gray-400 mb-2">
+                    <span>0</span>
+                    <span id="total-display">0</span>
+                </div>
+                <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-3 overflow-hidden">
+                    <div 
+                        id="progress-bar" 
+                        class="h-full bg-gradient-to-r from-apple-blue to-blue-500 transition-all duration-1000 ease-out rounded-full"
+                        style="width: 0%"
+                    ></div>
+                </div>
+            </div>
+
+            <!-- Circular Progress -->
+            <div class="flex justify-center">
+                <div class="relative w-24 h-24">
+                    <svg class="w-full h-full transform -rotate-90" viewBox="0 0 100 100">
+                        <circle 
+                            cx="50" 
+                            cy="50" 
+                            r="40" 
+                            stroke="currentColor" 
+                            stroke-width="8" 
+                            fill="none" 
+                            class="text-gray-200 dark:text-gray-700"
+                        />
+                        <circle 
+                            id="progress-circle"
+                            cx="50" 
+                            cy="50" 
+                            r="40" 
+                            stroke="currentColor" 
+                            stroke-width="8" 
+                            fill="none" 
+                            stroke-linecap="round"
+                            class="text-apple-blue transition-all duration-1000 ease-out"
+                            stroke-dasharray="251.2"
+                            stroke-dashoffset="251.2"
+                        />
+                    </svg>
+                    <div class="absolute inset-0 flex items-center justify-center">
+                        <span class="text-sm font-semibold text-gray-700 dark:text-gray-300" id="circle-percentage">0%</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Dark mode support
+        if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+            document.documentElement.classList.add('dark');
+        }
+        window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', event => {
+            if (event.matches) {
+                document.documentElement.classList.add('dark');
+            } else {
+                document.documentElement.classList.remove('dark');
+            }
+        });
+
+        const totalInput = document.getElementById('total');
+        const partInput = document.getElementById('part');
+        const calculateBtn = document.getElementById('calculate-btn');
+        const errorMessage = document.getElementById('error-message');
+        const resultCard = document.getElementById('result-card');
+        const percentageResult = document.getElementById('percentage-result');
+        const calculationDetails = document.getElementById('calculation-details');
+        const progressBar = document.getElementById('progress-bar');
+        const progressCircle = document.getElementById('progress-circle');
+        const circlePercentage = document.getElementById('circle-percentage');
+        const totalDisplay = document.getElementById('total-display');
+        const substitutedFormula = document.getElementById('substituted-formula');
+        const stepCalculation = document.getElementById('step-calculation');
+        const finalCalculation = document.getElementById('final-calculation');
+
+        function validateInputs() {
+            const total = parseFloat(totalInput.value);
+            const part = parseFloat(partInput.value);
+            
+            // Reset error state
+            errorMessage.classList.add('hidden');
+            partInput.classList.remove('ring-2', 'ring-red-500');
+            
+            // Check if both inputs have values
+            if (!totalInput.value || !partInput.value) {
+                calculateBtn.disabled = true;
+                return false;
+            }
+            
+            // Check if part is greater than total
+            if (part > total) {
+                errorMessage.classList.remove('hidden');
+                partInput.classList.add('ring-2', 'ring-red-500');
+                calculateBtn.disabled = true;
+                return false;
+            }
+            
+            // Check for negative values
+            if (total < 0 || part < 0) {
+                calculateBtn.disabled = true;
+                return false;
+            }
+            
+            calculateBtn.disabled = false;
+            return true;
+        }
+
+        function calculatePercentage() {
+            const total = parseFloat(totalInput.value);
+            const part = parseFloat(partInput.value);
+            
+            if (!validateInputs()) return;
+            
+            const percentage = total === 0 ? 0 : (part / total) * 100;
+            const division = total === 0 ? 0 : (part / total);
+            
+            // Update result display
+            percentageResult.textContent = `${percentage.toFixed(1)}%`;
+            calculationDetails.textContent = `${part} is ${percentage.toFixed(1)}% of ${total}`;
+            totalDisplay.textContent = total;
+            circlePercentage.textContent = `${Math.round(percentage)}%`;
+            
+            // Update formula steps
+            substitutedFormula.textContent = `Percentage = (${part} ÷ ${total}) × 100`;
+            stepCalculation.textContent = `Percentage = ${division.toFixed(4)} × 100`;
+            finalCalculation.textContent = `Percentage = ${percentage.toFixed(1)}%`;
+            
+            // Show result card with animation
+            resultCard.classList.remove('hidden');
+            resultCard.classList.add('slide-up');
+            
+            // Animate progress bar
+            setTimeout(() => {
+                progressBar.style.width = `${percentage}%`;
+                
+                // Animate circular progress
+                const circumference = 2 * Math.PI * 40; // radius = 40
+                const offset = circumference - (percentage / 100) * circumference;
+                progressCircle.style.strokeDashoffset = offset;
+            }, 100);
+        }
+
+        // Prevent typing numbers greater than total in part input
+        partInput.addEventListener('input', function() {
+            const total = parseFloat(totalInput.value);
+            const part = parseFloat(this.value);
+            
+            if (total && part > total) {
+                // Don't prevent typing, just show validation
+                validateInputs();
+            } else {
+                validateInputs();
+            }
+        });
+
+        totalInput.addEventListener('input', validateInputs);
+        partInput.addEventListener('input', validateInputs);
+        calculateBtn.addEventListener('click', calculatePercentage);
+
+        // Allow Enter key to calculate
+        [totalInput, partInput].forEach(input => {
+            input.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter' && !calculateBtn.disabled) {
+                    calculatePercentage();
+                }
+            });
+        });
+    </script>
+</body>
+</html>
