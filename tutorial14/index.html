@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The High Cost of Poor Food Safety</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: #353249;
+    }
+
+    .chart-container {
+      position: relative;
+      width: 100%;
+      max-width: 600px;
+      margin-left: auto;
+      margin-right: auto;
+      height: 320px;
+      max-height: 400px;
+    }
+
+    @media (min-width: 768px) {
+      .chart-container {
+        height: 350px;
+      }
+    }
+
+    .flow-arrow {
+      color: #E84855;
+      font-size: 2.5rem;
+      line-height: 1;
+      transform: translateY(25%);
+    }
+  </style>
+</head>
+
+<body class="text-gray-200">
+
+  <!-- 
+    Color Palette: Energetic & Playful (#00A6A6, #F28F3B, #E84855, #714955, #353249)
+    Narrative Plan:
+    1. Hook: A powerful global statistic on foodborne illness.
+    2. The Human Cost: Data on illnesses, deaths, and top pathogens.
+    3. Business Impact: Financial costs of recalls and brand damage.
+    4. Societal Costs: Broader economic impact on nations.
+    5. Ripple Effect: A flowchart showing how a single failure cascades.
+    6. Vulnerable Groups: Highlighting the disproportionate impact on specific populations.
+    7. Conclusion: Summarizing the costs and a call for prevention.
+
+    Visualization Choices:
+    - Hook -> Single Big Number -> Goal: Inform. Justification: Most direct way to show scale. Method: Styled HTML (NO SVG).
+    - Human Cost (Stats) -> Icon Chart -> Goal: Inform. Justification: More engaging than plain text for key stats. Method: Unicode + HTML (NO SVG).
+    - Human Cost (Pathogens) -> Horizontal Bar Chart -> Goal: Compare. Justification: Best for comparing prevalence across categories. Method: Chart.js/Canvas (NO SVG).
+    - Business Impact -> Donut Chart -> Goal: Show Composition. Justification: Clearly shows the breakdown of recall costs. Method: Chart.js/Canvas (NO SVG).
+    - Societal Costs -> Ordered Bar Chart -> Goal: Compare. Justification: Simple, effective comparison of economic burden between nations. Method: Chart.js/Canvas (NO SVG).
+    - Ripple Effect -> Flow Chart -> Goal: Organize. Justification: Ideal for illustrating a process and its consequences. Method: Structured HTML/CSS with Tailwind (NO SVG, NO MERMAID JS).
+    - Vulnerable Groups -> Stacked Bar Chart -> Goal: Compare/Composition. Justification: Shows total impact while highlighting proportions within that total. Method: Chart.js/Canvas (NO SVG).
+    - Conclusion -> Styled Text -> Goal: Inform. Justification: A clear, direct text summary is best for a call to action. Method: Styled HTML (NO SVG).
+
+    Final Confirmation: Neither Mermaid JS nor SVG graphics were used in this file. All visualizations are created with Chart.js (Canvas) or structured HTML/CSS.
+    -->
+
+  <div class="container mx-auto p-4 md:p-8 max-w-7xl">
+
+    <header class="text-center mb-12 md:mb-16">
+      <h1 class="text-4xl md:text-6xl font-black text-white mb-2">The Staggering Cost of Poor Food Safety</h1>
+      <p class="text-lg md:text-xl text-gray-300 max-w-3xl mx-auto">Unsafe food creates a vicious cycle of disease and
+        malnutrition, disproportionately affecting the most vulnerable and undermining global health and economic
+        stability.</p>
+    </header>
+
+    <section class="text-center bg-white/10 rounded-2xl shadow-lg p-8 mb-12 md:mb-16">
+      <h2 class="text-2xl font-bold text-white mb-2">A Global Health Crisis</h2>
+      <p class="text-gray-300 mb-6">According to the World Health Organization, the scale of foodborne illness is
+        immense, affecting people in every country.</p>
+      <div class="text-7xl md:text-9xl font-black text-[#F28F3B]">1 in 10</div>
+      <p class="text-2xl md:text-3xl font-bold text-white mt-2">people worldwide fall ill from contaminated food each
+        year.</p>
+    </section>
+
+    <main class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-12">
+
+      <div class="md:col-span-2 lg:col-span-3 bg-[#714955] rounded-2xl shadow-2xl p-6 md:p-8">
+        <h3 class="text-3xl font-bold text-white mb-4 text-center">The Human Toll of Unsafe Food</h3>
+        <p class="text-center text-gray-300 mb-8 max-w-4xl mx-auto">Beyond the initial illness, foodborne diseases have
+          severe, long-term health consequences, leading to millions of preventable hospitalizations and deaths annually
+          across the globe.</p>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
+          <div class="bg-white/10 p-6 rounded-xl">
+            <div class="text-6xl mb-2">🤒</div>
+            <div class="text-5xl font-extrabold text-[#00A6A6]">600 Million</div>
+            <p class="text-lg font-semibold text-white mt-1">Illnesses</p>
+          </div>
+          <div class="bg-white/10 p-6 rounded-xl">
+            <div class="text-6xl mb-2">🏥</div>
+            <div class="text-5xl font-extrabold text-[#F28F3B]">23 Million</div>
+            <p class="text-lg font-semibold text-white mt-1">Hospitalizations</p>
+          </div>
+          <div class="bg-white/10 p-6 rounded-xl">
+            <div class="text-6xl mb-2">💀</div>
+            <div class="text-5xl font-extrabold text-[#E84855]">420,000</div>
+            <p class="text-lg font-semibold text-white mt-1">Deaths</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="bg-white/5 rounded-2xl shadow-xl p-6 md:p-8">
+        <h3 class="text-2xl font-bold text-white mb-4 text-center">Leading Foodborne Pathogens</h3>
+        <p class="text-center text-gray-300 mb-6">A few key pathogens are responsible for the majority of foodborne
+          illnesses. Norovirus is the most common cause, leading to acute gastroenteritis.</p>
+        <div class="chart-container h-80 md:h-96">
+          <canvas id="pathogensChart"></canvas>
+        </div>
+      </div>
+
+      <div class="bg-white/5 rounded-2xl shadow-xl p-6 md:p-8">
+        <h3 class="text-2xl font-bold text-white mb-4 text-center">The Cost of a Recall for Businesses</h3>
+        <p class="text-center text-gray-300 mb-6">A single food recall can cost a company millions in direct expenses,
+          not including the devastating and long-lasting damage to its brand reputation and consumer trust.</p>
+        <div class="chart-container h-80 md:h-96">
+          <canvas id="recallCostChart"></canvas>
+        </div>
+      </div>
+
+      <div class="bg-white/5 rounded-2xl shadow-xl p-6 md:p-8">
+        <h3 class="text-2xl font-bold text-white mb-4 text-center">National Economic Burden</h3>
+        <p class="text-center text-gray-300 mb-6">The impact extends to entire economies, with nations losing billions
+          annually due to healthcare costs and lost productivity from foodborne diseases.</p>
+        <div class="chart-container h-80 md:h-96">
+          <canvas id="economicBurdenChart"></canvas>
+        </div>
+      </div>
+
+      <div class="md:col-span-2 lg:col-span-3 bg-[#714955] rounded-2xl shadow-2xl p-6 md:p-8">
+        <h3 class="text-3xl font-bold text-white mb-6 text-center">The Ripple Effect of a Single Failure</h3>
+        <p class="text-center text-gray-300 mb-8 max-w-4xl mx-auto">A food safety lapse at any point in the supply chain
+          creates a devastating cascade of consequences, impacting public health, businesses, and the economy.</p>
+        <div class="flex flex-col md:flex-row justify-between items-center text-center gap-4">
+          <div class="flex-1 bg-white/10 p-4 rounded-lg w-full">
+            <p class="font-bold text-lg text-[#00A6A6]">1. Contamination Event</p>
+            <p class="text-sm text-gray-300">Pathogen introduced at farm, factory, or restaurant.</p>
+          </div>
+          <div class="flow-arrow hidden md:block">&rarr;</div>
+          <div class="flow-arrow rotate-90 md:hidden">&darr;</div>
+          <div class="flex-1 bg-white/10 p-4 rounded-lg w-full">
+            <p class="font-bold text-lg text-[#F28F3B]">2. Public Health Impact</p>
+            <p class="text-sm text-gray-300">Consumers fall ill, leading to outbreaks and straining healthcare.</p>
+          </div>
+          <div class="flow-arrow hidden md:block">&rarr;</div>
+          <div class="flow-arrow rotate-90 md:hidden">&darr;</div>
+          <div class="flex-1 bg-white/10 p-4 rounded-lg w-full">
+            <p class="font-bold text-lg text-[#E84855]">3. Business & Brand Damage</p>
+            <p class="text-sm text-gray-300">Product recalls, facility closures, lawsuits, and loss of consumer trust.
+            </p>
+          </div>
+          <div class="flow-arrow hidden md:block">&rarr;</div>
+          <div class="flow-arrow rotate-90 md:hidden">&darr;</div>
+          <div class="flex-1 bg-white/10 p-4 rounded-lg w-full">
+            <p class="font-bold text-lg text-[#00A6A6]">4. Economic Fallout</p>
+            <p class="text-sm text-gray-300">Lost productivity, reduced trade, and long-term market loss.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="md:col-span-2 lg:col-span-3 bg-white/5 rounded-2xl shadow-xl p-6 md:p-8">
+        <h3 class="text-2xl font-bold text-white mb-4 text-center">Disproportionate Impact on Vulnerable Populations
+        </h3>
+        <p class="text-center text-gray-300 mb-6">While everyone is at risk, the consequences of foodborne disease are
+          most severe for vulnerable groups. Children under 5 are particularly susceptible, accounting for a tragic
+          percentage of deaths.</p>
+        <div class="chart-container max-w-4xl h-80 md:h-96">
+          <canvas id="vulnerableChart"></canvas>
+        </div>
+      </div>
+
+    </main>
+
+    <footer class="text-center mt-12 md:mt-16 border-t-2 border-white/20 pt-8">
+      <h2 class="text-3xl font-bold text-white mb-4">Prevention is the Best Investment</h2>
+      <p class="text-lg text-gray-300 max-w-3xl mx-auto">Investing in robust food safety education, training, and
+        infrastructure is not a cost—it's a critical investment in public health, economic stability, and human
+        potential.</p>
+    </footer>
+
+  </div>
+
+  <script>
+    const primaryColor = '#00A6A6';
+    const secondaryColor = '#F28F3B';
+    const tertiaryColor = '#E84855';
+    const textColor = '#FFFFFF';
+    const gridColor = 'rgba(255, 255, 255, 0.2)';
+
+    const tooltipTitleCallback = function (tooltipItems) {
+      const item = tooltipItems[0];
+      let label = item.chart.data.labels[item.dataIndex];
+      if (Array.isArray(label)) {
+        return label.join(' ');
+      } else {
+        return label;
+      }
+    };
+
+    function processLabels(labels) {
+      const maxLen = 16;
+      return labels.map(label => {
+        if (label.length <= maxLen) {
+          return label;
+        }
+        const words = label.split(' ');
+        let lines = [];
+        let currentLine = '';
+        for (const word of words) {
+          if ((currentLine + ' ' + word).trim().length > maxLen) {
+            lines.push(currentLine.trim());
+            currentLine = word;
+          } else {
+            currentLine = (currentLine + ' ' + word).trim();
+          }
+        }
+        if (currentLine) {
+          lines.push(currentLine.trim());
+        }
+        return lines;
+      });
+    }
+
+    const defaultChartOptions = {
+      maintainAspectRatio: false,
+      responsive: true,
+      plugins: {
+        legend: {
+          labels: {
+            color: textColor,
+            font: {
+              size: 14
+            }
+          }
+        },
+        tooltip: {
+          callbacks: {
+            title: tooltipTitleCallback
+          },
+          bodyFont: {
+            size: 14
+          },
+          titleFont: {
+            size: 16
+          }
+        }
+      }
+    };
+
+    const pathogensData = {
+      labels: processLabels(['Norovirus', 'Salmonella', 'Clostridium perfringens', 'Campylobacter', 'Staphylococcus aureus (Staph)']),
+      datasets: [{
+        label: 'Estimated Annual Cases (Millions)',
+        data: [68.5, 1.35, 1.0, 0.8, 0.25],
+        backgroundColor: [primaryColor, secondaryColor, tertiaryColor, '#714955', '#A88AAD'],
+        borderColor: '#353249',
+        borderWidth: 2
+      }]
+    };
+    new Chart(document.getElementById('pathogensChart'), {
+      type: 'bar',
+      data: pathogensData,
+      options: {
+        ...defaultChartOptions,
+        indexAxis: 'y',
+        scales: {
+          x: {
+            ticks: {color: textColor, font: {size: 12}},
+            grid: {color: gridColor},
+            title: {display: true, text: 'Cases (Millions)', color: textColor}
+          },
+          y: {
+            ticks: {color: textColor, font: {size: 12}},
+            grid: {color: 'transparent'}
+          }
+        },
+        plugins: {
+          legend: {display: false},
+          tooltip: defaultChartOptions.plugins.tooltip
+        }
+      }
+    });
+
+    const recallCostData = {
+      labels: ['Business Interruption', 'Product Recall & Disposal', 'Customer Reimbursement', 'Legal Fees & Fines'],
+      datasets: [{
+        data: [42, 31, 15, 12],
+        backgroundColor: [primaryColor, secondaryColor, tertiaryColor, '#714955'],
+        borderColor: '#353249',
+        borderWidth: 4,
+        hoverOffset: 8
+      }]
+    };
+    new Chart(document.getElementById('recallCostChart'), {
+      type: 'doughnut',
+      data: recallCostData,
+      options: {
+        ...defaultChartOptions,
+        cutout: '60%',
+        plugins: {
+          ...defaultChartOptions.plugins,
+          tooltip: {
+            ...defaultChartOptions.plugins.tooltip,
+            callbacks: {
+              ...defaultChartOptions.plugins.tooltip.callbacks,
+              label: function (context) {
+                let label = context.label || '';
+                if (label) {
+                  label += ': ';
+                }
+                if (context.parsed !== null) {
+                  label += context.parsed + '%';
+                }
+                return label;
+              }
+            }
+          }
+        }
+      }
+    });
+
+    const economicBurdenData = {
+      labels: ['USA', 'United Kingdom', 'Australia', 'Canada'],
+      datasets: [{
+        label: 'Annual Cost (Billions USD)',
+        data: [17.6, 11.0, 1.7, 1.3],
+        backgroundColor: [primaryColor, secondaryColor, tertiaryColor, '#714955'],
+        borderColor: '#353249',
+        borderWidth: 2
+      }]
+    };
+    new Chart(document.getElementById('economicBurdenChart'), {
+      type: 'bar',
+      data: economicBurdenData,
+      options: {
+        ...defaultChartOptions,
+        scales: {
+          y: {
+            beginAtZero: true,
+            ticks: {color: textColor, font: {size: 12}},
+            grid: {color: gridColor},
+            title: {display: true, text: 'Cost (Billions USD)', color: textColor}
+          },
+          x: {
+            ticks: {color: textColor, font: {size: 12}},
+            grid: {color: 'transparent'}
+          }
+        },
+        plugins: {
+          legend: {display: false},
+          tooltip: defaultChartOptions.plugins.tooltip
+        }
+      }
+    });
+
+    const vulnerableData = {
+      labels: ['Global Population'],
+      datasets: [
+        {
+          label: 'Children Under 5',
+          data: [30],
+          backgroundColor: tertiaryColor,
+        },
+        {
+          label: 'Elderly & Immunocompromised',
+          data: [25],
+          backgroundColor: secondaryColor,
+        },
+        {
+          label: 'General Population',
+          data: [45],
+          backgroundColor: primaryColor,
+        }
+      ]
+    };
+    new Chart(document.getElementById('vulnerableChart'), {
+      type: 'bar',
+      data: vulnerableData,
+      options: {
+        ...defaultChartOptions,
+        indexAxis: 'y',
+        scales: {
+          x: {
+            stacked: true,
+            max: 100,
+            ticks: {
+              callback: function (value) {return value + "%"},
+              color: textColor
+            },
+            grid: {color: gridColor}
+          },
+          y: {
+            stacked: true,
+            ticks: {display: false},
+            grid: {display: false}
+          }
+        },
+        plugins: {
+          ...defaultChartOptions.plugins,
+          tooltip: {
+            ...defaultChartOptions.plugins.tooltip,
+            callbacks: {
+              ...defaultChartOptions.plugins.tooltip.callbacks,
+              label: function (context) {
+                let label = context.dataset.label || '';
+                if (label) {
+                  label += ': ';
+                }
+                if (context.parsed.x !== null) {
+                  label += context.parsed.x + '% of Deaths';
+                }
+                return label;
+              }
+            }
+          }
+        }
+      }
+    });
+
+  </script>
+</body>
+
+</html>
