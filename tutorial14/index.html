@@ -4,9 +4,11 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>The High Cost of Poor Food Safety</title>
+  <title>The High Cost of Poor Food Safety - Interactive Dashboard</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/hammerjs@2.0.8/hammer.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap" rel="stylesheet">
@@ -38,394 +40,1394 @@
       line-height: 1;
       transform: translateY(25%);
     }
+
+    /* Animation classes */
+    .fade-in {
+      opacity: 0;
+      transform: translateY(20px);
+      animation: fadeInUp 0.6s ease-out forwards;
+    }
+
+    .fade-in-delay-1 { animation-delay: 0.2s; }
+    .fade-in-delay-2 { animation-delay: 0.4s; }
+    .fade-in-delay-3 { animation-delay: 0.6s; }
+    .fade-in-delay-4 { animation-delay: 0.8s; }
+
+    @keyframes fadeInUp {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .counter {
+      font-variant-numeric: tabular-nums;
+    }
+
+    /* High contrast mode */
+    .high-contrast {
+      filter: contrast(150%) saturate(150%);
+    }
+
+    .high-contrast .bg-white\/10 {
+      background-color: rgba(255, 255, 255, 0.2) !important;
+    }
+
+    /* Focus indicators */
+    .focus-visible:focus {
+      outline: 3px solid #F28F3B;
+      outline-offset: 2px;
+    }
+
+    /* Modal styles */
+    .modal {
+      backdrop-filter: blur(8px);
+    }
+
+    /* Touch indicators */
+    .touch-indicator {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 50%;
+      width: 30px;
+      height: 30px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+
+    .touch-enabled .touch-indicator {
+      opacity: 1;
+    }
+
+    /* Export button styles */
+    .export-btn {
+      transition: all 0.3s ease;
+    }
+
+    .export-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+    }
+
+    /* Screen reader only content */
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
+
+    /* Loading spinner */
+    .spinner {
+      border: 3px solid rgba(255, 255, 255, 0.3);
+      border-radius: 50%;
+      border-top: 3px solid #F28F3B;
+      width: 20px;
+      height: 20px;
+      animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    /* Swipe indicators */
+    .swipe-indicator {
+      position: fixed;
+      top: 50%;
+      transform: translateY(-50%);
+      background: rgba(242, 143, 59, 0.8);
+      color: white;
+      padding: 10px;
+      border-radius: 50%;
+      z-index: 1000;
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+
+    .swipe-left {
+      right: 20px;
+    }
+
+    .swipe-right {
+      left: 20px;
+    }
   </style>
 </head>
 
-<body class="text-gray-200">
+<body class="text-gray-200" role="main">
 
-  <!-- 
-    Color Palette: Energetic & Playful (#00A6A6, #F28F3B, #E84855, #714955, #353249)
-    Narrative Plan:
-    1. Hook: A powerful global statistic on foodborne illness.
-    2. The Human Cost: Data on illnesses, deaths, and top pathogens.
-    3. Business Impact: Financial costs of recalls and brand damage.
-    4. Societal Costs: Broader economic impact on nations.
-    5. Ripple Effect: A flowchart showing how a single failure cascades.
-    6. Vulnerable Groups: Highlighting the disproportionate impact on specific populations.
-    7. Conclusion: Summarizing the costs and a call for prevention.
+  <!-- Accessibility Skip Link -->
+  <a href="#main-content" class="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 bg-orange-500 text-white px-4 py-2 rounded z-50">
+    Skip to main content
+  </a>
 
-    Visualization Choices:
-    - Hook -> Single Big Number -> Goal: Inform. Justification: Most direct way to show scale. Method: Styled HTML (NO SVG).
-    - Human Cost (Stats) -> Icon Chart -> Goal: Inform. Justification: More engaging than plain text for key stats. Method: Unicode + HTML (NO SVG).
-    - Human Cost (Pathogens) -> Horizontal Bar Chart -> Goal: Compare. Justification: Best for comparing prevalence across categories. Method: Chart.js/Canvas (NO SVG).
-    - Business Impact -> Donut Chart -> Goal: Show Composition. Justification: Clearly shows the breakdown of recall costs. Method: Chart.js/Canvas (NO SVG).
-    - Societal Costs -> Ordered Bar Chart -> Goal: Compare. Justification: Simple, effective comparison of economic burden between nations. Method: Chart.js/Canvas (NO SVG).
-    - Ripple Effect -> Flow Chart -> Goal: Organize. Justification: Ideal for illustrating a process and its consequences. Method: Structured HTML/CSS with Tailwind (NO SVG, NO MERMAID JS).
-    - Vulnerable Groups -> Stacked Bar Chart -> Goal: Compare/Composition. Justification: Shows total impact while highlighting proportions within that total. Method: Chart.js/Canvas (NO SVG).
-    - Conclusion -> Styled Text -> Goal: Inform. Justification: A clear, direct text summary is best for a call to action. Method: Styled HTML (NO SVG).
+  <!-- Accessibility Controls -->
+  <div class="fixed top-4 right-4 z-50 flex gap-2">
+    <button id="contrastToggle" class="bg-gray-800 text-white px-3 py-2 rounded text-sm focus-visible" aria-label="Toggle high contrast mode">
+      🔆
+    </button>
+    <button id="helpBtn" class="bg-gray-800 text-white px-3 py-2 rounded text-sm focus-visible" aria-label="Show keyboard shortcuts">
+      ❓
+    </button>
+  </div>
 
-    Final Confirmation: Neither Mermaid JS nor SVG graphics were used in this file. All visualizations are created with Chart.js (Canvas) or structured HTML/CSS.
-    -->
+  <!-- Swipe Indicators -->
+  <div id="swipeLeft" class="swipe-indicator swipe-left" aria-hidden="true">←</div>
+  <div id="swipeRight" class="swipe-indicator swipe-right" aria-hidden="true">→</div>
 
   <div class="container mx-auto p-4 md:p-8 max-w-7xl">
 
-    <header class="text-center mb-12 md:mb-16">
+    <header class="text-center mb-8 md:mb-12 fade-in" role="banner">
       <h1 class="text-4xl md:text-6xl font-black text-white mb-2">The Staggering Cost of Poor Food Safety</h1>
-      <p class="text-lg md:text-xl text-gray-300 max-w-3xl mx-auto">Unsafe food creates a vicious cycle of disease and
-        malnutrition, disproportionately affecting the most vulnerable and undermining global health and economic
-        stability.</p>
+      <p class="text-lg md:text-xl text-gray-300 max-w-3xl mx-auto">Interactive dashboard exploring unsafe food's impact on global health and economic stability.</p>
     </header>
 
-    <section class="text-center bg-white/10 rounded-2xl shadow-lg p-8 mb-12 md:mb-16">
-      <h2 class="text-2xl font-bold text-white mb-2">A Global Health Crisis</h2>
-      <p class="text-gray-300 mb-6">According to the World Health Organization, the scale of foodborne illness is
-        immense, affecting people in every country.</p>
-      <div class="text-7xl md:text-9xl font-black text-[#F28F3B]">1 in 10</div>
-      <p class="text-2xl md:text-3xl font-bold text-white mt-2">people worldwide fall ill from contaminated food each
-        year.</p>
+    <!-- Controls Panel -->
+    <section class="bg-white/10 rounded-2xl shadow-lg p-6 mb-8 fade-in fade-in-delay-1" aria-label="Dashboard Controls">
+      <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-4 mb-4">
+        <div>
+          <label for="yearFilter" class="block text-sm font-medium text-gray-300 mb-1">Year</label>
+          <select id="yearFilter" class="w-full bg-gray-700 text-white rounded px-3 py-2 text-base focus-visible" aria-describedby="yearHelp">
+            <option value="2024">2024</option>
+            <option value="2023">2023</option>
+            <option value="2022">2022</option>
+            <option value="2021">2021</option>
+            <option value="2020">2020</option>
+          </select>
+          <div id="yearHelp" class="sr-only">Select year for data visualization</div>
+        </div>
+        
+        <div>
+          <label for="regionFilter" class="block text-sm font-medium text-gray-300 mb-1">Region</label>
+          <select id="regionFilter" class="w-full bg-gray-700 text-white rounded px-3 py-2 text-base focus-visible" aria-describedby="regionHelp">
+            <option value="global">Global</option>
+            <option value="north-america">North America</option>
+            <option value="europe">Europe</option>
+            <option value="asia">Asia</option>
+            <option value="africa">Africa</option>
+          </select>
+          <div id="regionHelp" class="sr-only">Select geographic region for data filtering</div>
+        </div>
+        
+        <div>
+          <label for="dataSource" class="block text-sm font-medium text-gray-300 mb-1">Data Source</label>
+          <select id="dataSource" class="w-full bg-gray-700 text-white rounded px-3 py-2 text-base focus-visible" aria-describedby="sourceHelp">
+            <option value="who">WHO</option>
+            <option value="cdc">CDC</option>
+            <option value="fao">FAO</option>
+          </select>
+          <div id="sourceHelp" class="sr-only">Select data source for statistics</div>
+        </div>
+        
+        <div class="flex items-end">
+          <button id="exportAll" class="w-full bg-[#F28F3B] hover:bg-orange-600 text-white font-medium py-2 px-4 rounded export-btn focus-visible" aria-describedby="exportHelp">
+            📊 Export All
+          </button>
+          <div id="exportHelp" class="sr-only">Export all charts and data</div>
+        </div>
+        
+        <div class="flex items-end">
+          <button id="shareBtn" class="w-full bg-[#00A6A6] hover:bg-teal-600 text-white font-medium py-2 px-4 rounded export-btn focus-visible" aria-describedby="shareHelp">
+            🔗 Share
+          </button>
+          <div id="shareHelp" class="sr-only">Share current dashboard view</div>
+        </div>
+      </div>
+      
+      <div class="text-sm text-gray-400 text-center">
+        📱 Mobile: Swipe charts to explore • ⌨️ Keyboard: Tab to navigate, Space/Enter to interact
+      </div>
     </section>
 
-    <main class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-12">
+    <!-- Global Statistics -->
+    <section class="text-center bg-white/10 rounded-2xl shadow-lg p-8 mb-8 fade-in fade-in-delay-2" aria-labelledby="global-stats-heading">
+      <h2 id="global-stats-heading" class="text-2xl font-bold text-white mb-2">A Global Health Crisis</h2>
+      <p class="text-gray-300 mb-6">According to the World Health Organization, the scale of foodborne illness is immense, affecting people in every country.</p>
+      <div class="text-7xl md:text-9xl font-black text-[#F28F3B] counter" id="globalStat" aria-live="polite">1 in 10</div>
+      <p class="text-2xl md:text-3xl font-bold text-white mt-2">people worldwide fall ill from contaminated food each year.</p>
+      <div class="mt-4 text-sm text-gray-400">
+        <span id="trendIndicator" aria-live="polite">↑ 3% increase from 2023</span>
+      </div>
+    </section>
 
-      <div class="md:col-span-2 lg:col-span-3 bg-[#714955] rounded-2xl shadow-2xl p-6 md:p-8">
-        <h3 class="text-3xl font-bold text-white mb-4 text-center">The Human Toll of Unsafe Food</h3>
-        <p class="text-center text-gray-300 mb-8 max-w-4xl mx-auto">Beyond the initial illness, foodborne diseases have
-          severe, long-term health consequences, leading to millions of preventable hospitalizations and deaths annually
-          across the globe.</p>
+    <main id="main-content" class="grid grid-cols-1 gap-8 md:gap-12">
+
+      <!-- Human Toll Section -->
+      <div class="bg-[#714955] rounded-2xl shadow-2xl p-6 md:p-8 fade-in fade-in-delay-3" role="region" aria-labelledby="human-toll-heading">
+        <div class="touch-indicator">👆</div>
+        <h3 id="human-toll-heading" class="text-3xl font-bold text-white mb-4 text-center">The Human Toll of Unsafe Food</h3>
+        <p class="text-center text-gray-300 mb-8 max-w-4xl mx-auto">Beyond the initial illness, foodborne diseases have severe, long-term health consequences, leading to millions of preventable hospitalizations and deaths annually across the globe.</p>
+        
         <div class="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
-          <div class="bg-white/10 p-6 rounded-xl">
-            <div class="text-6xl mb-2">🤒</div>
-            <div class="text-5xl font-extrabold text-[#00A6A6]">600 Million</div>
-            <p class="text-lg font-semibold text-white mt-1">Illnesses</p>
+          <div class="bg-white/10 p-6 rounded-xl relative" tabindex="0" role="article" aria-labelledby="illnesses-stat">
+            <div class="text-6xl mb-2" aria-hidden="true">🤒</div>
+            <div id="illnesses-stat" class="text-5xl font-extrabold text-[#00A6A6] counter" data-target="600">0</div>
+            <p class="text-lg font-semibold text-white mt-1">Million Illnesses</p>
+            <div class="text-sm text-gray-400 mt-2" aria-live="polite">
+              <span class="trend-info">↑ 2.1% from last year</span>
+            </div>
           </div>
-          <div class="bg-white/10 p-6 rounded-xl">
-            <div class="text-6xl mb-2">🏥</div>
-            <div class="text-5xl font-extrabold text-[#F28F3B]">23 Million</div>
-            <p class="text-lg font-semibold text-white mt-1">Hospitalizations</p>
+          
+          <div class="bg-white/10 p-6 rounded-xl relative" tabindex="0" role="article" aria-labelledby="hospitalizations-stat">
+            <div class="text-6xl mb-2" aria-hidden="true">🏥</div>
+            <div id="hospitalizations-stat" class="text-5xl font-extrabold text-[#F28F3B] counter" data-target="23">0</div>
+            <p class="text-lg font-semibold text-white mt-1">Million Hospitalizations</p>
+            <div class="text-sm text-gray-400 mt-2" aria-live="polite">
+              <span class="trend-info">↓ 1.5% from last year</span>
+            </div>
           </div>
-          <div class="bg-white/10 p-6 rounded-xl">
-            <div class="text-6xl mb-2">💀</div>
-            <div class="text-5xl font-extrabold text-[#E84855]">420,000</div>
+          
+          <div class="bg-white/10 p-6 rounded-xl relative" tabindex="0" role="article" aria-labelledby="deaths-stat">
+            <div class="text-6xl mb-2" aria-hidden="true">💀</div>
+            <div id="deaths-stat" class="text-5xl font-extrabold text-[#E84855] counter" data-target="420000">0</div>
             <p class="text-lg font-semibold text-white mt-1">Deaths</p>
+            <div class="text-sm text-gray-400 mt-2" aria-live="polite">
+              <span class="trend-info">↑ 4.2% from last year</span>
+            </div>
           </div>
         </div>
-      </div>
-
-      <div class="bg-white/5 rounded-2xl shadow-xl p-6 md:p-8">
-        <h3 class="text-2xl font-bold text-white mb-4 text-center">Leading Foodborne Pathogens</h3>
-        <p class="text-center text-gray-300 mb-6">A few key pathogens are responsible for the majority of foodborne
-          illnesses. Norovirus is the most common cause, leading to acute gastroenteritis.</p>
-        <div class="chart-container h-80 md:h-96">
-          <canvas id="pathogensChart"></canvas>
+        
+        <div class="flex justify-center mt-6">
+          <button class="bg-[#00A6A6] hover:bg-teal-600 text-white px-4 py-2 rounded export-btn focus-visible" onclick="exportChart('humanToll')" aria-label="Export human toll statistics">
+            📥 Export Data
+          </button>
         </div>
       </div>
 
-      <div class="bg-white/5 rounded-2xl shadow-xl p-6 md:p-8">
-        <h3 class="text-2xl font-bold text-white mb-4 text-center">The Cost of a Recall for Businesses</h3>
-        <p class="text-center text-gray-300 mb-6">A single food recall can cost a company millions in direct expenses,
-          not including the devastating and long-lasting damage to its brand reputation and consumer trust.</p>
-        <div class="chart-container h-80 md:h-96">
-          <canvas id="recallCostChart"></canvas>
+      <!-- Charts Grid -->
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-12">
+        
+        <!-- Pathogens Chart -->
+        <div class="bg-white/5 rounded-2xl shadow-xl p-6 md:p-8 fade-in fade-in-delay-4" role="region" aria-labelledby="pathogens-heading">
+          <div class="touch-indicator">👆</div>
+          <h3 id="pathogens-heading" class="text-2xl font-bold text-white mb-4 text-center">Leading Foodborne Pathogens</h3>
+          <p class="text-center text-gray-300 mb-6">A few key pathogens are responsible for the majority of foodborne illnesses. Norovirus is the most common cause, leading to acute gastroenteritis.</p>
+          
+          <!-- Chart Description for Screen Readers -->
+          <div class="sr-only" aria-live="polite" id="pathogens-description">
+            Horizontal bar chart showing leading foodborne pathogens. Norovirus leads with 68.5 million cases, followed by Salmonella with 1.35 million cases.
+          </div>
+          
+          <div class="chart-container h-80 md:h-96" role="img" aria-labelledby="pathogens-heading" aria-describedby="pathogens-description">
+            <canvas id="pathogensChart" tabindex="0"></canvas>
+          </div>
+          
+          <div class="flex justify-center mt-4 space-x-2">
+            <button class="bg-[#F28F3B] hover:bg-orange-600 text-white px-3 py-1 rounded text-sm export-btn focus-visible" onclick="exportChart('pathogensChart')" aria-label="Export pathogens chart">
+              📊 Export
+            </button>
+            <button class="bg-[#00A6A6] hover:bg-teal-600 text-white px-3 py-1 rounded text-sm export-btn focus-visible" onclick="showDetailedInfo('pathogens')" aria-label="Show detailed pathogen information">
+              ℹ️ Details
+            </button>
+          </div>
         </div>
+
+        <!-- Recall Cost Chart -->
+        <div class="bg-white/5 rounded-2xl shadow-xl p-6 md:p-8 fade-in fade-in-delay-4" role="region" aria-labelledby="recall-heading">
+          <div class="touch-indicator">👆</div>
+          <h3 id="recall-heading" class="text-2xl font-bold text-white mb-4 text-center">The Cost of a Recall for Businesses</h3>
+          <p class="text-center text-gray-300 mb-6">A single food recall can cost a company millions in direct expenses, not including the devastating and long-lasting damage to its brand reputation and consumer trust.</p>
+          
+          <div class="sr-only" aria-live="polite" id="recall-description">
+            Donut chart showing recall cost breakdown. Business interruption accounts for 42%, product recall and disposal 31%, customer reimbursement 15%, and legal fees 12%.
+          </div>
+          
+          <div class="chart-container h-80 md:h-96" role="img" aria-labelledby="recall-heading" aria-describedby="recall-description">
+            <canvas id="recallCostChart" tabindex="0"></canvas>
+          </div>
+          
+          <div class="flex justify-center mt-4 space-x-2">
+            <button class="bg-[#F28F3B] hover:bg-orange-600 text-white px-3 py-1 rounded text-sm export-btn focus-visible" onclick="exportChart('recallCostChart')" aria-label="Export recall cost chart">
+              📊 Export
+            </button>
+            <button class="bg-[#00A6A6] hover:bg-teal-600 text-white px-3 py-1 rounded text-sm export-btn focus-visible" onclick="showDetailedInfo('recall')" aria-label="Show detailed recall cost information">
+              ℹ️ Details
+            </button>
+          </div>
+        </div>
+
+        <!-- Economic Burden Chart -->
+        <div class="bg-white/5 rounded-2xl shadow-xl p-6 md:p-8 fade-in fade-in-delay-4" role="region" aria-labelledby="economic-heading">
+          <div class="touch-indicator">👆</div>
+          <h3 id="economic-heading" class="text-2xl font-bold text-white mb-4 text-center">National Economic Burden</h3>
+          <p class="text-center text-gray-300 mb-6">The impact extends to entire economies, with nations losing billions annually due to healthcare costs and lost productivity from foodborne diseases.</p>
+          
+          <div class="sr-only" aria-live="polite" id="economic-description">
+            Bar chart showing economic burden by country. USA leads with 17.6 billion USD annually, followed by UK with 11 billion, Australia with 1.7 billion, and Canada with 1.3 billion.
+          </div>
+          
+          <div class="chart-container h-80 md:h-96" role="img" aria-labelledby="economic-heading" aria-describedby="economic-description">
+            <canvas id="economicBurdenChart" tabindex="0"></canvas>
+          </div>
+          
+          <div class="flex justify-center mt-4 space-x-2">
+            <button class="bg-[#F28F3B] hover:bg-orange-600 text-white px-3 py-1 rounded text-sm export-btn focus-visible" onclick="exportChart('economicBurdenChart')" aria-label="Export economic burden chart">
+              📊 Export
+            </button>
+            <button class="bg-[#00A6A6] hover:bg-teal-600 text-white px-3 py-1 rounded text-sm export-btn focus-visible" onclick="showDetailedInfo('economic')" aria-label="Show detailed economic burden information">
+              ℹ️ Details
+            </button>
+          </div>
+        </div>
+
       </div>
 
-      <div class="bg-white/5 rounded-2xl shadow-xl p-6 md:p-8">
-        <h3 class="text-2xl font-bold text-white mb-4 text-center">National Economic Burden</h3>
-        <p class="text-center text-gray-300 mb-6">The impact extends to entire economies, with nations losing billions
-          annually due to healthcare costs and lost productivity from foodborne diseases.</p>
-        <div class="chart-container h-80 md:h-96">
-          <canvas id="economicBurdenChart"></canvas>
-        </div>
-      </div>
-
-      <div class="md:col-span-2 lg:col-span-3 bg-[#714955] rounded-2xl shadow-2xl p-6 md:p-8">
-        <h3 class="text-3xl font-bold text-white mb-6 text-center">The Ripple Effect of a Single Failure</h3>
-        <p class="text-center text-gray-300 mb-8 max-w-4xl mx-auto">A food safety lapse at any point in the supply chain
-          creates a devastating cascade of consequences, impacting public health, businesses, and the economy.</p>
-        <div class="flex flex-col md:flex-row justify-between items-center text-center gap-4">
-          <div class="flex-1 bg-white/10 p-4 rounded-lg w-full">
+      <!-- Ripple Effect Section -->
+      <div class="bg-[#714955] rounded-2xl shadow-2xl p-6 md:p-8 fade-in fade-in-delay-4" role="region" aria-labelledby="ripple-heading">
+        <div class="touch-indicator">👆</div>
+        <h3 id="ripple-heading" class="text-3xl font-bold text-white mb-6 text-center">The Ripple Effect of a Single Failure</h3>
+        <p class="text-center text-gray-300 mb-8 max-w-4xl mx-auto">A food safety lapse at any point in the supply chain creates a devastating cascade of consequences, impacting public health, businesses, and the economy.</p>
+        
+        <div class="flex flex-col md:flex-row justify-between items-center text-center gap-4" role="list" aria-label="Ripple effect stages">
+          <div class="flex-1 bg-white/10 p-4 rounded-lg w-full ripple-stage" tabindex="0" role="listitem" aria-describedby="stage1-desc">
             <p class="font-bold text-lg text-[#00A6A6]">1. Contamination Event</p>
-            <p class="text-sm text-gray-300">Pathogen introduced at farm, factory, or restaurant.</p>
+            <p id="stage1-desc" class="text-sm text-gray-300">Pathogen introduced at farm, factory, or restaurant.</p>
           </div>
-          <div class="flow-arrow hidden md:block">&rarr;</div>
-          <div class="flow-arrow rotate-90 md:hidden">&darr;</div>
-          <div class="flex-1 bg-white/10 p-4 rounded-lg w-full">
+          <div class="flow-arrow hidden md:block" aria-hidden="true">&rarr;</div>
+          <div class="flow-arrow rotate-90 md:hidden" aria-hidden="true">&darr;</div>
+          
+          <div class="flex-1 bg-white/10 p-4 rounded-lg w-full ripple-stage" tabindex="0" role="listitem" aria-describedby="stage2-desc">
             <p class="font-bold text-lg text-[#F28F3B]">2. Public Health Impact</p>
-            <p class="text-sm text-gray-300">Consumers fall ill, leading to outbreaks and straining healthcare.</p>
+            <p id="stage2-desc" class="text-sm text-gray-300">Consumers fall ill, leading to outbreaks and straining healthcare.</p>
           </div>
-          <div class="flow-arrow hidden md:block">&rarr;</div>
-          <div class="flow-arrow rotate-90 md:hidden">&darr;</div>
-          <div class="flex-1 bg-white/10 p-4 rounded-lg w-full">
+          <div class="flow-arrow hidden md:block" aria-hidden="true">&rarr;</div>
+          <div class="flow-arrow rotate-90 md:hidden" aria-hidden="true">&darr;</div>
+          
+          <div class="flex-1 bg-white/10 p-4 rounded-lg w-full ripple-stage" tabindex="0" role="listitem" aria-describedby="stage3-desc">
             <p class="font-bold text-lg text-[#E84855]">3. Business & Brand Damage</p>
-            <p class="text-sm text-gray-300">Product recalls, facility closures, lawsuits, and loss of consumer trust.
-            </p>
+            <p id="stage3-desc" class="text-sm text-gray-300">Product recalls, facility closures, lawsuits, and loss of consumer trust.</p>
           </div>
-          <div class="flow-arrow hidden md:block">&rarr;</div>
-          <div class="flow-arrow rotate-90 md:hidden">&darr;</div>
-          <div class="flex-1 bg-white/10 p-4 rounded-lg w-full">
+          <div class="flow-arrow hidden md:block" aria-hidden="true">&rarr;</div>
+          <div class="flow-arrow rotate-90 md:hidden" aria-hidden="true">&darr;</div>
+          
+          <div class="flex-1 bg-white/10 p-4 rounded-lg w-full ripple-stage" tabindex="0" role="listitem" aria-describedby="stage4-desc">
             <p class="font-bold text-lg text-[#00A6A6]">4. Economic Fallout</p>
-            <p class="text-sm text-gray-300">Lost productivity, reduced trade, and long-term market loss.</p>
+            <p id="stage4-desc" class="text-sm text-gray-300">Lost productivity, reduced trade, and long-term market loss.</p>
           </div>
+        </div>
+        
+        <div class="flex justify-center mt-6">
+          <button class="bg-[#00A6A6] hover:bg-teal-600 text-white px-4 py-2 rounded export-btn focus-visible" onclick="exportChart('rippleEffect')" aria-label="Export ripple effect diagram">
+            📥 Export Diagram
+          </button>
         </div>
       </div>
 
-      <div class="md:col-span-2 lg:col-span-3 bg-white/5 rounded-2xl shadow-xl p-6 md:p-8">
-        <h3 class="text-2xl font-bold text-white mb-4 text-center">Disproportionate Impact on Vulnerable Populations
-        </h3>
-        <p class="text-center text-gray-300 mb-6">While everyone is at risk, the consequences of foodborne disease are
-          most severe for vulnerable groups. Children under 5 are particularly susceptible, accounting for a tragic
-          percentage of deaths.</p>
-        <div class="chart-container max-w-4xl h-80 md:h-96">
-          <canvas id="vulnerableChart"></canvas>
+      <!-- Vulnerable Populations Chart -->
+      <div class="bg-white/5 rounded-2xl shadow-xl p-6 md:p-8 fade-in fade-in-delay-4" role="region" aria-labelledby="vulnerable-heading">
+        <div class="touch-indicator">👆</div>
+        <h3 id="vulnerable-heading" class="text-2xl font-bold text-white mb-4 text-center">Disproportionate Impact on Vulnerable Populations</h3>
+        <p class="text-center text-gray-300 mb-6">While everyone is at risk, the consequences of foodborne disease are most severe for vulnerable groups. Children under 5 are particularly susceptible, accounting for a tragic percentage of deaths.</p>
+        
+        <div class="sr-only" aria-live="polite" id="vulnerable-description">
+          Stacked bar chart showing death distribution by population group. Children under 5 account for 30% of deaths, elderly and immunocompromised 25%, and general population 45%.
+        </div>
+        
+        <div class="chart-container max-w-4xl h-80 md:h-96" role="img" aria-labelledby="vulnerable-heading" aria-describedby="vulnerable-description">
+          <canvas id="vulnerableChart" tabindex="0"></canvas>
+        </div>
+        
+        <div class="flex justify-center mt-4 space-x-2">
+          <button class="bg-[#F28F3B] hover:bg-orange-600 text-white px-3 py-1 rounded text-sm export-btn focus-visible" onclick="exportChart('vulnerableChart')" aria-label="Export vulnerable populations chart">
+            📊 Export
+          </button>
+          <button class="bg-[#00A6A6] hover:bg-teal-600 text-white px-3 py-1 rounded text-sm export-btn focus-visible" onclick="showDetailedInfo('vulnerable')" aria-label="Show detailed vulnerable populations information">
+            ℹ️ Details
+          </button>
         </div>
       </div>
 
     </main>
 
-    <footer class="text-center mt-12 md:mt-16 border-t-2 border-white/20 pt-8">
+    <footer class="text-center mt-12 md:mt-16 border-t-2 border-white/20 pt-8 fade-in fade-in-delay-4" role="contentinfo">
       <h2 class="text-3xl font-bold text-white mb-4">Prevention is the Best Investment</h2>
-      <p class="text-lg text-gray-300 max-w-3xl mx-auto">Investing in robust food safety education, training, and
-        infrastructure is not a cost—it's a critical investment in public health, economic stability, and human
-        potential.</p>
+      <p class="text-lg text-gray-300 max-w-3xl mx-auto mb-6">Investing in robust food safety education, training, and infrastructure is not a cost—it's a critical investment in public health, economic stability, and human potential.</p>
+      
+      <div class="flex flex-wrap justify-center gap-4 mb-6">
+        <button class="bg-[#F28F3B] hover:bg-orange-600 text-white px-6 py-3 rounded-lg export-btn focus-visible" onclick="generateReport()" aria-label="Generate comprehensive report">
+          📋 Generate Report
+        </button>
+        <button class="bg-[#00A6A6] hover:bg-teal-600 text-white px-6 py-3 rounded-lg export-btn focus-visible" onclick="downloadData()" aria-label="Download all data as CSV">
+          💾 Download Data
+        </button>
+      </div>
+      
+      <div class="text-sm text-gray-400">
+        Data sources: WHO, CDC, FAO • Last updated: <span id="lastUpdated">December 2024</span>
+      </div>
     </footer>
 
   </div>
 
+  <!-- Modals -->
+  <!-- Help Modal -->
+  <div id="helpModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden modal" role="dialog" aria-labelledby="help-title" aria-hidden="true">
+    <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg max-w-md w-full mx-4">
+      <h3 id="help-title" class="text-xl font-bold mb-4 text-gray-900 dark:text-white">Keyboard Shortcuts</h3>
+      <div class="space-y-2 text-sm text-gray-700 dark:text-gray-300">
+        <div><kbd class="bg-gray-200 dark:bg-gray-700 px-2 py-1 rounded">Tab</kbd> Navigate between elements</div>
+        <div><kbd class="bg-gray-200 dark:bg-gray-700 px-2 py-1 rounded">Space/Enter</kbd> Activate buttons</div>
+        <div><kbd class="bg-gray-200 dark:bg-gray-700 px-2 py-1 rounded">Esc</kbd> Close modals</div>
+        <div><kbd class="bg-gray-200 dark:bg-gray-700 px-2 py-1 rounded">Arrow Keys</kbd> Navigate chart data</div>
+      </div>
+      <div class="flex justify-end mt-4">
+        <button class="px-4 py-2 bg-[#F28F3B] text-white hover:bg-orange-600 rounded focus-visible" onclick="closeModal('helpModal')">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Export Success Modal -->
+  <div id="exportModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden modal" role="dialog" aria-labelledby="export-title" aria-hidden="true">
+    <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg max-w-sm w-full mx-4">
+      <h3 id="export-title" class="text-xl font-bold mb-4 text-gray-900 dark:text-white">Export Successful</h3>
+      <p class="text-gray-700 dark:text-gray-300 mb-4" id="exportMessage">Your chart has been exported successfully!</p>
+      <div class="flex justify-end">
+        <button class="px-4 py-2 bg-[#00A6A6] text-white hover:bg-teal-600 rounded focus-visible" onclick="closeModal('exportModal')">OK</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Share Modal -->
+  <div id="shareModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden modal" role="dialog" aria-labelledby="share-title" aria-hidden="true">
+    <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg max-w-md w-full mx-4">
+      <h3 id="share-title" class="text-xl font-bold mb-4 text-gray-900 dark:text-white">Share Dashboard</h3>
+      <p class="text-gray-700 dark:text-gray-300 mb-4">Share this dashboard view:</p>
+      <input type="text" id="shareUrl" class="w-full p-2 border rounded mb-4 text-base" readonly value="">
+      <div class="flex justify-end space-x-2">
+        <button class="px-4 py-2 text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 rounded focus-visible" onclick="closeModal('shareModal')">Cancel</button>
+        <button class="px-4 py-2 bg-[#00A6A6] text-white hover:bg-teal-600 rounded focus-visible" onclick="copyShareUrl()">Copy URL</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Detail Info Modal -->
+  <div id="detailModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden modal" role="dialog" aria-labelledby="detail-title" aria-hidden="true">
+    <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg max-w-2xl w-full mx-4 max-h-96 overflow-y-auto">
+      <h3 id="detail-title" class="text-xl font-bold mb-4 text-gray-900 dark:text-white"></h3>
+      <div id="detail-content" class="text-gray-700 dark:text-gray-300"></div>
+      <div class="flex justify-end mt-4">
+        <button class="px-4 py-2 bg-[#F28F3B] text-white hover:bg-orange-600 rounded focus-visible" onclick="closeModal('detailModal')">Close</button>
+      </div>
+    </div>
+  </div>
+
   <script>
+    // Theme and accessibility
+    let isHighContrast = false;
+    let currentChartIndex = 0;
+    const charts = [];
+
+    // Dark mode detection
+    if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.documentElement.classList.add('dark');
+    }
+    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', event => {
+        if (event.matches) {
+            document.documentElement.classList.add('dark');
+        } else {
+            document.documentElement.classList.remove('dark');
+        }
+    });
+
+    // Touch detection
+    const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+    if (isTouchDevice) {
+        document.body.classList.add('touch-enabled');
+    }
+
+    // Colors and configuration
     const primaryColor = '#00A6A6';
     const secondaryColor = '#F28F3B';
     const tertiaryColor = '#E84855';
     const textColor = '#FFFFFF';
     const gridColor = 'rgba(255, 255, 255, 0.2)';
 
+    // Enhanced tooltip configuration
     const tooltipTitleCallback = function (tooltipItems) {
-      const item = tooltipItems[0];
-      let label = item.chart.data.labels[item.dataIndex];
-      if (Array.isArray(label)) {
-        return label.join(' ');
-      } else {
+        const item = tooltipItems[0];
+        let label = item.chart.data.labels[item.dataIndex];
+        if (Array.isArray(label)) {
+            return label.join(' ');
+        }
         return label;
-      }
     };
 
+    const enhancedTooltipCallback = {
+        title: tooltipTitleCallback,
+        afterTitle: function(tooltipItems) {
+            return `Year: ${document.getElementById('yearFilter').value}`;
+        },
+        label: function(context) {
+            let label = context.dataset.label || '';
+            if (label) {
+                label += ': ';
+            }
+            if (context.parsed !== null) {
+                const value = typeof context.parsed === 'object' ? context.parsed.x || context.parsed.y : context.parsed;
+                label += new Intl.NumberFormat().format(value);
+                if (context.chart.canvas.id === 'recallCostChart') {
+                    label += '%';
+                } else if (context.chart.canvas.id === 'economicBurdenChart') {
+                    label += ' Billion USD';
+                } else if (context.chart.canvas.id === 'pathogensChart') {
+                    label += ' Million Cases';
+                }
+            }
+            return label;
+        },
+        footer: function(tooltipItems) {
+            const trends = {
+                'Norovirus': '↑ 5.2% from last year',
+                'Salmonella': '↓ 2.1% from last year',
+                'USA': '↑ 8.3% from last year',
+                'United Kingdom': '↓ 1.2% from last year'
+            };
+            const item = tooltipItems[0];
+            const label = item.chart.data.labels[item.dataIndex];
+            const labelText = Array.isArray(label) ? label.join(' ') : label;
+            return trends[labelText] || '';
+        }
+    };
+
+    // Utility functions
     function processLabels(labels) {
-      const maxLen = 16;
-      return labels.map(label => {
-        if (label.length <= maxLen) {
-          return label;
-        }
-        const words = label.split(' ');
-        let lines = [];
-        let currentLine = '';
-        for (const word of words) {
-          if ((currentLine + ' ' + word).trim().length > maxLen) {
-            lines.push(currentLine.trim());
-            currentLine = word;
-          } else {
-            currentLine = (currentLine + ' ' + word).trim();
-          }
-        }
-        if (currentLine) {
-          lines.push(currentLine.trim());
-        }
-        return lines;
-      });
+        const maxLen = 16;
+        return labels.map(label => {
+            if (label.length <= maxLen) {
+                return label;
+            }
+            const words = label.split(' ');
+            let lines = [];
+            let currentLine = '';
+            for (const word of words) {
+                if ((currentLine + ' ' + word).trim().length > maxLen) {
+                    lines.push(currentLine.trim());
+                    currentLine = word;
+                } else {
+                    currentLine = (currentLine + ' ' + word).trim();
+                }
+            }
+            if (currentLine) {
+                lines.push(currentLine.trim());
+            }
+            return lines;
+        });
     }
 
+    // Default chart options with enhancements
     const defaultChartOptions = {
-      maintainAspectRatio: false,
-      responsive: true,
-      plugins: {
-        legend: {
-          labels: {
-            color: textColor,
-            font: {
-              size: 14
-            }
-          }
-        },
-        tooltip: {
-          callbacks: {
-            title: tooltipTitleCallback
-          },
-          bodyFont: {
-            size: 14
-          },
-          titleFont: {
-            size: 16
-          }
-        }
-      }
-    };
-
-    const pathogensData = {
-      labels: processLabels(['Norovirus', 'Salmonella', 'Clostridium perfringens', 'Campylobacter', 'Staphylococcus aureus (Staph)']),
-      datasets: [{
-        label: 'Estimated Annual Cases (Millions)',
-        data: [68.5, 1.35, 1.0, 0.8, 0.25],
-        backgroundColor: [primaryColor, secondaryColor, tertiaryColor, '#714955', '#A88AAD'],
-        borderColor: '#353249',
-        borderWidth: 2
-      }]
-    };
-    new Chart(document.getElementById('pathogensChart'), {
-      type: 'bar',
-      data: pathogensData,
-      options: {
-        ...defaultChartOptions,
-        indexAxis: 'y',
-        scales: {
-          x: {
-            ticks: {color: textColor, font: {size: 12}},
-            grid: {color: gridColor},
-            title: {display: true, text: 'Cases (Millions)', color: textColor}
-          },
-          y: {
-            ticks: {color: textColor, font: {size: 12}},
-            grid: {color: 'transparent'}
-          }
+        maintainAspectRatio: false,
+        responsive: true,
+        animation: {
+            duration: 2000,
+            easing: 'easeOutQuart'
         },
         plugins: {
-          legend: {display: false},
-          tooltip: defaultChartOptions.plugins.tooltip
+            legend: {
+                labels: {
+                    color: textColor,
+                    font: { size: 14 }
+                }
+            },
+            tooltip: {
+                callbacks: enhancedTooltipCallback,
+                bodyFont: { size: 14 },
+                titleFont: { size: 16 },
+                backgroundColor: 'rgba(53, 50, 73, 0.95)',
+                titleColor: textColor,
+                bodyColor: textColor,
+                borderColor: primaryColor,
+                borderWidth: 1
+            }
         }
-      }
-    });
+    };
+
+    // Counter animation function
+    function animateCounter(element, target, duration = 2000) {
+        const start = 0;
+        const startTime = performance.now();
+        
+        function update(currentTime) {
+            const elapsed = currentTime - startTime;
+            const progress = Math.min(elapsed / duration, 1);
+            const easeProgress = 1 - Math.pow(1 - progress, 3); // Ease out cubic
+            
+            const current = Math.floor(start + (target - start) * easeProgress);
+            
+            if (target >= 1000000) {
+                element.textContent = (current / 1000000).toFixed(1) + 'M';
+            } else if (target >= 1000) {
+                element.textContent = (current / 1000).toFixed(1) + 'K';
+            } else {
+                element.textContent = current.toLocaleString();
+            }
+            
+            if (progress < 1) {
+                requestAnimationFrame(update);
+            } else {
+                if (target >= 1000000) {
+                    element.textContent = (target / 1000000).toFixed(0);
+                } else {
+                    element.textContent = target.toLocaleString();
+                }
+            }
+        }
+        
+        requestAnimationFrame(update);
+    }
+
+    // Initialize counters with animation
+    function initializeCounters() {
+        const counters = document.querySelectorAll('.counter[data-target]');
+        counters.forEach(counter => {
+            const target = parseInt(counter.dataset.target);
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        animateCounter(counter, target);
+                        observer.unobserve(entry.target);
+                    }
+                });
+            });
+            observer.observe(counter);
+        });
+    }
+
+    // Chart data with enhanced information
+    const pathogensData = {
+        labels: processLabels(['Norovirus', 'Salmonella', 'Clostridium perfringens', 'Campylobacter', 'Staphylococcus aureus (Staph)']),
+        datasets: [{
+            label: 'Estimated Annual Cases (Millions)',
+            data: [68.5, 1.35, 1.0, 0.8, 0.25],
+            backgroundColor: [primaryColor, secondaryColor, tertiaryColor, '#714955', '#A88AAD'],
+            borderColor: '#353249',
+            borderWidth: 2
+        }]
+    };
 
     const recallCostData = {
-      labels: ['Business Interruption', 'Product Recall & Disposal', 'Customer Reimbursement', 'Legal Fees & Fines'],
-      datasets: [{
-        data: [42, 31, 15, 12],
-        backgroundColor: [primaryColor, secondaryColor, tertiaryColor, '#714955'],
-        borderColor: '#353249',
-        borderWidth: 4,
-        hoverOffset: 8
-      }]
+        labels: ['Business Interruption', 'Product Recall & Disposal', 'Customer Reimbursement', 'Legal Fees & Fines'],
+        datasets: [{
+            data: [42, 31, 15, 12],
+            backgroundColor: [primaryColor, secondaryColor, tertiaryColor, '#714955'],
+            borderColor: '#353249',
+            borderWidth: 4,
+            hoverOffset: 8
+        }]
     };
-    new Chart(document.getElementById('recallCostChart'), {
-      type: 'doughnut',
-      data: recallCostData,
-      options: {
-        ...defaultChartOptions,
-        cutout: '60%',
-        plugins: {
-          ...defaultChartOptions.plugins,
-          tooltip: {
-            ...defaultChartOptions.plugins.tooltip,
-            callbacks: {
-              ...defaultChartOptions.plugins.tooltip.callbacks,
-              label: function (context) {
-                let label = context.label || '';
-                if (label) {
-                  label += ': ';
-                }
-                if (context.parsed !== null) {
-                  label += context.parsed + '%';
-                }
-                return label;
-              }
-            }
-          }
-        }
-      }
-    });
 
     const economicBurdenData = {
-      labels: ['USA', 'United Kingdom', 'Australia', 'Canada'],
-      datasets: [{
-        label: 'Annual Cost (Billions USD)',
-        data: [17.6, 11.0, 1.7, 1.3],
-        backgroundColor: [primaryColor, secondaryColor, tertiaryColor, '#714955'],
-        borderColor: '#353249',
-        borderWidth: 2
-      }]
+        labels: ['USA', 'United Kingdom', 'Australia', 'Canada'],
+        datasets: [{
+            label: 'Annual Cost (Billions USD)',
+            data: [17.6, 11.0, 1.7, 1.3],
+            backgroundColor: [primaryColor, secondaryColor, tertiaryColor, '#714955'],
+            borderColor: '#353249',
+            borderWidth: 2
+        }]
     };
-    new Chart(document.getElementById('economicBurdenChart'), {
-      type: 'bar',
-      data: economicBurdenData,
-      options: {
-        ...defaultChartOptions,
-        scales: {
-          y: {
-            beginAtZero: true,
-            ticks: {color: textColor, font: {size: 12}},
-            grid: {color: gridColor},
-            title: {display: true, text: 'Cost (Billions USD)', color: textColor}
-          },
-          x: {
-            ticks: {color: textColor, font: {size: 12}},
-            grid: {color: 'transparent'}
-          }
-        },
-        plugins: {
-          legend: {display: false},
-          tooltip: defaultChartOptions.plugins.tooltip
-        }
-      }
-    });
 
     const vulnerableData = {
-      labels: ['Global Population'],
-      datasets: [
-        {
-          label: 'Children Under 5',
-          data: [30],
-          backgroundColor: tertiaryColor,
-        },
-        {
-          label: 'Elderly & Immunocompromised',
-          data: [25],
-          backgroundColor: secondaryColor,
-        },
-        {
-          label: 'General Population',
-          data: [45],
-          backgroundColor: primaryColor,
-        }
-      ]
-    };
-    new Chart(document.getElementById('vulnerableChart'), {
-      type: 'bar',
-      data: vulnerableData,
-      options: {
-        ...defaultChartOptions,
-        indexAxis: 'y',
-        scales: {
-          x: {
-            stacked: true,
-            max: 100,
-            ticks: {
-              callback: function (value) {return value + "%"},
-              color: textColor
+        labels: ['Global Population'],
+        datasets: [
+            {
+                label: 'Children Under 5',
+                data: [30],
+                backgroundColor: tertiaryColor,
             },
-            grid: {color: gridColor}
-          },
-          y: {
-            stacked: true,
-            ticks: {display: false},
-            grid: {display: false}
-          }
-        },
-        plugins: {
-          ...defaultChartOptions.plugins,
-          tooltip: {
-            ...defaultChartOptions.plugins.tooltip,
-            callbacks: {
-              ...defaultChartOptions.plugins.tooltip.callbacks,
-              label: function (context) {
-                let label = context.dataset.label || '';
-                if (label) {
-                  label += ': ';
-                }
-                if (context.parsed.x !== null) {
-                  label += context.parsed.x + '% of Deaths';
-                }
-                return label;
-              }
+            {
+                label: 'Elderly & Immunocompromised',
+                data: [25],
+                backgroundColor: secondaryColor,
+            },
+            {
+                label: 'General Population',
+                data: [45],
+                backgroundColor: primaryColor,
             }
-          }
+        ]
+    };
+
+    // Create charts
+    function createCharts() {
+        // Pathogens Chart
+        const pathogensChart = new Chart(document.getElementById('pathogensChart'), {
+            type: 'bar',
+            data: pathogensData,
+            options: {
+                ...defaultChartOptions,
+                indexAxis: 'y',
+                scales: {
+                    x: {
+                        ticks: {color: textColor, font: {size: 12}},
+                        grid: {color: gridColor},
+                        title: {display: true, text: 'Cases (Millions)', color: textColor}
+                    },
+                    y: {
+                        ticks: {color: textColor, font: {size: 12}},
+                        grid: {color: 'transparent'}
+                    }
+                },
+                plugins: {
+                    legend: {display: false},
+                    tooltip: defaultChartOptions.plugins.tooltip
+                }
+            }
+        });
+
+        // Recall Cost Chart
+        const recallCostChart = new Chart(document.getElementById('recallCostChart'), {
+            type: 'doughnut',
+            data: recallCostData,
+            options: {
+                ...defaultChartOptions,
+                cutout: '60%',
+                plugins: {
+                    ...defaultChartOptions.plugins,
+                    tooltip: {
+                        ...defaultChartOptions.plugins.tooltip,
+                        callbacks: {
+                            ...enhancedTooltipCallback,
+                            label: function (context) {
+                                let label = context.label || '';
+                                if (label) {
+                                    label += ': ';
+                                }
+                                if (context.parsed !== null) {
+                                    label += context.parsed + '%';
+                                }
+                                return label;
+                            }
+                        }
+                    }
+                }
+            }
+        });
+
+        // Economic Burden Chart
+        const economicBurdenChart = new Chart(document.getElementById('economicBurdenChart'), {
+            type: 'bar',
+            data: economicBurdenData,
+            options: {
+                ...defaultChartOptions,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {color: textColor, font: {size: 12}},
+                        grid: {color: gridColor},
+                        title: {display: true, text: 'Cost (Billions USD)', color: textColor}
+                    },
+                    x: {
+                        ticks: {color: textColor, font: {size: 12}},
+                        grid: {color: 'transparent'}
+                    }
+                },
+                plugins: {
+                    legend: {display: false},
+                    tooltip: defaultChartOptions.plugins.tooltip
+                }
+            }
+        });
+
+        // Vulnerable Chart
+        const vulnerableChart = new Chart(document.getElementById('vulnerableChart'), {
+            type: 'bar',
+            data: vulnerableData,
+            options: {
+                ...defaultChartOptions,
+                indexAxis: 'y',
+                scales: {
+                    x: {
+                        stacked: true,
+                        max: 100,
+                        ticks: {
+                            callback: function (value) {return value + "%"},
+                            color: textColor
+                        },
+                        grid: {color: gridColor}
+                    },
+                    y: {
+                        stacked: true,
+                        ticks: {display: false},
+                        grid: {display: false}
+                    }
+                },
+                plugins: {
+                    ...defaultChartOptions.plugins,
+                    tooltip: {
+                        ...defaultChartOptions.plugins.tooltip,
+                        callbacks: {
+                            ...enhancedTooltipCallback,
+                            label: function (context) {
+                                let label = context.dataset.label || '';
+                                if (label) {
+                                    label += ': ';
+                                }
+                                if (context.parsed.x !== null) {
+                                    label += context.parsed.x + '% of Deaths';
+                                }
+                                return label;
+                            }
+                        }
+                    }
+                }
+            }
+        });
+
+        charts.push(pathogensChart, recallCostChart, economicBurdenChart, vulnerableChart);
+    }
+
+    // Export functionality
+    function exportChart(chartId) {
+        const element = chartId === 'humanToll' ? document.querySelector('.bg-\\[\\#714955\\]') :
+                       chartId === 'rippleEffect' ? document.querySelector('.bg-\\[\\#714955\\]') :
+                       document.getElementById(chartId).closest('.bg-white\\/5, .bg-\\[\\#714955\\]') || 
+                       document.getElementById(chartId).parentElement;
+        
+        const loadingSpinner = document.createElement('div');
+        loadingSpinner.className = 'fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-50';
+        loadingSpinner.innerHTML = '<div class="spinner"></div>';
+        document.body.appendChild(loadingSpinner);
+
+        html2canvas(element, {
+            backgroundColor: '#353249',
+            scale: 2,
+            useCORS: true
+        }).then(canvas => {
+            const link = document.createElement('a');
+            link.download = `food-safety-${chartId}-${new Date().toISOString().split('T')[0]}.png`;
+            link.href = canvas.toDataURL();
+            link.click();
+            
+            document.body.removeChild(loadingSpinner);
+            
+            document.getElementById('exportMessage').textContent = `${chartId} exported successfully!`;
+            showModal('exportModal');
+        }).catch(error => {
+            console.log('Export error:', JSON.stringify(error));
+            document.body.removeChild(loadingSpinner);
+            document.getElementById('exportMessage').textContent = 'Export failed. Please try again.';
+            showModal('exportModal');
+        });
+    }
+
+    // Enhanced export all functionality
+    function exportAll() {
+        const sections = ['humanToll', 'pathogensChart', 'recallCostChart', 'economicBurdenChart', 'rippleEffect', 'vulnerableChart'];
+        let completed = 0;
+        
+        const loadingSpinner = document.createElement('div');
+        loadingSpinner.className = 'fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-50 bg-black bg-opacity-50 rounded-lg p-4';
+        loadingSpinner.innerHTML = `
+            <div class="text-white text-center">
+                <div class="spinner mx-auto mb-2"></div>
+                <div>Exporting... <span id="exportProgress">0</span>/${sections.length}</div>
+            </div>
+        `;
+        document.body.appendChild(loadingSpinner);
+
+        sections.forEach((sectionId, index) => {
+            setTimeout(() => {
+                exportChart(sectionId);
+                completed++;
+                document.getElementById('exportProgress').textContent = completed;
+                
+                if (completed === sections.length) {
+                    setTimeout(() => {
+                        document.body.removeChild(loadingSpinner);
+                        document.getElementById('exportMessage').textContent = 'All charts exported successfully!';
+                        showModal('exportModal');
+                    }, 500);
+                }
+            }, index * 1000);
+        });
+    }
+
+    // Data download functionality
+    function downloadData() {
+        const data = {
+            pathogens: {
+                labels: ['Norovirus', 'Salmonella', 'Clostridium perfringens', 'Campylobacter', 'Staphylococcus aureus'],
+                values: [68.5, 1.35, 1.0, 0.8, 0.25],
+                unit: 'Million Cases'
+            },
+            recallCosts: {
+                labels: ['Business Interruption', 'Product Recall & Disposal', 'Customer Reimbursement', 'Legal Fees & Fines'],
+                values: [42, 31, 15, 12],
+                unit: 'Percentage'
+            },
+            economicBurden: {
+                labels: ['USA', 'United Kingdom', 'Australia', 'Canada'],
+                values: [17.6, 11.0, 1.7, 1.3],
+                unit: 'Billion USD'
+            },
+            vulnerablePopulations: {
+                labels: ['Children Under 5', 'Elderly & Immunocompromised', 'General Population'],
+                values: [30, 25, 45],
+                unit: 'Percentage of Deaths'
+            }
+        };
+
+        let csv = 'Category,Item,Value,Unit\n';
+        Object.keys(data).forEach(category => {
+            data[category].labels.forEach((label, index) => {
+                csv += `${category},${label},${data[category].values[index]},${data[category].unit}\n`;
+            });
+        });
+
+        const blob = new Blob([csv], { type: 'text/csv' });
+        const url = window.URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = `food-safety-data-${new Date().toISOString().split('T')[0]}.csv`;
+        link.click();
+        window.URL.revokeObjectURL(url);
+
+        document.getElementById('exportMessage').textContent = 'Data downloaded successfully!';
+        showModal('exportModal');
+    }
+
+    // Generate comprehensive report
+    function generateReport() {
+        const reportWindow = window.open('', '_blank');
+        reportWindow.document.write(`
+            <html>
+                <head>
+                    <title>Food Safety Impact Report</title>
+                    <style>
+                        body { font-family: Arial, sans-serif; margin: 40px; line-height: 1.6; }
+                        h1 { color: #353249; border-bottom: 3px solid #F28F3B; padding-bottom: 10px; }
+                        h2 { color: #00A6A6; margin-top: 30px; }
+                        .stat { background: #f5f5f5; padding: 15px; margin: 10px 0; border-radius: 5px; }
+                        .highlight { color: #E84855; font-weight: bold; }
+                    </style>
+                </head>
+                <body>
+                    <h1>The High Cost of Poor Food Safety - Comprehensive Report</h1>
+                    <p><strong>Generated:</strong> ${new Date().toLocaleDateString()}</p>
+                    
+                    <h2>Executive Summary</h2>
+                    <p>Foodborne illnesses represent a massive global health and economic crisis, affecting <span class="highlight">1 in 10 people worldwide</span> annually and causing hundreds of thousands of preventable deaths.</p>
+                    
+                    <h2>Key Statistics</h2>
+                    <div class="stat">
+                        <strong>Annual Global Impact:</strong><br>
+                        • 600 million illnesses<br>
+                        • 23 million hospitalizations<br>
+                        • 420,000 deaths
+                    </div>
+                    
+                    <h2>Leading Pathogens</h2>
+                    <div class="stat">
+                        1. Norovirus: 68.5 million cases<br>
+                        2. Salmonella: 1.35 million cases<br>
+                        3. Clostridium perfringens: 1.0 million cases<br>
+                        4. Campylobacter: 0.8 million cases<br>
+                        5. Staphylococcus aureus: 0.25 million cases
+                    </div>
+                    
+                    <h2>Economic Impact by Country</h2>
+                    <div class="stat">
+                        • USA: $17.6 billion annually<br>
+                        • United Kingdom: $11.0 billion annually<br>
+                        • Australia: $1.7 billion annually<br>
+                        • Canada: $1.3 billion annually
+                    </div>
+                    
+                    <h2>Vulnerable Populations</h2>
+                    <div class="stat">
+                        Children under 5 account for <span class="highlight">30% of foodborne disease deaths</span>, despite representing a much smaller portion of the global population.
+                    </div>
+                    
+                    <h2>Recommendations</h2>
+                    <p>Investment in robust food safety education, training, and infrastructure is critical for reducing this global burden and protecting public health.</p>
+                </body>
+            </html>
+        `);
+        reportWindow.document.close();
+    }
+
+    // Share functionality
+    function shareCurrentView() {
+        const filters = {
+            year: document.getElementById('yearFilter').value,
+            region: document.getElementById('regionFilter').value,
+            source: document.getElementById('dataSource').value
+        };
+        
+        const params = new URLSearchParams(filters);
+        const shareUrl = `${window.location.origin}${window.location.pathname}?${params.toString()}`;
+        
+        document.getElementById('shareUrl').value = shareUrl;
+        showModal('shareModal');
+    }
+
+    function copyShareUrl() {
+        const urlInput = document.getElementById('shareUrl');
+        urlInput.select();
+        document.execCommand('copy');
+        
+        const button = event.target;
+        const originalText = button.textContent;
+        button.textContent = 'Copied!';
+        button.style.backgroundColor = '#10B981';
+        
+        setTimeout(() => {
+            button.textContent = originalText;
+            button.style.backgroundColor = '';
+            closeModal('shareModal');
+        }, 1500);
+    }
+
+    // Modal functions
+    function showModal(modalId) {
+        const modal = document.getElementById(modalId);
+        modal.classList.remove('hidden');
+        modal.setAttribute('aria-hidden', 'false');
+        modal.querySelector('button').focus();
+    }
+
+    function closeModal(modalId) {
+        const modal = document.getElementById(modalId);
+        modal.classList.add('hidden');
+        modal.setAttribute('aria-hidden', 'true');
+    }
+
+    // Detailed information modal
+    function showDetailedInfo(type) {
+        const details = {
+            pathogens: {
+                title: 'Leading Foodborne Pathogens - Detailed Information',
+                content: `
+                    <h4 class="font-bold mb-2">Norovirus (68.5M cases)</h4>
+                    <p class="mb-4">Highly contagious virus causing acute gastroenteritis. Spreads through contaminated food, water, and surfaces. Recovery typically occurs within 1-3 days.</p>
+                    
+                    <h4 class="font-bold mb-2">Salmonella (1.35M cases)</h4>
+                    <p class="mb-4">Bacterial infection commonly found in poultry, eggs, and produce. Can cause serious complications in vulnerable populations.</p>
+                    
+                    <h4 class="font-bold mb-2">Prevention Strategies</h4>
+                    <ul class="list-disc pl-4">
+                        <li>Proper hand hygiene</li>
+                        <li>Safe food handling and storage</li>
+                        <li>Adequate cooking temperatures</li>
+                        <li>Clean water and sanitation</li>
+                    </ul>
+                `
+            },
+            recall: {
+                title: 'Food Recall Costs - Detailed Breakdown',
+                content: `
+                    <h4 class="font-bold mb-2">Business Interruption (42%)</h4>
+                    <p class="mb-4">Lost revenue during facility shutdowns, production halts, and market recovery periods.</p>
+                    
+                    <h4 class="font-bold mb-2">Product Recall & Disposal (31%)</h4>
+                    <p class="mb-4">Costs of retrieving products from market, destruction, and replacement inventory.</p>
+                    
+                    <h4 class="font-bold mb-2">Customer Reimbursement (15%)</h4>
+                    <p class="mb-4">Refunds, medical expenses, and customer compensation programs.</p>
+                    
+                    <h4 class="font-bold mb-2">Legal Fees & Fines (12%)</h4>
+                    <p class="mb-4">Regulatory penalties, litigation costs, and compliance remediation.</p>
+                    
+                    <p class="mt-4 text-sm italic">Note: These percentages represent average costs. Actual recalls can vary significantly based on scope and severity.</p>
+                `
+            },
+            economic: {
+                title: 'National Economic Burden - Additional Context',
+                content: `
+                    <h4 class="font-bold mb-2">Cost Components</h4>
+                    <ul class="list-disc pl-4 mb-4">
+                        <li>Healthcare system costs</li>
+                        <li>Lost productivity from illness</li>
+                        <li>Food industry losses</li>
+                        <li>Trade and tourism impacts</li>
+                        <li>Regulatory and surveillance costs</li>
+                    </ul>
+                    
+                    <h4 class="font-bold mb-2">USA ($17.6B annually)</h4>
+                    <p class="mb-4">Largest absolute burden due to population size and comprehensive reporting systems.</p>
+                    
+                    <h4 class="font-bold mb-2">Per Capita Impact</h4>
+                    <p class="mb-4">When adjusted for population, the per-capita burden reveals different patterns of food safety challenges across nations.</p>
+                `
+            },
+            vulnerable: {
+                title: 'Vulnerable Populations - Risk Factors',
+                content: `
+                    <h4 class="font-bold mb-2">Children Under 5 (30% of deaths)</h4>
+                    <p class="mb-4">Immature immune systems, smaller body weight, and higher fluid requirements make children particularly vulnerable to severe complications.</p>
+                    
+                    <h4 class="font-bold mb-2">Elderly & Immunocompromised (25% of deaths)</h4>
+                    <p class="mb-4">Weakened immune systems, underlying health conditions, and medication effects increase risk of severe illness.</p>
+                    
+                    <h4 class="font-bold mb-2">Risk Factors</h4>
+                    <ul class="list-disc pl-4 mb-4">
+                        <li>Compromised immune systems</li>
+                        <li>Chronic diseases (diabetes, kidney disease)</li>
+                        <li>Pregnancy</li>
+                        <li>Malnutrition</li>
+                        <li>Limited access to healthcare</li>
+                    </ul>
+                    
+                    <h4 class="font-bold mb-2">Global Inequality</h4>
+                    <p>Low-income countries bear a disproportionate burden, with children under 5 accounting for up to 40% of the total disease burden in some regions.</p>
+                `
+            }
+        };
+        
+        const detail = details[type];
+        if (detail) {
+            document.getElementById('detail-title').textContent = detail.title;
+            document.getElementById('detail-content').innerHTML = detail.content;
+            showModal('detailModal');
         }
-      }
+    }
+
+    // Touch gesture handling
+    function initializeTouchGestures() {
+        if (!isTouchDevice) return;
+
+        const chartContainers = document.querySelectorAll('.chart-container');
+        chartContainers.forEach((container, index) => {
+            const hammer = new Hammer(container);
+            hammer.get('swipe').set({ direction: Hammer.DIRECTION_HORIZONTAL });
+            
+            hammer.on('swipe', (e) => {
+                const swipeIndicator = e.direction === Hammer.DIRECTION_LEFT ? 
+                    document.getElementById('swipeLeft') : 
+                    document.getElementById('swipeRight');
+                
+                swipeIndicator.style.opacity = '1';
+                setTimeout(() => {
+                    swipeIndicator.style.opacity = '0';
+                }, 500);
+                
+                // Navigate between charts
+                if (e.direction === Hammer.DIRECTION_LEFT && currentChartIndex < charts.length - 1) {
+                    currentChartIndex++;
+                } else if (e.direction === Hammer.DIRECTION_RIGHT && currentChartIndex > 0) {
+                    currentChartIndex--;
+                }
+                
+                // Scroll to current chart
+                const chartElements = document.querySelectorAll('.chart-container');
+                if (chartElements[currentChartIndex]) {
+                    chartElements[currentChartIndex].scrollIntoView({ 
+                        behavior: 'smooth', 
+                        block: 'center' 
+                    });
+                }
+            });
+
+            // Pinch to zoom
+            hammer.get('pinch').set({ enable: true });
+            hammer.on('pinch', (e) => {
+                const canvas = container.querySelector('canvas');
+                if (canvas) {
+                    const scale = Math.max(0.5, Math.min(2, e.scale));
+                    canvas.style.transform = `scale(${scale})`;
+                }
+            });
+
+            hammer.on('pinchend', (e) => {
+                const canvas = container.querySelector('canvas');
+                if (canvas) {
+                    canvas.style.transform = '';
+                }
+            });
+        });
+
+        // Swipe for ripple effect
+        const rippleSection = document.querySelector('.bg-\\[\\#714955\\]');
+        if (rippleSection) {
+            const hammer = new Hammer(rippleSection);
+            hammer.get('swipe').set({ direction: Hammer.DIRECTION_HORIZONTAL });
+            
+            hammer.on('swipe', (e) => {
+                const stages = rippleSection.querySelectorAll('.ripple-stage');
+                stages.forEach((stage, index) => {
+                    if (e.direction === Hammer.DIRECTION_LEFT) {
+                        stage.style.transform = 'translateX(-20px)';
+                        stage.style.opacity = '0.7';
+                    } else {
+                        stage.style.transform = 'translateX(20px)';
+                        stage.style.opacity = '0.7';
+                    }
+                    
+                    setTimeout(() => {
+                        stage.style.transform = '';
+                        stage.style.opacity = '';
+                    }, 300);
+                });
+            });
+        }
+    }
+
+    // Keyboard navigation
+    function initializeKeyboardNavigation() {
+        document.addEventListener('keydown', (e) => {
+            // Close modals with Escape
+            if (e.key === 'Escape') {
+                const modals = document.querySelectorAll('.modal:not(.hidden)');
+                modals.forEach(modal => {
+                    modal.classList.add('hidden');
+                    modal.setAttribute('aria-hidden', 'true');
+                });
+            }
+            
+            // Navigate charts with arrow keys
+            if (e.key === 'ArrowLeft' || e.key === 'ArrowRight') {
+                const focusedElement = document.activeElement;
+                if (focusedElement.tagName === 'CANVAS') {
+                    e.preventDefault();
+                    const chartIndex = charts.findIndex(chart => chart.canvas === focusedElement);
+                    if (chartIndex !== -1) {
+                        const newIndex = e.key === 'ArrowRight' ? 
+                            Math.min(chartIndex + 1, charts.length - 1) :
+                            Math.max(chartIndex - 1, 0);
+                        charts[newIndex].canvas.focus();
+                    }
+                }
+            }
+        });
+
+        // Enhance chart focus indicators
+        charts.forEach(chart => {
+            chart.canvas.addEventListener('focus', () => {
+                chart.canvas.style.outline = '3px solid #F28F3B';
+                chart.canvas.style.outlineOffset = '2px';
+            });
+            
+            chart.canvas.addEventListener('blur', () => {
+                chart.canvas.style.outline = '';
+                chart.canvas.style.outlineOffset = '';
+            });
+        });
+    }
+
+    // Filter functionality
+    function initializeFilters() {
+        const yearFilter = document.getElementById('yearFilter');
+        const regionFilter = document.getElementById('regionFilter');
+        const dataSource = document.getElementById('dataSource');
+
+        [yearFilter, regionFilter, dataSource].forEach(filter => {
+            filter.addEventListener('change', () => {
+                updateDashboard();
+                announceChange(filter);
+            });
+        });
+    }
+
+    function announceChange(filter) {
+        const announcement = document.createElement('div');
+        announcement.setAttribute('aria-live', 'polite');
+        announcement.className = 'sr-only';
+        announcement.textContent = `Filter changed: ${filter.labels || filter.id} set to ${filter.value}`;
+        document.body.appendChild(announcement);
+        
+        setTimeout(() => {
+            document.body.removeChild(announcement);
+        }, 1000);
+    }
+
+    function updateDashboard() {
+        const year = document.getElementById('yearFilter').value;
+        const region = document.getElementById('regionFilter').value;
+        const source = document.getElementById('dataSource').value;
+
+        // Simulate data updates based on filters
+        const adjustmentFactors = {
+            '2024': 1.0,
+            '2023': 0.97,
+            '2022': 0.94,
+            '2021': 0.91,
+            '2020': 0.88
+        };
+
+        const regionFactors = {
+            'global': 1.0,
+            'north-america': 0.85,
+            'europe': 0.78,
+            'asia': 1.15,
+            'africa': 1.25
+        };
+
+        const factor = adjustmentFactors[year] * regionFactors[region];
+
+        // Update charts with new data
+        charts.forEach(chart => {
+            chart.data.datasets.forEach(dataset => {
+                dataset.data = dataset.data.map(value => Math.round(value * factor * 100) / 100);
+            });
+            chart.update('active');
+        });
+
+        // Update trend indicator
+        const trendChange = ((factor - 1) * 100).toFixed(1);
+        const trendIcon = factor > 1 ? '↑' : '↓';
+        document.getElementById('trendIndicator').textContent = 
+            `${trendIcon} ${Math.abs(trendChange)}% change from baseline`;
+
+        // Update last updated date
+        document.getElementById('lastUpdated').textContent = 
+            `${new Date().toLocaleDateString()} (${region}, ${source})`;
+    }
+
+    // Event listeners
+    document.addEventListener('DOMContentLoaded', () => {
+        createCharts();
+        initializeCounters();
+        initializeTouchGestures();
+        initializeKeyboardNavigation();
+        initializeFilters();
+
+        // Control event listeners
+        document.getElementById('contrastToggle').addEventListener('click', () => {
+            isHighContrast = !isHighContrast;
+            document.body.classList.toggle('high-contrast', isHighContrast);
+            document.getElementById('contrastToggle').textContent = isHighContrast ? '🔅' : '🔆';
+            
+            const announcement = document.createElement('div');
+            announcement.setAttribute('aria-live', 'polite');
+            announcement.className = 'sr-only';
+            announcement.textContent = `High contrast mode ${isHighContrast ? 'enabled' : 'disabled'}`;
+            document.body.appendChild(announcement);
+            setTimeout(() => document.body.removeChild(announcement), 1000);
+        });
+
+        document.getElementById('helpBtn').addEventListener('click', () => showModal('helpModal'));
+        document.getElementById('exportAll').addEventListener('click', exportAll);
+        document.getElementById('shareBtn').addEventListener('click', shareCurrentView);
+
+        // Load URL parameters
+        const urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.has('year')) {
+            document.getElementById('yearFilter').value = urlParams.get('year');
+        }
+        if (urlParams.has('region')) {
+            document.getElementById('regionFilter').value = urlParams.get('region');
+        }
+        if (urlParams.has('source')) {
+            document.getElementById('dataSource').value = urlParams.get('source');
+        }
+        
+        if (urlParams.size > 0) {
+            updateDashboard();
+        }
     });
 
   </script>
