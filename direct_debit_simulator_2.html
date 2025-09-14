@@ -55,6 +55,12 @@
                     Set Loan Amount
                 </button>
             </div>
+            
+            <!-- New Section for Loan Company to select transfer amount -->
+            <div id="debit-controls" class="flex flex-col gap-2 w-full max-w-xs mt-4 hidden">
+                <label for="debit-amount-input" class="text-sm font-semibold text-gray-600">Direct Debit Amount:</label>
+                <input type="number" id="debit-amount-input" placeholder="e.g. 50.00" class="p-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-green-500">
+            </div>
 
             <button id="debit-button" class="bg-green-600 text-white font-bold py-4 px-6 rounded-lg hover:bg-green-700 transition duration-300 shadow-lg mt-4" disabled>
                 Initiate Direct Debit
@@ -95,7 +101,6 @@
         let debtorBalance = 0;
         let companyBalance = 0;
         let totalDebt = 0; // Starts at 0, will be set by the user
-        const monthlyInstallment = 50.00;
 
         // --- DOM Elements ---
         const debtorBalanceEl = document.getElementById('debtor-balance');
@@ -108,6 +113,8 @@
         const loanAmountInput = document.getElementById('loan-amount-input');
         const setLoanBtn = document.getElementById('set-loan-button');
         const loanSetupSection = document.getElementById('loan-setup');
+        const debitControlsSection = document.getElementById('debit-controls');
+        const debitAmountInput = document.getElementById('debit-amount-input');
 
         // --- Helper Functions ---
 
@@ -118,10 +125,16 @@
             debtorBalanceEl.textContent = `$${debtorBalance.toFixed(2)}`;
             companyBalanceEl.textContent = `$${companyBalance.toFixed(2)}`;
             amountOwedEl.textContent = `$${totalDebt.toFixed(2)}`;
+            
             // Disable the debit button if there is no debt left
-            if (totalDebt <= 0 && totalDebt !== 0) { // totalDebt === 0 means no loan is set yet
+            if (totalDebt <= 0 && totalDebt !== 0) {
                 debitBtn.disabled = true;
                 logEvent("Congratulations! The loan has been fully repaid.", 'success');
+                // Hide the debit controls
+                debitControlsSection.classList.add('hidden');
+            } else {
+                // Re-enable the button if there is debt and a loan is set
+                debitBtn.disabled = totalDebt === 0;
             }
         }
 
@@ -190,10 +203,9 @@
             updateUI();
             logEvent(`Loan of $${amount.toFixed(2)} created.`, 'success');
 
-            // Disable loan setup and enable debit button
-            loanAmountInput.disabled = true;
-            setLoanBtn.disabled = true;
-            loanSetupSection.classList.add('hidden'); // Hide the loan setup
+            // Hide loan setup and show debit controls
+            loanSetupSection.classList.add('hidden'); 
+            debitControlsSection.classList.remove('hidden');
             debitBtn.disabled = false; // Enable the debit button
         }
 
@@ -204,12 +216,27 @@
         async function handleDirectDebit() {
             // Disable the button to prevent multiple clicks
             debitBtn.disabled = true;
+            
+            const requestedAmount = parseFloat(debitAmountInput.value);
+
+            // Validate the input amount
+            if (isNaN(requestedAmount) || requestedAmount <= 0) {
+                logEvent("Invalid debit amount. Please enter a positive number.", 'error');
+                debitBtn.disabled = false;
+                return;
+            }
+
+            if (requestedAmount > totalDebt) {
+                logEvent(`Cannot debit $${requestedAmount.toFixed(2)}. The amount exceeds the total debt of $${totalDebt.toFixed(2)}.`, 'error');
+                debitBtn.disabled = false;
+                return;
+            }
+            
             logEvent("Initiating direct debit request...", 'info');
             await simulateDelay(1500); // Simulate network latency
 
-            // Determine the amount to be debited. This is the smaller of the monthly installment or the remaining total debt.
-            const debitAmount = Math.min(monthlyInstallment, totalDebt);
-            
+            const debitAmount = requestedAmount;
+
             // Check if there are sufficient funds
             if (debtorBalance >= debitAmount) {
                 logEvent(`Funds available. Processing payment of $${debitAmount.toFixed(2)}...`, 'info');
