@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Direct Debit Simulator</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f3f4f6;
+        }
+        .container {
+            max-width: 800px;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 min-h-screen flex items-center justify-center p-4">
+
+    <div class="container bg-white shadow-xl rounded-2xl p-8 flex flex-col md:flex-row gap-8">
+
+        <!-- Left Column: Debtor's Account -->
+        <div class="flex-1 bg-blue-50 rounded-lg p-6 flex flex-col justify-between">
+            <div>
+                <h2 class="text-2xl font-bold text-gray-800 mb-4">Debtor's Account</h2>
+                <div class="mb-6">
+                    <p class="text-gray-600">Current Balance:</p>
+                    <p id="debtor-balance" class="text-4xl font-extrabold text-blue-600">$0.00</p>
+                </div>
+                <div class="flex flex-col gap-2">
+                    <input type="number" id="deposit-amount" placeholder="Deposit amount" class="p-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    <button id="deposit-button" class="bg-blue-600 text-white font-bold py-3 rounded-lg hover:bg-blue-700 transition duration-300 shadow-md">
+                        Deposit Money
+                    </button>
+                </div>
+            </div>
+            <p class="mt-4 text-sm text-gray-500 italic text-center">
+                Simulate a bank account receiving funds.
+            </p>
+        </div>
+
+        <!-- Middle Column: Actions and Controls -->
+        <div class="flex-1 flex flex-col items-center justify-center p-6 bg-white rounded-lg">
+            <h2 class="text-2xl font-bold text-gray-800 mb-6">System Controls</h2>
+            <div class="mb-6 text-center">
+                <p class="text-gray-600">Amount Owed:</p>
+                <p id="amount-owed" class="text-4xl font-extrabold text-gray-800">$0.00</p>
+            </div>
+            
+            <!-- New Section to Set Loan Amount -->
+            <div id="loan-setup" class="flex flex-col gap-2 w-full max-w-xs">
+                <input type="number" id="loan-amount-input" placeholder="Enter loan amount" class="p-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                <button id="set-loan-button" class="bg-gray-400 text-white font-bold py-3 rounded-lg hover:bg-gray-500 transition duration-300 shadow-md">
+                    Set Loan Amount
+                </button>
+            </div>
+
+            <button id="debit-button" class="bg-green-600 text-white font-bold py-4 px-6 rounded-lg hover:bg-green-700 transition duration-300 shadow-lg mt-4" disabled>
+                Initiate Direct Debit
+            </button>
+
+            <p class="mt-4 text-sm text-gray-500 italic text-center">
+                This simulates the loan company's system request.
+            </p>
+        </div>
+
+        <!-- Right Column: Loan Company's Account & Log -->
+        <div class="flex-1 bg-green-50 rounded-lg p-6 flex flex-col justify-between">
+            <div>
+                <h2 class="text-2xl font-bold text-gray-800 mb-4">Loan Company Account</h2>
+                <div class="mb-6">
+                    <p class="text-gray-600">Current Balance:</p>
+                    <p id="company-balance" class="text-4xl font-extrabold text-green-600">$0.00</p>
+                </div>
+            </div>
+
+            <!-- Transaction Log -->
+            <div>
+                <h3 class="text-lg font-bold text-gray-800 mb-2">Transaction Log</h3>
+                <div id="log-history" class="bg-white p-3 rounded-lg h-32 overflow-y-auto border border-gray-300">
+                    <!-- Log entries will appear here -->
+                </div>
+            </div>
+            
+        </div>
+
+    </div>
+
+    <script>
+        // Use a Promise to simulate a delay for a more realistic "API call"
+        const simulateDelay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
+
+        // --- Core State Management ---
+        let debtorBalance = 0;
+        let companyBalance = 0;
+        let totalDebt = 0; // Starts at 0, will be set by the user
+        const monthlyInstallment = 50.00;
+
+        // --- DOM Elements ---
+        const debtorBalanceEl = document.getElementById('debtor-balance');
+        const companyBalanceEl = document.getElementById('company-balance');
+        const amountOwedEl = document.getElementById('amount-owed');
+        const depositAmountEl = document.getElementById('deposit-amount');
+        const depositBtn = document.getElementById('deposit-button');
+        const debitBtn = document.getElementById('debit-button');
+        const logHistoryEl = document.getElementById('log-history');
+        const loanAmountInput = document.getElementById('loan-amount-input');
+        const setLoanBtn = document.getElementById('set-loan-button');
+        const loanSetupSection = document.getElementById('loan-setup');
+
+        // --- Helper Functions ---
+
+        /**
+         * Updates the balance displays on the page.
+         */
+        function updateUI() {
+            debtorBalanceEl.textContent = `$${debtorBalance.toFixed(2)}`;
+            companyBalanceEl.textContent = `$${companyBalance.toFixed(2)}`;
+            amountOwedEl.textContent = `$${totalDebt.toFixed(2)}`;
+            // Disable the debit button if there is no debt left
+            if (totalDebt <= 0 && totalDebt !== 0) { // totalDebt === 0 means no loan is set yet
+                debitBtn.disabled = true;
+                logEvent("Congratulations! The loan has been fully repaid.", 'success');
+            }
+        }
+
+        /**
+         * Adds a new message to the transaction log.
+         * @param {string} message The message to log.
+         * @param {string} type The type of log (e.g., 'info', 'error', 'success').
+         */
+        function logEvent(message, type = 'info') {
+            const entry = document.createElement('p');
+            entry.textContent = `[${new Date().toLocaleTimeString()}] ${message}`;
+            entry.classList.add('text-sm', 'mb-1');
+            
+            if (type === 'error') {
+                entry.classList.add('text-red-500');
+            } else if (type === 'success') {
+                entry.classList.add('text-green-500');
+            } else {
+                entry.classList.add('text-gray-700');
+            }
+            
+            logHistoryEl.appendChild(entry);
+            // Scroll to the bottom to show the latest entry
+            logHistoryEl.scrollTop = logHistoryEl.scrollHeight;
+        }
+
+        // --- Event Handlers ---
+
+        /**
+         * Handles the deposit button click.
+         * Adds funds to the debtor's account.
+         */
+        async function handleDeposit() {
+            const amount = parseFloat(depositAmountEl.value);
+
+            if (isNaN(amount) || amount <= 0) {
+                logEvent("Invalid deposit amount. Please enter a positive number.", 'error');
+                return;
+            }
+
+            // Simulate the deposit process with a short delay
+            depositBtn.disabled = true;
+            logEvent(`Processing deposit of $${amount.toFixed(2)}...`);
+            await simulateDelay(1000);
+
+            debtorBalance += amount;
+            updateUI();
+            logEvent(`$${amount.toFixed(2)} deposited successfully.`, 'success');
+            depositAmountEl.value = ''; // Clear the input field
+            depositBtn.disabled = false;
+        }
+
+        /**
+         * Handles the "Set Loan Amount" button click.
+         * Sets the initial total debt.
+         */
+        function handleSetLoan() {
+            const amount = parseFloat(loanAmountInput.value);
+
+            if (isNaN(amount) || amount <= 0) {
+                logEvent("Invalid loan amount. Please enter a positive number.", 'error');
+                return;
+            }
+
+            totalDebt = amount;
+            updateUI();
+            logEvent(`Loan of $${amount.toFixed(2)} created.`, 'success');
+
+            // Disable loan setup and enable debit button
+            loanAmountInput.disabled = true;
+            setLoanBtn.disabled = true;
+            loanSetupSection.classList.add('hidden'); // Hide the loan setup
+            debitBtn.disabled = false; // Enable the debit button
+        }
+
+        /**
+         * Handles the direct debit button click.
+         * Simulates the loan company's automatic withdrawal.
+         */
+        async function handleDirectDebit() {
+            // Disable the button to prevent multiple clicks
+            debitBtn.disabled = true;
+            logEvent("Initiating direct debit request...", 'info');
+            await simulateDelay(1500); // Simulate network latency
+
+            // Determine the amount to be debited. This is the smaller of the monthly installment or the remaining total debt.
+            const debitAmount = Math.min(monthlyInstallment, totalDebt);
+            
+            // Check if there are sufficient funds
+            if (debtorBalance >= debitAmount) {
+                logEvent(`Funds available. Processing payment of $${debitAmount.toFixed(2)}...`, 'info');
+                await simulateDelay(1500); // Simulate bank processing time
+
+                // Transfer the money
+                debtorBalance -= debitAmount;
+                companyBalance += debitAmount;
+                totalDebt -= debitAmount;
+                
+                // Update the UI
+                updateUI();
+                logEvent(`Direct debit successful! $${debitAmount.toFixed(2)} transferred.`, 'success');
+
+            } else {
+                // Not enough funds, log a failure
+                logEvent(`Insufficient funds. Direct debit failed.`, 'error');
+            }
+
+            // Re-enable the button
+            debitBtn.disabled = false;
+        }
+
+        // --- Event Listeners ---
+        depositBtn.addEventListener('click', handleDeposit);
+        setLoanBtn.addEventListener('click', handleSetLoan);
+        debitBtn.addEventListener('click', handleDirectDebit);
+
+        // --- Initialization ---
+        updateUI();
+        logEvent("Simulator ready. Please set the loan amount to begin.", 'info');
+
+    </script>
+
+</body>
+</html>
