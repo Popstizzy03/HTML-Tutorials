@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FoodExpress | Restaurant Delivery App</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
+    <script src="https://unpkg.com/feather-icons"></script>
+    <style>
+        .hero-gradient {
+            background: linear-gradient(135deg, #f6d365 0%, #fda085 100%);
+        }
+        .category-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+        .food-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+        .cart-item:hover {
+            background-color: rgba(249, 250, 251, 0.8);
+        }
+        .scroll-hidden::-webkit-scrollbar {
+            display: none;
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- Navigation -->
+    <nav class="bg-white shadow-sm sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16 items-center">
+                <div class="flex items-center">
+                    <i data-feather="truck" class="text-orange-500 mr-2"></i>
+                    <span class="text-xl font-bold text-orange-500">FoodExpress</span>
+                </div>
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="#" class="text-gray-700 hover:text-orange-500 font-medium">Home</a>
+                    <a href="#" class="text-gray-700 hover:text-orange-500 font-medium">Restaurants</a>
+                    <a href="#" class="text-gray-700 hover:text-orange-500 font-medium">Offers</a>
+                    <a href="#" class="text-gray-700 hover:text-orange-500 font-medium">My Orders</a>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <button class="relative p-2 text-gray-700 hover:text-orange-500">
+                        <i data-feather="shopping-cart"></i>
+                        <span class="absolute -top-1 -right-1 bg-orange-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">3</span>
+                    </button>
+                    <button class="p-2 text-gray-700 hover:text-orange-500">
+                        <i data-feather="user"></i>
+                    </button>
+                    <button class="md:hidden p-2 text-gray-700 hover:text-orange-500">
+                        <i data-feather="menu"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero-gradient py-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col md:flex-row items-center">
+                <div class="md:w-1/2 mb-8 md:mb-0" data-aos="fade-right">
+                    <h1 class="text-4xl md:text-5xl font-bold text-white mb-4">Delicious Food Delivered To Your Doorstep</h1>
+                    <p class="text-white text-lg mb-6">Order from your favorite restaurants with just a few taps and enjoy a quick delivery.</p>
+                    <div class="relative max-w-md">
+                        <input type="text" placeholder="Enter your delivery address" class="w-full py-3 px-4 rounded-full shadow-md focus:outline-none focus:ring-2 focus:ring-orange-500">
+                        <button class="absolute right-2 top-1/2 transform -translate-y-1/2 bg-orange-500 text-white p-2 rounded-full">
+                            <i data-feather="search"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="md:w-1/2" data-aos="fade-left">
+                    <img src="http://static.photos/food/640x360/1" alt="Food Delivery" class="rounded-lg shadow-xl">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Categories -->
+    <section class="py-12 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 class="text-2xl font-bold text-gray-800 mb-8" data-aos="fade-up">Food Categories</h2>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <div class="category-card bg-white rounded-lg shadow-md p-4 text-center transition duration-300" data-aos="zoom-in">
+                    <div class="bg-orange-100 rounded-full p-4 w-16 h-16 mx-auto mb-3">
+                        <i data-feather="coffee" class="text-orange-500 w-8 h-8 mx-auto"></i>
+                    </div>
+                    <h3 class="font-medium text-gray-800">Breakfast</h3>
+                </div>
+                <div class="category-card bg-white rounded-lg shadow-md p-4 text-center transition duration-300" data-aos="zoom-in" data-aos-delay="100">
+                    <div class="bg-orange-100 rounded-full p-4 w-16 h-16 mx-auto mb-3">
+                        <i data-feather="drumstick" class="text-orange-500 w-8 h-8 mx-auto"></i>
+                    </div>
+                    <h3 class="font-medium text-gray-800">Lunch</h3>
+                </div>
+                <div class="category-card bg-white rounded-lg shadow-md p-4 text-center transition duration-300" data-aos="zoom-in" data-aos-delay="200">
+                    <div class="bg-orange-100 rounded-full p-4 w-16 h-16 mx-auto mb-3">
+                        <i data-feather="moon" class="text-orange-500 w-8 h-8 mx-auto"></i>
+                    </div>
+                    <h3 class="font-medium text-gray-800">Dinner</h3>
+                </div>
+                <div class="category-card bg-white rounded-lg shadow-md p-4 text-center transition duration-300" data-aos="zoom-in" data-aos-delay="300">
+                    <div class="bg-orange-100 rounded-full p-4 w-16 h-16 mx-auto mb-3">
+                        <i data-feather="ice-cream" class="text-orange-500 w-8 h-8 mx-auto"></i>
+                    </div>
+                    <h3 class="font-medium text-gray-800">Desserts</h3>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Popular Restaurants -->
+    <section class="py-12 bg-gray-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center mb-8">
+                <h2 class="text-2xl font-bold text-gray-800" data-aos="fade-up">Popular Restaurants</h2>
+                <a href="#" class="text-orange-500 font-medium flex items-center" data-aos="fade-up">
+                    View All <i data-feather="chevron-right" class="ml-1"></i>
+                </a>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="food-card bg-white rounded-lg shadow-md overflow-hidden transition duration-300" data-aos="fade-up">
+                    <img src="http://static.photos/restaurant/640x360/1" alt="Restaurant" class="w-full h-48 object-cover">
+                    <div class="p-4">
+                        <div class="flex justify-between items-start mb-2">
+                            <h3 class="font-bold text-lg text-gray-800">Burger King</h3>
+                            <span class="bg-green-100 text-green-800 text-xs px-2 py-1 rounded-full">4.5 ★</span>
+                        </div>
+                        <p class="text-gray-600 text-sm mb-3">American • Burgers • Fast Food</p>
+                        <div class="flex justify-between items-center">
+                            <div class="flex items-center text-sm text-gray-500">
+                                <i data-feather="clock" class="w-4 h-4 mr-1"></i>
+                                <span>20-30 min</span>
+                            </div>
+                            <div class="flex items-center text-sm text-gray-500">
+                                <i data-feather="dollar-sign" class="w-4 h-4 mr-1"></i>
+                                <span>Free delivery</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="food-card bg-white rounded-lg shadow-md overflow-hidden transition duration-300" data-aos="fade-up" data-aos-delay="100">
+                    <img src="http://static.photos/restaurant/640x360/2" alt="Restaurant" class="w-full h-48 object-cover">
+                    <div class="p-4">
+                        <div class="flex justify-between items-start mb-2">
+                            <h3 class="font-bold text-lg text-gray-800">Pizza Hut</h3>
+                            <span class="bg-green-100 text-green-800 text-xs px-2 py-1 rounded-full">4.3 ★</span>
+                        </div>
+                        <p class="text-gray-600 text-sm mb-3">Italian • Pizza • Pasta</p>
+                        <div class="flex justify-between items-center">
+                            <div class="flex items-center text-sm text-gray-500">
+                                <i data-feather="clock" class="w-4 h-4 mr-1"></i>
+                                <span>25-40 min</span>
+                            </div>
+                            <div class="flex items-center text-sm text-gray-500">
+                                <i data-feather="dollar-sign" class="w-4 h-4 mr-1"></i>
+                                <span>$1.99 delivery</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="food-card bg-white rounded-lg shadow-md overflow-hidden transition duration-300" data-aos="fade-up" data-aos-delay="200">
+                    <img src="http://static.photos/restaurant/640x360/3" alt="Restaurant" class="w-full h-48 object-cover">
+                    <div class="p-4">
+                        <div class="flex justify-between items-start mb-2">
+                            <h3 class="font-bold text-lg text-gray-800">Sushi Palace</h3>
+                            <span class="bg-green-100 text-green-800 text-xs px-2 py-1 rounded-full">4.7 ★</span>
+                        </div>
+                        <p class="text-gray-600 text-sm mb-3">Japanese • Sushi • Asian</p>
+                        <div class="flex justify-between items-center">
+                            <div class="flex items-center text-sm text-gray-500">
+                                <i data-feather="clock" class="w-4 h-4 mr-1"></i>
+                                <span>30-45 min</span>
+                            </div>
+                            <div class="flex items-center text-sm text-gray-500">
+                                <i data-feather="dollar-sign" class="w-4 h-4 mr-1"></i>
+                                <span>Free delivery</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Special Offers -->
+    <section class="py-12 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 class="text-2xl font-bold text-gray-800 mb-8" data-aos="fade-up">Special Offers</h2>
+            <div class="bg-orange-50 rounded-xl p-6 md:p-8 flex flex-col md:flex-row items-center" data-aos="zoom-in">
+                <div class="md:w-1/2 mb-6 md:mb-0">
+                    <h3 class="text-2xl font-bold text-orange-600 mb-2">50% OFF</h3>
+                    <h4 class="text-xl font-semibold text-gray-800 mb-3">On Your First Order</h4>
+                    <p class="text-gray-600 mb-4">Use code <span class="font-bold">WELCOME50</span> at checkout to get 50% off on your first order up to $20.</p>
+                    <button class="bg-orange-500 hover:bg-orange-600 text-white font-medium py-2 px-6 rounded-full transition duration-300">
+                        Order Now
+                    </button>
+                </div>
+                <div class="md:w-1/2">
+                    <img src="http://static.photos/food/640x360/4" alt="Special Offer" class="rounded-lg shadow-md">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works -->
+    <section class="py-12 bg-gray-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 class="text-2xl font-bold text-gray-800 mb-12 text-center" data-aos="fade-up">How It Works</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="text-center" data-aos="fade-up">
+                    <div class="bg-orange-100 rounded-full p-4 w-16 h-16 mx-auto mb-4 flex items-center justify-center">
+                        <i data-feather="map-pin" class="text-orange-500 w-8 h-8"></i>
+                    </div>
+                    <h3 class="font-bold text-lg text-gray-800 mb-2">1. Choose Location</h3>
+                    <p class="text-gray-600">Enter your delivery address to find restaurants near you.</p>
+                </div>
+                <div class="text-center" data-aos="fade-up" data-aos-delay="100">
+                    <div class="bg-orange-100 rounded-full p-4 w-16 h-16 mx-auto mb-4 flex items-center justify-center">
+                        <i data-feather="shopping-bag" class="text-orange-500 w-8 h-8"></i>
+                    </div>
+                    <h3 class="font-bold text-lg text-gray-800 mb-2">2. Order Food</h3>
+                    <p class="text-gray-600">Browse menus and select your favorite dishes.</p>
+                </div>
+                <div class="text-center" data-aos="fade-up" data-aos-delay="200">
+                    <div class="bg-orange-100 rounded-full p-4 w-16 h-16 mx-auto mb-4 flex items-center justify-center">
+                        <i data-feather="truck" class="text-orange-500 w-8 h-8"></i>
+                    </div>
+                    <h3 class="font-bold text-lg text-gray-800 mb-2">3. Fast Delivery</h3>
+                    <p class="text-gray-600">Track your order in real-time until it arrives at your door.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Download App -->
+    <section class="py-12 bg-orange-500">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col md:flex-row items-center">
+                <div class="md:w-1/2 mb-8 md:mb-0" data-aos="fade-right">
+                    <h2 class="text-3xl font-bold text-white mb-4">Download Our App</h2>
+                    <p class="text-white mb-6">Get exclusive app-only offers and track your orders on the go. Available for iOS and Android.</p>
+                    <div class="flex flex-col sm:flex-row space-y-3 sm:space-y-0 sm:space-x-4">
+                        <button class="bg-black hover:bg-gray-900 text-white font-medium py-3 px-6 rounded-lg flex items-center justify-center transition duration-300">
+                            <i data-feather="apple" class="mr-2"></i>
+                            App Store
+                        </button>
+                        <button class="bg-black hover:bg-gray-900 text-white font-medium py-3 px-6 rounded-lg flex items-center justify-center transition duration-300">
+                            <i data-feather="play" class="mr-2"></i>
+                            Google Play
+                        </button>
+                    </div>
+                </div>
+                <div class="md:w-1/2 flex justify-center" data-aos="fade-left">
+                    <img src="http://static.photos/technology/640x360/1" alt="Mobile App" class="max-w-xs">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-white py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <div>
+                    <div class="flex items-center mb-4">
+                        <i data-feather="truck" class="text-orange-500 mr-2"></i>
+                        <span class="text-xl font-bold">FoodExpress</span>
+                    </div>
+                    <p class="text-gray-400 mb-4">Delicious food delivered fast to your doorstep.</p>
+                    <div class="flex space-x-4">
+                        <a href="#" class="text-gray-400 hover:text-white transition duration-300">
+                            <i data-feather="facebook"></i>
+                        </a>
+                        <a href="#" class="text-gray-400 hover:text-white transition duration-300">
+                            <i data-feather="twitter"></i>
+                        </a>
+                        <a href="#" class="text-gray-400 hover:text-white transition duration-300">
+                            <i data-feather="instagram"></i>
+                        </a>
+                    </div>
+                </div>
+                <div>
+                    <h3 class="font-bold text-lg mb-4">Company</h3>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-gray-400 hover:text-white transition duration-300">About Us</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition duration-300">Careers</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition duration-300">Blog</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition duration-300">Press</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="font-bold text-lg mb-4">Support</h3>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-gray-400 hover:text-white transition duration-300">Contact Us</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition duration-300">Help Center</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition duration-300">Privacy Policy</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition duration-300">Terms of Service</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="font-bold text-lg mb-4">Contact</h3>
+                    <ul class="space-y-2">
+                        <li class="flex items-center text-gray-400">
+                            <i data-feather="map-pin" class="mr-2"></i>
+                            <span>123 Food St, New York</span>
+                        </li>
+                        <li class="flex items-center text-gray-400">
+                            <i data-feather="mail" class="mr-2"></i>
+                            <span>support@foodexpress.com</span>
+                        </li>
+                        <li class="flex items-center text-gray-400">
+                            <i data-feather="phone" class="mr-2"></i>
+                            <span>+1 (555) 123-4567</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="border-t border-gray-800 mt-8 pt-8 text-center text-gray-400">
+                <p>© 2023 FoodExpress. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Mobile Bottom Navigation -->
+    <div class="md:hidden fixed bottom-0 left-0 right-0 bg-white shadow-lg flex justify-around items-center py-3 px-4 z-50">
+        <a href="#" class="text-orange-500 flex flex-col items-center">
+            <i data-feather="home" class="w-5 h-5"></i>
+            <span class="text-xs mt-1">Home</span>
+        </a>
+        <a href="#" class="text-gray-600 flex flex-col items-center">
+            <i data-feather="search" class="w-5 h-5"></i>
+            <span class="text-xs mt-1">Search</span>
+        </a>
+        <a href="#" class="text-gray-600 flex flex-col items-center">
+            <i data-feather="shopping-bag" class="w-5 h-5"></i>
+            <span class="text-xs mt-1">Orders</span>
+        </a>
+        <a href="#" class="text-gray-600 flex flex-col items-center">
+            <i data-feather="user" class="w-5 h-5"></i>
+            <span class="text-xs mt-1">Account</span>
+        </a>
+    </div>
+
+    <script>
+        AOS.init({
+            duration: 800,
+            easing: 'ease-in-out',
+            once: true
+        });
+        feather.replace();
+    </script>
+</body>
+</html>
